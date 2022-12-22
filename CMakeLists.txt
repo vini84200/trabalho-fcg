@@ -5,8 +5,8 @@ cmake_minimum_required(VERSION 3.15)
 #
 
 project(
-  "Project"
-  VERSION 0.1.0
+  "ProjetoCG"
+        VERSION 0.1.0
   LANGUAGES CXX
 )
 
