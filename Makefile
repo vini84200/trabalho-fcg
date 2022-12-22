@@ -63,7 +63,7 @@ clean-build: ## build the project from scratch
 	cmake --build build --config Release
 
 .PHONY: build
-build: build ## build the project
+build: ## build the project
 	cmake --build build --config Release
 
 .PHONY: run

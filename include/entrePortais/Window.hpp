@@ -2,12 +2,13 @@
 #define PROJETOCG_WINDOW_HPP
 
 #include "glad/glad.h"
+#include "IScene.hpp"
 #include <GLFW/glfw3.h>
 
 namespace entre_portais {
     class Window {
     public:
-        Window(int width, int height, char *title);
+        Window(int width, int height, char *title, IScene *scene);
 
         ~Window();
 
@@ -33,7 +34,7 @@ namespace entre_portais {
         int width_;
         int height_;
         char *title_;
-
+        IScene *scene_;
     };
 }
 #endif  // PROJETOCG_WINDOW_HPP

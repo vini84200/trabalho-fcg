@@ -4,11 +4,17 @@
 #include <cstdlib>
 
 namespace entre_portais {
-    Window::Window(int width, int height, char *title) {
+    Window::Window(int width, int height, char *title, IScene *scene) {
+
+        if (scene == NULL) {
+            fprintf(stderr, "ERROR: scene is a null pointer.\n");
+            std::exit(EXIT_FAILURE);
+        }
         width_ = width;
         height_ = height;
         title_ = title;
         running_ = true;
+        scene_ = scene;
         int success = glfwInit();
         if (!success) {
             fprintf(stderr, "ERROR: glfwInit() failed.\n");
@@ -53,19 +59,26 @@ namespace entre_portais {
             std::exit(EXIT_FAILURE);
         }
 
+        scene_->initialize();
+
         while (running_) {
             update();
             render();
             glfwSwapBuffers(window_);
             glfwPollEvents();
         }
+        scene_->onExit();
         onExit();
     }
 
     void Window::update() {
+        scene_->update();
     }
 
     void Window::render() {
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        scene_->render();
     }
 
     void Window::onResize(int width, int height) {
