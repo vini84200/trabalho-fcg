@@ -51,13 +51,21 @@ docs: ## generate Doxygen HTML documentation, including API docs
 	cmake --build build --target doxygen-docs
 	$(BROWSER) docs/html/index.html
 
-install: ## install the package to the `INSTALL_LOCATION`
-	rm -rf build/
-	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION)
-	cmake --build build --config Release
-	cmake --build build --target install --config Release
-
 format: ## format the project sources
 	rm -rf build/
 	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION)
 	cmake --build build --target clang-format
+
+.PHONY: clean-build
+clean-build: ## build the project from scratch
+	rm -rf build/
+	cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$(INSTALL_LOCATION)
+	cmake --build build --config Release
+
+.PHONY: build
+build: build ## build the project
+	cmake --build build --config Release
+
+.PHONY: run
+run: build ## run the project
+	./build/bin/Debug/entrePortais

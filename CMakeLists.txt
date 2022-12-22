@@ -50,12 +50,6 @@ if(PROJECT_SOURCE_DIR STREQUAL PROJECT_BINARY_DIR)
   message(FATAL_ERROR "In-source builds not allowed. Please make a new directory (called a build directory) and run CMake from there.\n")
 endif()
 
-#
-# Enable package managers
-#
-
-include(cmake/Conan.cmake)
-include(cmake/Vcpkg.cmake)
 
 #
 # Create library, setup header and source files
@@ -198,6 +192,9 @@ add_library(glad ${EXT_INCLUDE_DIR}/glad/glad.h ${EXT_SRC_DIR}/glad/glad.c)
 target_include_directories(glad PUBLIC ${EXT_INCLUDE_DIR})
 
 target_link_libraries(${PROJECT_NAME} PUBLIC glfw glad)
+if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
+  target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad)
+endif ()
 
 verbose_message("Successfully added all dependencies and linked against them.")
 

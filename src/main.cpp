@@ -10,14 +10,10 @@
 
 #include "entrePortais/Window.hpp"
 
-void ErrorCallback(int error, const char *description) {
-    printf("ERROR: GLFW: %s\n", description);
-    exit(-1);
-}
-
 int main() {
     printf("Hello World!\n");
-    entre_portais::Window janela(800, 600, "Hello World");
+    char title[] = "Entre Portais";
+    entre_portais::Window janela(1920, 1080, title);
     janela.Run();
 
     return 0;

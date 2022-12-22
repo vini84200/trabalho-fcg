@@ -48,7 +48,7 @@ namespace entre_portais {
             self->onMouseButton(button, action, mods);
         });
 
-        if (!gladLoadGLLoader((GLADloadproc) glfwGetProcAddress)) {
+        if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
             fprintf(stderr, "ERROR: gladLoadGLLoader() failed.\n");
             std::exit(EXIT_FAILURE);
         }
@@ -71,22 +71,26 @@ namespace entre_portais {
     void Window::onResize(int width, int height) {
         width_ = width;
         height_ = height;
+        printf("Window resized to %dx%d.\n", width_, height_);
     }
 
-    void Window::onKey(int key, int scancode, int action, int mods) {
+    void Window::onKey(int key, int  /*scancode*/, int action, int  /*mods*/) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
             running_ = false;
+        } else {
+            printf("Key %d %s.\n", key, action == GLFW_PRESS ? "pressed" : "released");
         }
     }
 
-    void Window::onMouseButton(int button, int action, int mods) {
+    void Window::onMouseButton(int /*button*/, int /*action*/, int /*mods*/) {
+        printf("Mouse button pressed.\n");
     }
 
-    void Window::onError(int error, const char *description) {
+    void Window::onError(int /*error*/, const char *description) {
         fprintf(stderr, "ERROR: %s\n", description);
     }
 
     void Window::onExit() {
-        printf("Bye bye!\n");
+        printf("Bye bye! See you soon...\n");
     }
 }  // namespace entre_portais
