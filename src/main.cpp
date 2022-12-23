@@ -8,11 +8,10 @@
 #include "glad/glad.h"
 #include "GLFW/glfw3.h"
 
-#include "entrePortais/Window.hpp"
-#include "entrePortais/TriScene.hpp"
+#include "entrePortaisEngine/Window.hpp"
+#include "entrePortaisEngine/TriScene.hpp"
 
 int main() {
-    printf("Hello World!\n");
     char title[] = "Entre Portais";
     entre_portais::TriScene scene;
     entre_portais::Window janela(800, 600, title, &scene);

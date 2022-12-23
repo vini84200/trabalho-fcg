@@ -1,8 +1,8 @@
 set(sources
-		src/entrePortais/Window.cpp
-		src/entrePortais/TriScene.cpp
-		src/entrePortais/Shader.cpp
-)
+		src/entrePortaisEngine/Window.cpp
+		src/entrePortaisEngine/TriScene.cpp
+		src/entrePortaisEngine/Shader.cpp
+		)
 
 set(exe_sources
 		src/main.cpp
@@ -10,7 +10,6 @@ set(exe_sources
 )
 
 set(headers
-		include/entrePortais/Window.hpp
 )
 
 set(test_sources

@@ -5,7 +5,7 @@
 #ifndef ENTREPORTAIS_TRISCENE_HPP
 #define ENTREPORTAIS_TRISCENE_HPP
 
-#include "entrePortais/IScene.hpp"
+#include "entrePortaisEngine/IScene.hpp"
 #include "Shader.hpp"
 
 namespace entre_portais {

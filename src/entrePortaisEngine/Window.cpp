@@ -1,5 +1,5 @@
-#include "entrePortais/Window.hpp"
-
+#include "entrePortaisEngine/Window.hpp"
+#include "entrePortaisEngine/Logger.hpp"
 #include <cstdio>
 #include <cstdlib>
 
@@ -65,6 +65,7 @@ namespace entre_portais {
         glfwSwapInterval(1);
         scene_->initialize();
         while (running_) {
+            // TODO: Calculate Delta Time
             update();
             render();
             glfwSwapBuffers(window_);
@@ -101,7 +102,9 @@ namespace entre_portais {
     }
 
     void Window::onMouseButton(int button, int action, int mods) {
-        printf("Mouse button pressed.\n");
+        log("Pressed button");
+        log("action:", action);
+        log("mods:", mods);
         scene_->onMouseButton(button, action, mods);
     }
 

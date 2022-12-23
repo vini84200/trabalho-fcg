@@ -5,7 +5,7 @@
 #include <ios>
 #include <fstream>
 #include <sstream>
-#include "entrePortais/Shader.hpp"
+#include "entrePortaisEngine/Shader.hpp"
 
 namespace entre_portais {
     Shader::Shader(const char *vertexPath, const char *fragmentPath) {

@@ -20,24 +20,28 @@ project(
 include(cmake/StandardSettings.cmake)
 include(cmake/StaticAnalyzers.cmake)
 include(cmake/Utils.cmake)
-if(NOT CMAKE_BUILD_TYPE)
+if (NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE "Debug")
-endif()
+endif ()
 message(STATUS "Started CMake for ${PROJECT_NAME} v${PROJECT_VERSION}...\n")
 
 if (UNIX)
   add_compile_options("$<$<CONFIG:DEBUG>:-D_DEBUG>")    #this will allow to use same _DEBUG macro available in both Linux as well as Windows - MSCV environment. Easy to put Debug specific code.
 endif (UNIX)
 
+if (CMAKE_BUILD_TYPE STREQUAL "Debug")
+  add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")    #this will allow to use same _DEBUG macro available in both Linux as well as Windows - MSCV environment. Easy to put Debug specific code.
+endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
+
 
 #
 # Setup alternative names
 #
 
-if(${PROJECT_NAME}_USE_ALT_NAMES)
+if (${PROJECT_NAME}_USE_ALT_NAMES)
   string(TOLOWER ${PROJECT_NAME} PROJECT_NAME_LOWERCASE)
   string(TOUPPER ${PROJECT_NAME} PROJECT_NAME_UPPERCASE)
-else()
+else ()
   set(PROJECT_NAME_LOWERCASE ${PROJECT_NAME})
   set(PROJECT_NAME_UPPERCASE ${PROJECT_NAME})
 endif()

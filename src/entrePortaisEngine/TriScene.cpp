@@ -1,6 +1,6 @@
 
 #include <cstdio>
-#include "entrePortais/TriScene.hpp"
+#include "entrePortaisEngine/TriScene.hpp"
 #include "glad/glad.h"
 
 namespace entre_portais {
