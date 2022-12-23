@@ -53,14 +53,17 @@ namespace entre_portais {
             Window *self = static_cast<Window *>(glfwGetWindowUserPointer(window));
             self->onMouseButton(button, action, mods);
         });
+        glfwSetWindowCloseCallback(window_, [](GLFWwindow *window) {
+            Window *self = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            self->onCloseWindow();
+        });;
 
         if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
             fprintf(stderr, "ERROR: gladLoadGLLoader() failed.\n");
             std::exit(EXIT_FAILURE);
         }
-
+        glfwSwapInterval(1);
         scene_->initialize();
-
         while (running_) {
             update();
             render();
@@ -85,25 +88,33 @@ namespace entre_portais {
         width_ = width;
         height_ = height;
         printf("Window resized to %dx%d.\n", width_, height_);
+        scene_->onResize(width_, height_);
     }
 
-    void Window::onKey(int key, int  /*scancode*/, int action, int  /*mods*/) {
+    void Window::onKey(int key, int scancode, int action, int mods) {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
             running_ = false;
         } else {
             printf("Key %d %s.\n", key, action == GLFW_PRESS ? "pressed" : "released");
+            scene_->onKey(key, scancode, action, mods);
         }
     }
 
-    void Window::onMouseButton(int /*button*/, int /*action*/, int /*mods*/) {
+    void Window::onMouseButton(int button, int action, int mods) {
         printf("Mouse button pressed.\n");
+        scene_->onMouseButton(button, action, mods);
     }
 
     void Window::onError(int /*error*/, const char *description) {
         fprintf(stderr, "ERROR: %s\n", description);
     }
 
+    void Window::onCloseWindow() {
+        running_ = false;
+    }
+
     void Window::onExit() {
         printf("Bye bye! See you soon...\n");
+        scene_->onExit();
     }
 }  // namespace entre_portais

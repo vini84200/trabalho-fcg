@@ -26,6 +26,8 @@ namespace entre_portais {
 
         static void onError(int error, const char *description);
 
+        void onCloseWindow();
+
         void onExit();
 
     private:
