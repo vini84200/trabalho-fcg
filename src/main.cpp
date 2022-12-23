@@ -15,7 +15,7 @@ int main() {
     printf("Hello World!\n");
     char title[] = "Entre Portais";
     entre_portais::TriScene scene;
-    entre_portais::Window janela(1920, 1080, title, &scene);
+    entre_portais::Window janela(800, 600, title, &scene);
     janela.Run();
 
     return 0;

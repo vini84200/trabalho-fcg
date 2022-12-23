@@ -6,6 +6,7 @@
 #define ENTREPORTAIS_TRISCENE_HPP
 
 #include "entrePortais/IScene.hpp"
+#include "Shader.hpp"
 
 namespace entre_portais {
 
@@ -30,7 +31,8 @@ namespace entre_portais {
         void onExit() override;
 
     private:
-        unsigned int VBO, VAO, VBO_COLOR, vertexShader_, fragmentShader_, program_;
+        unsigned int VBO, VAO, VBO_COLOR;
+        Shader *shader_;
     };
 
 } // entre_portais

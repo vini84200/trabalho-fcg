@@ -62,47 +62,7 @@ namespace entre_portais {
         glBindVertexArray(0);
 
         // program_
-
-        const char *vertex = "#version 330 core\n"
-                             "layout (location = 0) in vec4 position;\n"
-                             "layout (location = 1) in vec4 color;\n"
-                             "out vec4 vertexColor;\n"
-                             "void main()\n"
-                             "{\n"
-                             "   gl_Position = position;\n"
-                             "   vertexColor = color;\n"
-                             "}\0";
-
-        const char *fragment = "#version 330 core\n"
-                               "out vec4 FragColor;\n"
-                               "in vec4 vertexColor;\n"
-                               "void main()\n"
-                               "{\n"
-                               "   FragColor = vertexColor;\n"
-                               "}\n\0";
-
-        vertexShader_ = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertexShader_, 1, &vertex, NULL);
-        glCompileShader(vertexShader_);
-        GLint log_length = 0;
-        glGetShaderiv(vertexShader_, GL_INFO_LOG_LENGTH, &log_length);
-        GLchar *log = new GLchar[log_length];
-        glGetShaderInfoLog(vertexShader_, log_length, &log_length, log);
-        printf("Vertex Shader Log: (size %d) %s\n", log_length, log);
-        fragmentShader_ = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragmentShader_, 1, &fragment, NULL);
-        glCompileShader(fragmentShader_);
-        glGetShaderiv(fragmentShader_, GL_INFO_LOG_LENGTH, &log_length);
-        log = new GLchar[log_length];
-        glGetShaderInfoLog(fragmentShader_, log_length, &log_length, log);
-        printf("Fragment Shader Log: (size %d) %s\n", log_length, log);
-
-        program_ = glCreateProgram();
-        glAttachShader(program_, vertexShader_);
-        glAttachShader(program_, fragmentShader_);
-        glLinkProgram(program_);
-        /*glDeleteShader(vertexShader_);
-        glDeleteShader(fragmentShader_);*/
+        shader_ = new Shader("assets/shaders/tri.vert", "assets/shaders/tri.frag");
 
     }
 
@@ -114,10 +74,11 @@ namespace entre_portais {
     }
 
     void TriScene::render() {
-        glUseProgram(program_);
+        shader_->use();
         glBindVertexArray(VAO);
         glDrawElements(GL_TRIANGLES, 3, GL_UNSIGNED_INT, 0);
         glBindVertexArray(0);
+        glUseProgram(0);
     }
 
     void TriScene::onExit() {
