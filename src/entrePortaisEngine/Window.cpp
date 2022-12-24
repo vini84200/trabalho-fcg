@@ -2,6 +2,7 @@
 #include "entrePortaisEngine/Logger.hpp"
 #include <cstdio>
 #include <cstdlib>
+#include <csignal>
 
 namespace entre_portais {
     Window::Window(int width, int height, char *title, IScene *scene) {
@@ -65,10 +66,17 @@ namespace entre_portais {
         glfwSwapInterval(1);
         scene_->initialize();
         while (running_) {
-            // TODO: Calculate Delta Time
-            update();
+            float currentFrame = glfwGetTime();
             render();
             glfwSwapBuffers(window_);
+            float deltaTime = glfwGetTime() - currentFrame;
+            update();
+            if (deltaTime < 1.0f / targetFPS_) {
+                // Here we can do some work while waiting for the next frame.
+
+                // Sleep for the remaining time.
+                usleep((1.0f / targetFPS_ - deltaTime) * 1000000);
+            }
             glfwPollEvents();
         }
         scene_->onExit();

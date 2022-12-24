@@ -37,6 +37,7 @@ namespace entre_portais {
         int height_;
         char *title_;
         IScene *scene_;
+        float targetFPS_ = 60.0f;
     };
 }
 #endif  // PROJETOCG_WINDOW_HPP
