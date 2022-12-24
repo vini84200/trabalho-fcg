@@ -66,13 +66,13 @@ namespace entre_portais {
         glfwSwapInterval(1);
         scene_->initialize();
         while (running_) {
-            float currentFrame = glfwGetTime();
+            double currentFrame = glfwGetTime();
             render();
             glfwSwapBuffers(window_);
             update();
-            float deltaTime = glfwGetTime() - currentFrame;
+            double deltaTime = glfwGetTime() - currentFrame;
             glfwPollEvents();
-            if (deltaTime < 1.0f / targetFPS_) {
+            if (deltaTime < 1.0 / targetFPS_) {
                 // Here we can do some work while waiting for the next frame.
 
                 // Sleep for the remaining time.
