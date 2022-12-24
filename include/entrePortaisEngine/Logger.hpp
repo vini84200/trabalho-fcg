@@ -2,6 +2,7 @@
 #define ENTREPORTAIS_LOGGER_HPP
 
 #include <iostream>
+#include <glm/glm.hpp>
 
 void log(const char *message) {
 #ifdef DEBUG
@@ -40,10 +41,10 @@ void log(const char *message, bool value) {
 }
 
 
-//void log(const char *message, const glm::vec2 &value) {
-//#ifdef DEBUG
-//    printf("%s (%f, %f) \n", message, value.x, value.y);
-//#endif
-//}
+void log(const char *message, const glm::vec2 &value) {
+#ifdef DEBUG
+    printf("%s (%f, %f) \n", message, value.x, value.y);
+#endif
+}
 
 #endif //ENTREPORTAIS_LOGGER_HPP

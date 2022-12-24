@@ -195,7 +195,30 @@ set(EXT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/include)
 add_library(glad ${EXT_INCLUDE_DIR}/glad/glad.h ${EXT_SRC_DIR}/glad/glad.c)
 target_include_directories(glad PUBLIC ${EXT_INCLUDE_DIR})
 
-target_link_libraries(${PROJECT_NAME} PUBLIC glfw glad)
+# Auto GitSubmodules
+# FONTE: https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
+find_package(Git QUIET)
+if (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+  # Update submodules as needed
+  option(GIT_SUBMODULE "Check submodules during build" ON)
+  if (GIT_SUBMODULE)
+    message(STATUS "Submodule update")
+    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+            RESULT_VARIABLE GIT_SUBMOD_RESULT)
+    if (NOT GIT_SUBMOD_RESULT EQUAL "0")
+      message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+    endif ()
+  endif ()
+endif ()
+
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/CMakeLists.txt")
+  message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+endif ()
+
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
+
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw glad glm)
 if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
   target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad)
 endif ()
@@ -375,23 +398,3 @@ if (${PROJECT_NAME}_ENABLE_UNIT_TESTING)
   add_subdirectory(test)
 endif ()
 
-# Auto GitSubmodules
-# FONTE: https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
-find_package(Git QUIET)
-if (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-  # Update submodules as needed
-  option(GIT_SUBMODULE "Check submodules during build" ON)
-  if (GIT_SUBMODULE)
-    message(STATUS "Submodule update")
-    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            RESULT_VARIABLE GIT_SUBMOD_RESULT)
-    if (NOT GIT_SUBMOD_RESULT EQUAL "0")
-      message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
-    endif ()
-  endif ()
-endif ()
-
-if (NOT EXISTS "${PROJECT_SOURCE_DIR}/extern/repo/CMakeLists.txt")
-  message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
-endif ()
