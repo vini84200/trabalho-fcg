@@ -6,7 +6,7 @@ on:
       - 'v*'
 
 env:
-  PROJECT_NAME: "modern-cpp-template"
+  PROJECT_NAME: "trabalho-fcg"
   BUILD_TYPE: Release
 
 jobs:
@@ -74,11 +74,18 @@ jobs:
         cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local" -Dgtest_force_shared_crt=1
         cmake --build build --config Release
         cmake --build build --target install --config Release
-        cd ../modern-cpp-template
+        cd ../trabalho-fcg
+
+    - name: install glfw
+      if: ${{ steps.cache.output.cache-hit != 'true' }}
+      run: |
+        cd ..
+        sudo apt update
+        sudo apt install libglfw3-dev
 
     - name: configure
       run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX="$HOME/.local"
-      
+
     - name: build
       run: cmake --build build --config "$env:BUILD_TYPE" -j4
 

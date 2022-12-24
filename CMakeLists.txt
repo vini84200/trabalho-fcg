@@ -187,13 +187,14 @@ include(cmake/Doxygen.cmake)
 # On Linux and Mac this variable is ignored. If any issues rise from it, try commenting it out
 # and letting CMake decide how to link with it.
 set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 find_package(glfw3 3.3 REQUIRED)
+find_package(OpenGL REQUIRED)
 
 set(EXT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/src)
 set(EXT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/include)
 
 add_library(glad ${EXT_INCLUDE_DIR}/glad/glad.h ${EXT_SRC_DIR}/glad/glad.c)
-target_include_directories(glad PUBLIC ${EXT_INCLUDE_DIR})
 
 # Auto GitSubmodules
 # FONTE: https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
@@ -217,10 +218,12 @@ if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/CMakeLists.txt")
 endif ()
 
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
-
-target_link_libraries(${PROJECT_NAME} PUBLIC glfw glad glm)
+target_include_directories(glad PUBLIC ${EXT_INCLUDE_DIR})
+message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")
+#target_include_directories(glm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external/glm)
+target_link_libraries(${PROJECT_NAME} PUBLIC glfw glad glm ${CMAKE_DL_LIBS})
 if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
-  target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad)
+  target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad glm)
 endif ()
 
 verbose_message("Successfully added all dependencies and linked against them.")
