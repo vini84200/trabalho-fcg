@@ -2,6 +2,7 @@ set(sources
 		src/entrePortaisEngine/Window.cpp
 		src/entrePortaisEngine/TriScene.cpp
 		src/entrePortaisEngine/Shader.cpp
+		src/entrePortaisEngine/Buffer.cpp
 		)
 
 set(exe_sources
