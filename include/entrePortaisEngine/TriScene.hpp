@@ -7,6 +7,7 @@
 
 #include "entrePortaisEngine/IScene.hpp"
 #include "Shader.hpp"
+#include "VAOBuffer.hpp"
 
 namespace entre_portais {
 
@@ -31,7 +32,8 @@ namespace entre_portais {
         void onExit() override;
 
     private:
-        unsigned int VBO, VAO, VBO_COLOR;
+        std::shared_ptr<VAOBuffer> vao_ = nullptr;
+        unsigned int vboPos_, vboCol_;
         Shader *shader_;
     };
 

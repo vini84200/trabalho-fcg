@@ -30,12 +30,15 @@ namespace entre_portais {
     }
 
     Window::~Window() {
+        log("Window::~Window()");
+        log("glfwTerminate()");
         glfwTerminate();
     }
 
     void Window::Run() {
         window_ = glfwCreateWindow(width_, height_, title_, NULL, NULL);
         if (!window_) {
+            log("glfwTerminate()");
             glfwTerminate();
             fprintf(stderr, "ERROR: glfwCreateWindow() failed.\n");
             std::exit(EXIT_FAILURE);

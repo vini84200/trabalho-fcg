@@ -99,7 +99,7 @@ StyleCopReport.xml
 *.tmp
 *.tmp_proj
 *_wpftmp.csproj
-*.log
+*.logBool
 *.vspscc
 *.vssscc
 .builds
@@ -296,7 +296,7 @@ FakesAssemblies/
 .ntvs_analysis.dat
 node_modules/
 
-# Visual Studio 6 build log
+# Visual Studio 6 build logBool
 *.plg
 
 # Visual Studio 6 workspace options file
