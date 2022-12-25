@@ -59,7 +59,7 @@ namespace entre_portais {
         GLint log_length = 0;
         glGetShaderiv(shader_id, GL_INFO_LOG_LENGTH, &log_length);
 
-        // Alocamos memória para guardar o log de compilação.
+        // Alocamos memória para guardar o logBool de compilação.
         // A chamada "new" em C++ é equivalente ao "malloc()" do C.
         GLchar *log = new GLchar[log_length];
         glGetShaderInfoLog(shader_id, log_length, &log_length, log);
@@ -72,16 +72,16 @@ namespace entre_portais {
                 output += "ERROR: OpenGL compilation of \"";
                 output += filename;
                 output += "\" failed.\n";
-                output += "== Start of compilation log\n";
+                output += "== Start of compilation logBool\n";
                 output += log;
-                output += "== End of compilation log\n";
+                output += "== End of compilation logBool\n";
             } else {
                 output += "WARNING: OpenGL compilation of \"";
                 output += filename;
                 output += "\".\n";
-                output += "== Start of compilation log\n";
+                output += "== Start of compilation logBool\n";
                 output += log;
-                output += "== End of compilation log\n";
+                output += "== End of compilation logBool\n";
             }
 
             fprintf(stderr, "%s", output.c_str());
