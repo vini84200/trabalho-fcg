@@ -47,6 +47,8 @@ namespace entre_portais {
         friend class VAOBuffer;
 
         friend class VBOBuffer;
+
+        friend class EBOBuffer;
     };
 
     struct BoundAttribute {

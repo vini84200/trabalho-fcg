@@ -9,19 +9,24 @@ namespace entre_portais {
 
     void TriScene::initialize() {
         printf("Initializing TriScene\n");
+        // Draw a square
         float vertices[] = {
-                -0.5f, -0.5f, 0.0f, 1.f,
-                0.5f, -0.5f, 0.0f, 1.f,
-                0.0f, 0.5f, 0.0f, 1.f,
+                0.5f, 0.5f, 0.0f, 1.0,
+                0.5f, -0.5f, 0.0f, 1.0,
+                -0.5f, -0.5f, 0.0f, 1.0,
+                -0.5f, 0.5f, 0.0f, 1.0,
+
         };
 
         float colors[] = {
                 1.f, 0.f, 0.f, 1.f,
                 0.f, 1.f, 0.f, 1.f,
                 0.f, 0.f, 1.f, 1.f,
+                1.f, 0.f, 1.f, 1.f,
         };
 
         vao_ = std::make_shared<VAOBuffer>();
+        // BUFFER POSITIONS
         BufferBuilder pos_b;
         pos_b.addAttribute(0, 4, GL_FLOAT, GL_FALSE, 0, 0);
         pos_b.setData(vertices, sizeof(vertices));
@@ -29,6 +34,7 @@ namespace entre_portais {
 
         vao_->addBufferToQueue(&pos_b);
 
+        // BUFFER COLORS
         BufferBuilder color_b;
         color_b.addAttribute(1, 4, GL_FLOAT, GL_FALSE, 0, 0);
         color_b.setData(colors, sizeof(colors));
@@ -36,21 +42,19 @@ namespace entre_portais {
 
         vao_->addBufferToQueue(&color_b);
 
+        // INDICES
+        unsigned int indices[] = {
+                0, 1, 3,
+                1, 2, 3
+        };
+        BufferBuilder indices_b;
+        indices_b.setData(indices, sizeof(indices));
+        indices_b.setUsage(GL_STATIC_DRAW);
+        vao_->addEBOToQueue(&indices_b);
+
         vao_->Commit();
 
 
-//
-//        // INDICES
-//        unsigned int indices[] = {
-//                0, 1, 2
-//        };
-//
-//        GLuint indices_id;
-//        glGenBuffers(1, &indices_id);
-//
-//        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, indices_id);
-//        glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indices), indices, GL_STATIC_DRAW);
-//        glBindVertexArray(0);
 
         // program_
         shader_ = new Shader("assets/shaders/tri.vert", "assets/shaders/tri.frag");
@@ -67,7 +71,7 @@ namespace entre_portais {
     void TriScene::render() {
         shader_->use();
         vao_->bind();
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         vao_->unbind();
         glUseProgram(0);
     }

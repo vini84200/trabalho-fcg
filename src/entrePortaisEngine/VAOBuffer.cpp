@@ -73,11 +73,13 @@ namespace entre_portais {
                     attributes_.push_back(attribute);
                 }
             }
+            buffersToBuild_.clear();
             delete[] ids;
         }
 
         if (eboToBuild_.has_value()) {
             auto eboBuffer = new EBOBuffer(*eboToBuild_, this);
+            eboToBuild_ = std::nullopt;
         }
         unbind();
     }
@@ -178,15 +180,20 @@ namespace entre_portais {
     }
 
     EBOBuffer::EBOBuffer(BufferBuilder builder, VAOBuffer *vao) : vao_(vao) {
+        log("EBOBuffer::EBOBuffer()");
         glGenBuffers(1, &id_);
         // Assumes that the vao is already bound
         assert(("VAO is not bound", vao_->isBound()));
 
         bind();
+        if (builder.data_ != nullptr) {
+            glBufferData(GL_ELEMENT_ARRAY_BUFFER, builder.size_, builder.data_, builder.usage_);
+        }
         vao_->setEBO(this);
     }
 
     EBOBuffer::~EBOBuffer() {
+        log("EBOBuffer::~EBOBuffer()");
         glDeleteBuffers(1, &id_);
     }
 
@@ -211,10 +218,12 @@ namespace entre_portais {
     }
 
     void EBOBuffer::bind() {
+        log("EBOBuffer::bind()");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_);
     }
 
     void EBOBuffer::unbind() {
+        log("EBOBuffer::unbind()");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
