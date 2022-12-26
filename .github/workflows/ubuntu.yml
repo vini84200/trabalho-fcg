@@ -41,7 +41,7 @@ jobs:
         run: |
           cd ..
           sudo apt update
-          sudo apt install libglfw3-dev
+          sudo apt install libwayland-dev libxkbcommon-dev wayland-protocols extra-cmake-modules libxrandr-dev libxinerama-dev libxcursor-dev libxi-dev
 
       - name: configure
         run: cmake -Bbuild -DCMAKE_INSTALL_PREFIX=$GITHUB_WORKSPACE/$INSTALL_LOCATION -DProject_ENABLE_CODE_COVERAGE=1
