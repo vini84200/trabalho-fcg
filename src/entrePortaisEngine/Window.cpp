@@ -79,7 +79,7 @@ namespace entre_portais {
                 // Here we can do some work while waiting for the next frame.
 
                 // Sleep for the remaining time.
-                usleep(static_cast<__useconds_t>((1.0f / targetFPS_ - deltaTime) * 1000000));
+                usleep((1.0f / targetFPS_ - deltaTime) * 1000000);
             }
         }
         scene_->onExit();
