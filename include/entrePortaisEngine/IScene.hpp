@@ -4,7 +4,18 @@
 namespace entre_portais {
     class IScene {
     public:
-        virtual ~IScene() {};
+        virtual ~IScene() = default;
+
+        IScene() = default;
+
+        // Remove construtores e operadores de cópia e movimentação
+        IScene(const IScene &other) = delete;
+
+        IScene &operator=(const IScene &other) = delete;
+
+        IScene(IScene &&other) = delete;
+
+        IScene &operator=(IScene &&other) = delete;
 
         virtual void initialize() = 0;
 
@@ -18,6 +29,7 @@ namespace entre_portais {
 
         virtual void onMouseButton(int button, int action, int mods) = 0;
 
+        // TODO: Adicionar mais eventos
         virtual void onExit() = 0;
     };
 }

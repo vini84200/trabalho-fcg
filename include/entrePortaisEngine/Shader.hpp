@@ -11,6 +11,15 @@ namespace entre_portais {
 
         ~Shader();
 
+        // Remove os construtores e operadores de cópia e movimentação
+        Shader(const Shader &other) = delete;
+
+        Shader &operator=(const Shader &other) = delete;
+
+        Shader(Shader &&other) = delete;
+
+        Shader &operator=(Shader &&other) = delete;
+
         void use();
 
     private:

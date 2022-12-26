@@ -1,16 +1,26 @@
-#ifndef PROJETOCG_WINDOW_HPP
-#define PROJETOCG_WINDOW_HPP
+#ifndef ENTREPORTAIS_WINDOW_HPP
+#define ENTREPORTAIS_WINDOW_HPP
 
 #include "glad/glad.h"
 #include "IScene.hpp"
 #include <GLFW/glfw3.h>
 
 namespace entre_portais {
+    static const double DEFAULT_FPS = 60.0;
+
     class Window {
     public:
-        Window(int width, int height, char *title, IScene *scene);
+        Window(int width, int height, const char *title, IScene *scene);
 
         ~Window();
+
+        Window(const Window &other) = delete;
+
+        Window &operator=(const Window &other) = delete;
+
+        Window(Window &&other) = delete;
+
+        Window &operator=(Window &&other) = delete;
 
         void Run();
 
@@ -38,7 +48,7 @@ namespace entre_portais {
         int height_;
         char *title_;
         IScene *scene_;
-        double targetFPS_ = 60.0;
+        double targetFPS_ = DEFAULT_FPS;
     };
 }
-#endif  // PROJETOCG_WINDOW_HPP
+#endif  // ENTREPORTAIS_WINDOW_HPP

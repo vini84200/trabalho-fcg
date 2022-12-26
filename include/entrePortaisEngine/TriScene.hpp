@@ -1,7 +1,3 @@
-//
-// Created by vini84200 on 12/22/22.
-//
-
 #ifndef ENTREPORTAIS_TRISCENE_HPP
 #define ENTREPORTAIS_TRISCENE_HPP
 
@@ -16,6 +12,15 @@ namespace entre_portais {
         TriScene();
 
         ~TriScene() override;
+
+        // Remove construtores e operadores de cópia e movimentação
+        TriScene(const TriScene &other) = delete;
+
+        TriScene &operator=(const TriScene &other) = delete;
+
+        TriScene(TriScene &&other) = delete;
+
+        TriScene &operator=(TriScene &&other) = delete;
 
         void update() override;
 
@@ -33,7 +38,6 @@ namespace entre_portais {
 
     private:
         std::shared_ptr<VAOBuffer> vao_ = nullptr;
-        unsigned int vboPos_, vboCol_;
         Shader *shader_;
     };
 

@@ -1,7 +1,3 @@
-//
-// Created by vini84200 on 12/25/22.
-//
-
 #ifndef ENTREPORTAIS_VAOBUFFER_HPP
 #define ENTREPORTAIS_VAOBUFFER_HPP
 
@@ -20,7 +16,7 @@ namespace entre_portais {
         GLboolean normalized;
         GLsizei stride;
         const GLvoid *offset;
-    } __attribute__((packed, aligned(32)));
+    };
 
     class BufferBuilder {
     public:
@@ -35,9 +31,9 @@ namespace entre_portais {
 
         void setUsage(GLenum usage);
 
-        unsigned int getID() const;
+        [[nodiscard]] unsigned int getID() const;
 
-    protected:
+    private:
         const void *data_ = nullptr;
         GLsizeiptr size_ = 0;
         std::vector<Attribute> attributes_;
