@@ -4,6 +4,7 @@
 #include "IGameNode.hpp"
 #include "IMesh.hpp"
 #include "Transform.hpp"
+#include "Logger.hpp"
 
 namespace entre_portais {
 
@@ -38,9 +39,16 @@ namespace entre_portais {
             return &transform_;
         }
 
+        std::shared_ptr<IScene> getScene() override;
+
+        void setScene(std::shared_ptr<IScene> scene) override;
+
+        bool hasScene() override;
+
     protected:
         std::shared_ptr<IMesh> mesh_;
         Transform transform_;
+        std::weak_ptr<IScene> scene_;
     };
 
 } // entre_portais

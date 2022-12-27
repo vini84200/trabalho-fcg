@@ -1,5 +1,6 @@
 #include "testGame/TriObject.hpp"
 #include "entrePortaisEngine/EasyMesh.hpp"
+#include "GLFW/glfw3.h"
 
 entre_portais::TriObject::TriObject() {
     auto vert = new entre_portais::ManyVertices();
@@ -41,5 +42,7 @@ void entre_portais::TriObject::onMouseButton(int button, int action, int mods) {
 }
 
 void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods) {
-
+    if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
+        printf("Hi, I'm a triangle! And my scene is %d\n", scene_.lock().get());
+    }
 }

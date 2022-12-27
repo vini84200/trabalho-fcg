@@ -19,11 +19,11 @@ namespace entre_portais {
         glDeleteVertexArrays(1, &id_);
         // Delete all VBOs
         for (auto &vbo: buffers_) {
-            delete vbo;
+            vbo.reset();
         }
         // Delete the EBO
         if (ebo_) {
-            delete ebo_;
+            ebo_.reset();
         }
     }
 
@@ -67,7 +67,8 @@ namespace entre_portais {
             glGenBuffers(buffersToCreate, ids);
 
             for (int i = 0; i < buffersToCreate; i++) {
-                VBOBuffer *vboBuffer = new VBOBuffer(buffersToBuild_[i], ids[i], this);
+                auto vboBuffer = std::shared_ptr<VBOBuffer>(
+                        new VBOBuffer(buffersToBuild_[i], ids[i], weak_from_this()));
                 buffers_.push_back(vboBuffer);
                 for (auto &attribute: vboBuffer->getAttributes()) {
                     attributes_.push_back(attribute);
@@ -78,14 +79,15 @@ namespace entre_portais {
         }
 
         if (eboToBuild_.has_value()) {
-            auto eboBuffer = new EBOBuffer(*eboToBuild_, this);
+            auto eboBuffer = std::shared_ptr<EBOBuffer>(new EBOBuffer(eboToBuild_.value(), weak_from_this()));
             eboToBuild_ = std::nullopt;
+            ebo_ = eboBuffer;
         }
         unbind();
     }
 
     bool VertexArrayBuffer::IsClean() const {
-        return buffers_.empty() && ebo_ == 0;
+        return buffers_.empty() && ebo_.has_value();
     }
 
     bool VertexArrayBuffer::isCommitted() const {
@@ -96,7 +98,7 @@ namespace entre_portais {
         return boundVAO_ == id_;
     }
 
-    void VertexArrayBuffer::setEBO(EBOBuffer *ebo) {
+    void VertexArrayBuffer::setEBO(std::shared_ptr<EBOBuffer> ebo) {
         ebo_ = ebo;
     }
 
@@ -123,9 +125,10 @@ namespace entre_portais {
         return id_;
     }
 
-    VBOBuffer::VBOBuffer(BufferBuilder builder, unsigned int id, VertexArrayBuffer *vao) : id_(id) {
+    VBOBuffer::VBOBuffer(BufferBuilder builder, unsigned int id, std::weak_ptr<VertexArrayBuffer> vao) : id_(id) {
         // Assumes that the VAO is already bound
-        assert(("VAO is not bound", vao->isBound()));
+        assert(("VAO has expired", !vao.expired()));
+        assert(("VAO is not bound", vao.lock()->isBound()));
         // Assumes that the id is already generated
         assert(("ID is not generated", id != 0));
 
@@ -179,17 +182,17 @@ namespace entre_portais {
         return attributes_;
     }
 
-    EBOBuffer::EBOBuffer(BufferBuilder builder, VertexArrayBuffer *vao) : vao_(vao) {
+    EBOBuffer::EBOBuffer(BufferBuilder builder, std::weak_ptr<VertexArrayBuffer> vao) : vao_(vao) {
         log("EBOBuffer::EBOBuffer()");
         glGenBuffers(1, &id_);
+        assert(("ID is not generated", id_ != 0));
         // Assumes that the vao is already bound
-        assert(("VAO is not bound", vao_->isBound()));
+        assert(("VAO is not bound", vao_.lock()->isBound()));
 
         bind();
         if (builder.data_ != nullptr) {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, builder.size_, builder.data_, builder.usage_);
         }
-        vao_->setEBO(this);
     }
 
     EBOBuffer::~EBOBuffer() {
@@ -198,22 +201,24 @@ namespace entre_portais {
     }
 
     void EBOBuffer::setData(const void *data, unsigned int size) {
-        if (vao_->isBound()) {
+        auto vao = vao_.lock();
+        if (vao->isBound()) {
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
         } else {
-            vao_->bind();
+            vao->bind();
             glBufferData(GL_ELEMENT_ARRAY_BUFFER, size, data, GL_STATIC_DRAW);
-            vao_->unbind();
+            vao->unbind();
         }
     }
 
     void EBOBuffer::setSubData(const void *data, unsigned int size, unsigned int offset) {
-        if (vao_->isBound()) {
+        auto vao = vao_.lock();
+        if (vao->isBound()) {
             glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, data);
         } else {
-            vao_->bind();
+            vao->bind();
             glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, offset, size, data);
-            vao_->unbind();
+            vao->unbind();
         }
     }
 

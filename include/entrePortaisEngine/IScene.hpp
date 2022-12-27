@@ -11,7 +11,12 @@ namespace entre_portais {
     public:
         virtual ~IScene() = default;
 
-        IScene() = default;
+        IScene() : IGameNode() {
+        }
+
+        std::shared_ptr<IScene> getScene() {
+            return std::dynamic_pointer_cast<IScene>(shared_from_this());
+        }
 
         // Remove construtores e operadores de cópia e movimentação
         IScene(const IScene &other) = delete;
@@ -43,6 +48,13 @@ namespace entre_portais {
             throw std::runtime_error("Não se pode definir o pai de uma cena, pois essa é a raiz da hierarquia.");
         }
 
+        void setScene(std::shared_ptr<IScene> scene) override {
+            throw std::runtime_error("Não se pode definir a cena de uma cena, pois essa é a raiz da hierarquia.");
+        }
+
+        bool hasScene() override {
+            return true;
+        }
     };
 }
 

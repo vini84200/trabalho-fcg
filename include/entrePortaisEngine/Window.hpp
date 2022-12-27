@@ -10,7 +10,7 @@ namespace entre_portais {
 
     class Window {
     public:
-        Window(int width, int height, const char *title, IScene *scene);
+        Window(int width, int height, const char *title, std::shared_ptr<IScene> scene);
 
         ~Window();
 
@@ -47,7 +47,7 @@ namespace entre_portais {
         int width_;
         int height_;
         char *title_;
-        IScene *scene_;
+        std::shared_ptr<IScene> scene_;
         double targetFPS_ = DEFAULT_FPS;
     };
 }
