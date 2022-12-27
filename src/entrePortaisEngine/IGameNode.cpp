@@ -45,6 +45,7 @@ namespace entre_portais {
     }
 
     void IGameNode::addChild(std::shared_ptr<IGameNode> child) {
+        child->initializePropagate();
         children_.push_back(child);
     }
 

@@ -2,8 +2,8 @@
 #define ENTREPORTAIS_TRISCENE_HPP
 
 #include "entrePortaisEngine/IScene.hpp"
-#include "Shader.hpp"
-#include "VAOBuffer.hpp"
+#include "entrePortaisEngine/Shader.hpp"
+#include "entrePortaisEngine/VertexArrayBuffer.hpp"
 
 namespace entre_portais {
 
@@ -37,7 +37,7 @@ namespace entre_portais {
         void onExit() override;
 
     private:
-        std::shared_ptr<VAOBuffer> vao_ = nullptr;
+        std::shared_ptr<VertexArrayBuffer> vao_ = nullptr;
         Shader *shader_;
     };
 

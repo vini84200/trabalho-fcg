@@ -3,19 +3,19 @@
 //
 
 #include <assert.h>
-#include "entrePortaisEngine/VAOBuffer.hpp"
+#include "entrePortaisEngine/VertexArrayBuffer.hpp"
 #include "entrePortaisEngine/Logger.hpp"
 
 namespace entre_portais {
-    unsigned int VAOBuffer::boundVAO_ = 0;
+    unsigned int VertexArrayBuffer::boundVAO_ = 0;
 
-    VAOBuffer::VAOBuffer() {
-        log("VAOBuffer::VAOBuffer()");
+    VertexArrayBuffer::VertexArrayBuffer() {
+        log("VertexArrayBuffer::VertexArrayBuffer()");
         glGenVertexArrays(1, &id_);
     }
 
-    VAOBuffer::~VAOBuffer() {
-        log("VAOBuffer::~VAOBuffer()");
+    VertexArrayBuffer::~VertexArrayBuffer() {
+        log("VertexArrayBuffer::~VertexArrayBuffer()");
         glDeleteVertexArrays(1, &id_);
         // Delete all VBOs
         for (auto &vbo: buffers_) {
@@ -27,29 +27,29 @@ namespace entre_portais {
         }
     }
 
-    void VAOBuffer::bind() {
+    void VertexArrayBuffer::bind() {
         if (boundVAO_ != id_) {
             boundVAO_ = id_;
             glBindVertexArray(id_);
         }
     }
 
-    void VAOBuffer::unbind() {
+    void VertexArrayBuffer::unbind() {
         if (boundVAO_ != 0) {
             boundVAO_ = 0;
             glBindVertexArray(0);
         }
     }
 
-    void VAOBuffer::addBufferToQueue(BufferBuilder *bufferBuilder) {
+    void VertexArrayBuffer::addBufferToQueue(BufferBuilder *bufferBuilder) {
         buffersToBuild_.push_back(*bufferBuilder);
     }
 
-    void VAOBuffer::addEBOToQueue(BufferBuilder *bufferBuilder) {
+    void VertexArrayBuffer::addEBOToQueue(BufferBuilder *bufferBuilder) {
         eboToBuild_ = *bufferBuilder;
     }
 
-    BoundAttribute *VAOBuffer::getAttribute(unsigned int location) {
+    BoundAttribute *VertexArrayBuffer::getAttribute(unsigned int location) {
         for (auto &attribute: attributes_) {
             if (attribute.index == location) {
                 return &attribute;
@@ -58,7 +58,7 @@ namespace entre_portais {
         return nullptr;
     }
 
-    void VAOBuffer::Commit() {
+    void VertexArrayBuffer::Commit() {
         bind();
         auto buffersToCreate = static_cast<GLsizei>(buffersToBuild_.size());
         if (buffersToCreate != 0) {
@@ -84,19 +84,19 @@ namespace entre_portais {
         unbind();
     }
 
-    bool VAOBuffer::IsClean() const {
+    bool VertexArrayBuffer::IsClean() const {
         return buffers_.empty() && ebo_ == 0;
     }
 
-    bool VAOBuffer::isCommitted() const {
+    bool VertexArrayBuffer::isCommitted() const {
         return buffersToBuild_.empty() && !eboToBuild_.has_value();
     }
 
-    bool VAOBuffer::isBound() const {
+    bool VertexArrayBuffer::isBound() const {
         return boundVAO_ == id_;
     }
 
-    void VAOBuffer::setEBO(EBOBuffer *ebo) {
+    void VertexArrayBuffer::setEBO(EBOBuffer *ebo) {
         ebo_ = ebo;
     }
 
@@ -123,7 +123,7 @@ namespace entre_portais {
         return id_;
     }
 
-    VBOBuffer::VBOBuffer(BufferBuilder builder, unsigned int id, VAOBuffer *vao) : id_(id) {
+    VBOBuffer::VBOBuffer(BufferBuilder builder, unsigned int id, VertexArrayBuffer *vao) : id_(id) {
         // Assumes that the VAO is already bound
         assert(("VAO is not bound", vao->isBound()));
         // Assumes that the id is already generated
@@ -179,7 +179,7 @@ namespace entre_portais {
         return attributes_;
     }
 
-    EBOBuffer::EBOBuffer(BufferBuilder builder, VAOBuffer *vao) : vao_(vao) {
+    EBOBuffer::EBOBuffer(BufferBuilder builder, VertexArrayBuffer *vao) : vao_(vao) {
         log("EBOBuffer::EBOBuffer()");
         glGenBuffers(1, &id_);
         // Assumes that the vao is already bound

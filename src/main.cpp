@@ -3,7 +3,7 @@
 #include <string>
 
 #include "entrePortaisEngine/Window.hpp"
-#include "entrePortaisEngine/TriScene.hpp"
+#include "testGame/TriScene.hpp"
 
 static const int WIDTH = 800;
 static const int HEIGHT = 600;

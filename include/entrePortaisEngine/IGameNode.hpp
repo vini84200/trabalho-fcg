@@ -24,6 +24,10 @@ namespace entre_portais {
 
         virtual void render() = 0;
 
+        virtual void preRender() {};
+
+        virtual void postRender() {};
+
         void initializePropagate();
 
         virtual void initialize() = 0;
