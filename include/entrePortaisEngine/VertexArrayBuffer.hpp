@@ -1,5 +1,5 @@
-#ifndef ENTREPORTAIS_VAOBUFFER_HPP
-#define ENTREPORTAIS_VAOBUFFER_HPP
+#ifndef ENTREPORTAIS_VERTEXARRAYBUFFER_HPP
+#define ENTREPORTAIS_VERTEXARRAYBUFFER_HPP
 
 #include <vector>
 #include <optional>
@@ -7,7 +7,7 @@
 #include "glad/glad.h"
 
 namespace entre_portais {
-    class VAOBuffer;
+    class VertexArrayBuffer;
 
     struct Attribute {
         GLuint index;
@@ -40,7 +40,7 @@ namespace entre_portais {
         unsigned int id_ = 0;
         GLenum usage_ = GL_STATIC_DRAW;
 
-        friend class VAOBuffer;
+        friend class VertexArrayBuffer;
 
         friend class VBOBuffer;
 
@@ -77,13 +77,13 @@ namespace entre_portais {
         [[nodiscard]] const std::vector<BoundAttribute> &getAttributes() const;
 
     private:
-        VBOBuffer(BufferBuilder builder, unsigned int id, VAOBuffer *vao);
+        VBOBuffer(BufferBuilder builder, unsigned int id, VertexArrayBuffer *vao);
 
         unsigned int id_ = 0;
-        VAOBuffer *vao_ = nullptr;
+        VertexArrayBuffer *vao_ = nullptr;
         std::vector<BoundAttribute> attributes_;
 
-        friend class VAOBuffer;
+        friend class VertexArrayBuffer;
     };
 
     class EBOBuffer {
@@ -101,19 +101,19 @@ namespace entre_portais {
         unsigned int getId() const;
 
     private:
-        EBOBuffer(BufferBuilder builder, VAOBuffer *vao);
+        EBOBuffer(BufferBuilder builder, VertexArrayBuffer *vao);
 
         unsigned int id_ = 0;
-        VAOBuffer *vao_ = nullptr;
+        VertexArrayBuffer *vao_ = nullptr;
 
-        friend class VAOBuffer;
+        friend class VertexArrayBuffer;
     };
 
-    class VAOBuffer {
+    class VertexArrayBuffer {
     public:
-        VAOBuffer();
+        VertexArrayBuffer();
 
-        ~VAOBuffer();
+        ~VertexArrayBuffer();
 
         void Commit();
 
@@ -150,4 +150,4 @@ namespace entre_portais {
 }
 
 
-#endif //ENTREPORTAIS_VAOBUFFER_HPP
+#endif //ENTREPORTAIS_VERTEXARRAYBUFFER_HPP
