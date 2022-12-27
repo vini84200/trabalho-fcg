@@ -6,9 +6,11 @@
 #include <fstream>
 #include <sstream>
 #include "entrePortaisEngine/Shader.hpp"
+#include "entrePortaisEngine/Logger.hpp"
 
 namespace entre_portais {
     Shader::Shader(const char *vertexPath, const char *fragmentPath) {
+        log("Shader::Shader");
         vertexShader_ = glCreateShader(GL_VERTEX_SHADER);
         fragmentShader_ = glCreateShader(GL_FRAGMENT_SHADER);
         program_ = glCreateProgram();
@@ -24,7 +26,8 @@ namespace entre_portais {
     }
 
     Shader::~Shader() {
-
+        log("Shader::~Shader");
+        glDeleteProgram(program_);
     }
 
     void Shader::use() {
@@ -90,5 +93,30 @@ namespace entre_portais {
         // A chamada "delete" em C++ é equivalente ao "free()" do C
         delete[] log;
 
+    }
+
+    void Shader::setUniformInt(const char *name, int value) {
+        glUniform1i(glGetUniformLocation(program_, name), value);
+    }
+
+    void Shader::setUniformFloat(const char *name, float value) {
+        glUniform1f(glGetUniformLocation(program_, name), value);
+    }
+
+    void Shader::setUniformVec3(const char *name, float x, float y, float z) {
+        glUniform3f(glGetUniformLocation(program_, name), x, y, z);
+    }
+
+    void Shader::setUniformVec3(const char *name, const glm::vec3 &value) {
+        glUniform3f(glGetUniformLocation(program_, name), value.x, value.y, value.z);
+    }
+
+    void Shader::setUniformMat4(const char *name, const float *value) {
+        glUniformMatrix4fv(glGetUniformLocation(program_, name), 1, GL_FALSE, value);
+
+    }
+
+    void Shader::setUniformMat4(const char *name, const glm::mat4 &value) {
+        glUniformMatrix4fv(glGetUniformLocation(program_, name), 1, GL_FALSE, &value[0][0]);
     }
 } // entre_portais

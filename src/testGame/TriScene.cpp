@@ -11,8 +11,12 @@ namespace entre_portais {
     void TriScene::initialize() {
         printf("Initializing TriScene\n");
         auto obj = std::make_shared<TriObject>();
+        auto obj2 = std::make_shared<TriObject>();
         obj->initialize();
         addChild(obj);
+        obj2->getTransform()->setPosition(glm::vec3(0.3f, 0.3f, 0.0f));
+        obj2->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+        addChild(obj2);
     }
 
     TriScene::~TriScene() {
@@ -20,9 +24,6 @@ namespace entre_portais {
 
     void TriScene::update() {
 
-    }
-
-    void TriScene::render() {
     }
 
     void TriScene::onExit() {
@@ -40,4 +41,9 @@ namespace entre_portais {
     void TriScene::onMouseButton(int /*button*/, int /*action*/, int /*mods*/) {
 
     }
+
+    void TriScene::render() {
+
+    }
+
 } // entre_portais

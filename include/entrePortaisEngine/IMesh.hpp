@@ -38,6 +38,14 @@ namespace entre_portais {
             shader_ = std::move(shader);
         };
 
+        virtual void SetShader(const char *vertexPath, const char *fragmentPath) {
+            shader_ = std::make_shared<Shader>(vertexPath, fragmentPath);
+        };
+
+        virtual Shader *GetShader() {
+            return shader_.get();
+        };
+
         virtual void UseShader() {
             shader_->use();
         }

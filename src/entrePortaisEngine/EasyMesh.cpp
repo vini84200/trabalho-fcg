@@ -28,10 +28,8 @@ namespace entre_portais {
     }
 
     void EasyMesh::Draw() {
-        UseShader();
         UseVAO();
         glDrawElements(GL_TRIANGLES, GetNumVertices(), GL_UNSIGNED_INT, 0);
         UnbindVAO();
-        UnbindShader();
     }
 } // entre_portais

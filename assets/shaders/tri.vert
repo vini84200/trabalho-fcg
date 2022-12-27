@@ -1,12 +1,16 @@
 #version 330 core
 
-layout (location = 0) in vec4 NDC_coefficients;
-layout (location = 1) in vec4 color_coefficients;
+layout (location = 0) in vec3 position_modelspace;
+layout (location = 1) in vec4 color;
 
-out vec4 cor_interpolada_pelo_rasterizador;
+out vec4 cor;
+
+uniform mat4 model;
+uniform mat4 view;
+uniform mat4 projection;
 
 void main()
 {
-    gl_Position = NDC_coefficients;
-    cor_interpolada_pelo_rasterizador = color_coefficients;
+    gl_Position = projection * view * model * vec4(position_modelspace, 1.0);
+    cor = color;
 }

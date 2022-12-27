@@ -10,10 +10,18 @@ entre_portais::TriObject::TriObject() {
     vert->indices.push_back(1);
     vert->indices.push_back(2);
     mesh_ = std::make_shared<EasyMesh>(*vert, "assets/shaders/tri.vert", "assets/shaders/tri.frag");
+
+    delete vert;
+    Transform t = Transform();
+    t.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    t.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+    t.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+    transform_ = t;
 }
 
 void entre_portais::TriObject::update() {
-    // Do nothing
+    // Gira o triângulo
+    transform_.setRotation(glm::vec3(0.0f, 0.0f, transform_.rz + 0.3f));
 }
 
 void entre_portais::TriObject::initialize() {

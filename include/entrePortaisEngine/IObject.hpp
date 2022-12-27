@@ -3,6 +3,7 @@
 
 #include "IGameNode.hpp"
 #include "IMesh.hpp"
+#include "Transform.hpp"
 
 namespace entre_portais {
 
@@ -33,8 +34,13 @@ namespace entre_portais {
 
         void onResize(int width, int height) override = 0;
 
+        Transform *getTransform() {
+            return &transform_;
+        }
+
     protected:
         std::shared_ptr<IMesh> mesh_;
+        Transform transform_;
     };
 
 } // entre_portais
