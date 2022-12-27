@@ -1,8 +1,13 @@
 #ifndef ENTREPORTAIS_ISCENE_HPP
 #define ENTREPORTAIS_ISCENE_HPP
 
+#include "IGameNode.hpp"
+#include <stdexcept>
+
 namespace entre_portais {
-    class IScene {
+    class IScene : public IGameNode {
+        /* Cena exibida, e pode ser trocada.
+         * Pode ser uma tela de menu, de jogo, etc. */
     public:
         virtual ~IScene() = default;
 
@@ -31,6 +36,13 @@ namespace entre_portais {
 
         // TODO: Adicionar mais eventos
         virtual void onExit() = 0;
+
+        bool isRoot() override { return true; }
+
+        void setParent(std::shared_ptr<IGameNode> parent) override {
+            throw std::runtime_error("Não se pode definir o pai de uma cena, pois essa é a raiz da hierarquia.");
+        }
+
     };
 }
 

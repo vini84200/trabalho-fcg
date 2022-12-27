@@ -4,6 +4,7 @@ set(sources
 		src/entrePortaisEngine/Shader.cpp
 		src/entrePortaisEngine/Logger.cpp
 		src/entrePortaisEngine/VAOBuffer.cpp
+		src/entrePortaisEngine/IGameNode.cpp
 		)
 
 set(exe_sources

@@ -89,20 +89,20 @@ namespace entre_portais {
     }
 
     void Window::update() {
-        scene_->update();
+        scene_->updatePropagate();
     }
 
     void Window::render() {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
-        scene_->render();
+        scene_->renderPropagate();
     }
 
     void Window::onResize(int width, int height) {
         width_ = width;
         height_ = height;
         printf("Window resized to %dx%d.\n", width_, height_);
-        scene_->onResize(width_, height_);
+        scene_->resize(width_, height_);
     }
 
     void Window::onKey(int key, int scancode, int action, int mods) {
@@ -110,7 +110,7 @@ namespace entre_portais {
             running_ = false;
         } else {
             printf("Key %d %s.\n", key, action == GLFW_PRESS ? "pressed" : "released");
-            scene_->onKey(key, scancode, action, mods);
+            scene_->keyPress(key, scancode, action, mods);
         }
     }
 
@@ -118,7 +118,7 @@ namespace entre_portais {
         log("Pressed button");
         log("action:", action);
         log("mods:", mods);
-        scene_->onMouseButton(button, action, mods);
+        scene_->mouseButton(button, action, mods);
     }
 
     void Window::onError(int /*error*/, const char *description) {
@@ -131,6 +131,6 @@ namespace entre_portais {
 
     void Window::onExit() {
         printf("Bye bye! See you soon...\n");
-        scene_->onExit();
+        scene_->exit();
     }
 }  // namespace entre_portais
