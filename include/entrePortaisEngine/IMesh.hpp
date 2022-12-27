@@ -29,7 +29,7 @@ namespace entre_portais {
 
         virtual void Draw() = 0;
 
-        virtual void SetVAO(std::unique_ptr<VertexArrayBuffer> vao, unsigned int numVertices = 0) {
+        virtual void SetVAO(std::shared_ptr<VertexArrayBuffer> vao, unsigned int numVertices = 0) {
             vertexArray_ = std::move(vao);
             vertexCount_ = numVertices;
         }
@@ -69,7 +69,7 @@ namespace entre_portais {
     private:
         std::shared_ptr<Shader> shader_;
         unsigned int vertexCount_;
-        std::unique_ptr<VertexArrayBuffer> vertexArray_;
+        std::shared_ptr<VertexArrayBuffer> vertexArray_;
     };
 
 } // entre_portais

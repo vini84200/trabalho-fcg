@@ -8,7 +8,10 @@ namespace entre_portais {
     public:
         TriObject();
 
-        ~TriObject() override = default;
+        ~TriObject() override {
+            log("TriObject destroyed");
+        }
+
 
         TriObject(const TriObject &other) = delete;
 

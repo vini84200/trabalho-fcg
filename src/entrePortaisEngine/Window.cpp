@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 namespace entre_portais {
-    Window::Window(int width, int height, const char *title, IScene *scene) {
+    Window::Window(int width, int height, const char *title, std::shared_ptr<IScene> scene) {
 
         if (scene == NULL) {
             fprintf(stderr, "ERROR: scene is a null pointer.\n");
@@ -65,7 +65,9 @@ namespace entre_portais {
 
     Window::~Window() {
         log("Window::~Window()");
+        scene_.reset();
         log("glfwTerminate()");
+        glfwDestroyWindow(window_);
         glfwTerminate();
     }
 

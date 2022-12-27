@@ -77,10 +77,10 @@ namespace entre_portais {
         [[nodiscard]] const std::vector<BoundAttribute> &getAttributes() const;
 
     private:
-        VBOBuffer(BufferBuilder builder, unsigned int id, VertexArrayBuffer *vao);
+        VBOBuffer(BufferBuilder builder, unsigned int id, std::weak_ptr<VertexArrayBuffer> vao);
 
         unsigned int id_ = 0;
-        VertexArrayBuffer *vao_ = nullptr;
+        std::weak_ptr<VertexArrayBuffer> vao_;
         std::vector<BoundAttribute> attributes_;
 
         friend class VertexArrayBuffer;
@@ -101,15 +101,15 @@ namespace entre_portais {
         unsigned int getId() const;
 
     private:
-        EBOBuffer(BufferBuilder builder, VertexArrayBuffer *vao);
+        EBOBuffer(BufferBuilder builder, std::weak_ptr<VertexArrayBuffer> vao);
 
         unsigned int id_ = 0;
-        VertexArrayBuffer *vao_ = nullptr;
+        std::weak_ptr<VertexArrayBuffer> vao_;
 
         friend class VertexArrayBuffer;
     };
 
-    class VertexArrayBuffer {
+    class VertexArrayBuffer : public std::enable_shared_from_this<VertexArrayBuffer> {
     public:
         VertexArrayBuffer();
 
@@ -133,13 +133,13 @@ namespace entre_portais {
 
         bool isBound() const;
 
-        void setEBO(EBOBuffer *ebo);
+        void setEBO(std::shared_ptr<EBOBuffer> ebo);
 
     private:
         unsigned int id_ = 0;
 
-        std::vector<VBOBuffer *> buffers_;
-        EBOBuffer *ebo_ = nullptr;
+        std::vector<std::shared_ptr<VBOBuffer>> buffers_;
+        std::optional<std::shared_ptr<EBOBuffer>> ebo_;
         std::vector<BoundAttribute> attributes_;
 
         std::vector<BufferBuilder> buffersToBuild_;

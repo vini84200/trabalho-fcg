@@ -7,7 +7,9 @@
 
 namespace entre_portais {
 
-    class IGameNode {
+    class IScene;
+
+    class IGameNode : public std::enable_shared_from_this<IGameNode> {
         /* Objeto que participa da hierarquia na renderização e
          * propagação de eventos.*/
 
@@ -60,13 +62,22 @@ namespace entre_portais {
 
         virtual void setParent(std::shared_ptr<IGameNode> parent) { parent_ = std::move(parent); }
 
-        virtual std::shared_ptr<IGameNode> getParent() { return parent_; }
+        virtual std::shared_ptr<IGameNode> getParent() { return parent_.lock(); }
 
-        virtual bool isRoot() { return parent_ == nullptr; }
+        virtual bool isRoot() { return parent_.expired(); }
+
+        virtual std::shared_ptr<IScene> getScene() = 0;
+
+        virtual bool hasScene() = 0;
+
+        void setScenePropagate(std::shared_ptr<IScene> scene);
+
+        virtual void setScene(std::shared_ptr<IScene> scene) = 0;
 
     private:
-        std::shared_ptr<IGameNode> parent_;
+        std::weak_ptr<IGameNode> parent_;
         std::vector<std::shared_ptr<IGameNode>> children_;
+        bool is_initialized_ = false;
     };
 
 } // entre_portais

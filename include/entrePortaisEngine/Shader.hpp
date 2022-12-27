@@ -39,7 +39,7 @@ namespace entre_portais {
     private:
         void LoadShader(const char *filePath, GLuint shaderId);
 
-        unsigned int vertexShader_, fragmentShader_, program_;
+        unsigned int program_;
     };
 
 } // entre_portais

@@ -9,20 +9,20 @@
 #include "entrePortaisEngine/Logger.hpp"
 
 namespace entre_portais {
-    Shader::Shader(const char *vertexPath, const char *fragmentPath) {
+    Shader::Shader(const char *vertexPath, const char *fragmentPath) : program_(glCreateProgram()) {
         log("Shader::Shader");
-        vertexShader_ = glCreateShader(GL_VERTEX_SHADER);
-        fragmentShader_ = glCreateShader(GL_FRAGMENT_SHADER);
-        program_ = glCreateProgram();
+        GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
+        GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
-        LoadShader(vertexPath, vertexShader_);
-        LoadShader(fragmentPath, fragmentShader_);
 
-        glAttachShader(program_, vertexShader_);
-        glAttachShader(program_, fragmentShader_);
+        LoadShader(vertexPath, vertexShader);
+        LoadShader(fragmentPath, fragmentShader);
+
+        glAttachShader(program_, vertexShader);
+        glAttachShader(program_, fragmentShader);
         glLinkProgram(program_);
-        glDeleteShader(vertexShader_);
-        glDeleteShader(fragmentShader_);
+        glDeleteShader(vertexShader);
+        glDeleteShader(fragmentShader);
     }
 
     Shader::~Shader() {

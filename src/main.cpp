@@ -10,19 +10,16 @@ static const int HEIGHT = 600;
 
 int main() {
     std::string title = "Entre Portais";
-    std::unique_ptr<entre_portais::TriScene> scene(new entre_portais::TriScene());
+    auto scene = std::make_shared<entre_portais::TriScene>();
     std::unique_ptr<entre_portais::Window> janela(
             new entre_portais::Window(
                     WIDTH,
                     HEIGHT,
                     title.c_str(),
-                    scene.get()
+                    std::move(scene)
             ));
 
     janela->Run();
-
-    scene.reset();
-    janela.reset();
     return 0;
 }
 
