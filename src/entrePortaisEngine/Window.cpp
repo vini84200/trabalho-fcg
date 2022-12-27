@@ -5,7 +5,7 @@
 #include <unistd.h>
 
 namespace entre_portais {
-    Window::Window(int width, int height, char *title, IScene *scene) {
+    Window::Window(int width, int height, const char *title, IScene *scene) {
 
         if (scene == NULL) {
             fprintf(stderr, "ERROR: scene is a null pointer.\n");
@@ -13,7 +13,7 @@ namespace entre_portais {
         }
         width_ = width;
         height_ = height;
-        title_ = title;
+        title_ = (char *) title;
         running_ = true;
         scene_ = scene;
         int success = glfwInit();
@@ -27,16 +27,9 @@ namespace entre_portais {
 
         glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-    }
 
-    Window::~Window() {
-        log("Window::~Window()");
-        log("glfwTerminate()");
-        glfwTerminate();
-    }
-
-    void Window::Run() {
         window_ = glfwCreateWindow(width_, height_, title_, NULL, NULL);
+
         if (!window_) {
             log("glfwTerminate()");
             glfwTerminate();
@@ -68,6 +61,15 @@ namespace entre_portais {
         }
         glfwSwapInterval(1);
         scene_->initialize();
+    }
+
+    Window::~Window() {
+        log("Window::~Window()");
+        log("glfwTerminate()");
+        glfwTerminate();
+    }
+
+    void Window::Run() {
         while (running_) {
             double currentFrame = glfwGetTime();
             render();
