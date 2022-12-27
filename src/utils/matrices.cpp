@@ -89,36 +89,36 @@ glm::mat4 matrices::Matrix_Rotate(float angle, glm::vec4 axis) {
 }
 
 glm::vec4 matrices::crossproduct(glm::vec4 u, glm::vec4 v) {
-    float u1 = u.x;
-    float u2 = u.y;
-    float u3 = u.z;
-    float v1 = v.x;
-    float v2 = v.y;
-    float v3 = v.z;
+    float ux = u.x;
+    float uy = u.y;
+    float uz = u.z;
+    float vx = v.x;
+    float vy = v.y;
+    float vz = v.z;
 
-    return glm::vec4(u2 * v3 - u3 * v2, // Primeiro coeficiente
-                     u3 * v1 - u1 * v3, // Segundo coeficiente
-                     u1 * v2 - u2 * v1, // Terceiro coeficiente
+    return glm::vec4(uy * vz - uz * vy, // Primeiro coeficiente
+                     uz * vx - ux * vz, // Segundo coeficiente
+                     ux * vy - uy * vx, // Terceiro coeficiente
                      0.0f // w = 0 para vetores.
     );
 }
 
 float matrices::dotproduct(glm::vec4 u, glm::vec4 v) {
-    float u1 = u.x;
-    float u2 = u.y;
-    float u3 = u.z;
-    float u4 = u.w;
-    float v1 = v.x;
-    float v2 = v.y;
+    float ux = u.x;
+    float uy = u.y;
+    float uz = u.z;
+    float uw = u.w;
+    float vx = v.x;
+    float vy = v.y;
     float v3 = v.z;
-    float v4 = v.w;
+    float vw = v.w;
 
-    if (u4 != 0.0f || v4 != 0.0f) {
+    if (uw != 0.0f || vw != 0.0f) {
         fprintf(stderr, "ERROR: Produto escalar não definido para pontos.\n");
         std::exit(EXIT_FAILURE);
     }
 
-    return u1 * v1 + u2 * v2 + u3 * v3 + u4 * v4;
+    return ux * vx + uy * vy + uz * v3 + uw * vw;
 }
 
 glm::mat4 matrices::Matrix_Camera_View(glm::vec4 position_c, glm::vec4 view_vector, glm::vec4 up_vector) {
