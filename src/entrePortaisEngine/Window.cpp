@@ -72,12 +72,14 @@ namespace entre_portais {
     }
 
     void Window::Run() {
+        lastFrameTime_ = glfwGetTime() - 1.0 / targetFPS_;
         while (running_) {
             double currentFrame = glfwGetTime();
+            double deltaTime = currentFrame - lastFrameTime_;
+            lastFrameTime_ = currentFrame;
             render();
             glfwSwapBuffers(window_);
-            update();
-            double deltaTime = glfwGetTime() - currentFrame;
+            update(deltaTime);
             glfwPollEvents();
             if (deltaTime < 1.0 / targetFPS_) {
                 // Here we can do some work while waiting for the next frame.
@@ -90,8 +92,8 @@ namespace entre_portais {
         onExit();
     }
 
-    void Window::update() {
-        scene_->updatePropagate();
+    void Window::update(double deltaTime) {
+        scene_->updatePropagate(deltaTime);
     }
 
     void Window::render() {

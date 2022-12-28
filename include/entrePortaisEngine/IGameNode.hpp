@@ -18,9 +18,9 @@ namespace entre_portais {
 
         virtual ~IGameNode() = default;
 
-        void updatePropagate();
+        void updatePropagate(double deltaTime);
 
-        virtual void update() = 0;
+        virtual void update(double deltaTime) = 0;
 
         void renderPropagate();
 

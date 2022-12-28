@@ -29,7 +29,7 @@ namespace entre_portais {
 
         virtual void initialize() = 0;
 
-        virtual void update() = 0;
+        virtual void update(double deltaTime) = 0;
 
         virtual void render() = 0;
 

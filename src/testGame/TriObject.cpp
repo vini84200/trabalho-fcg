@@ -20,9 +20,9 @@ entre_portais::TriObject::TriObject() {
     transform_ = t;
 }
 
-void entre_portais::TriObject::update() {
+void entre_portais::TriObject::update(double deltaTime) {
     // Gira o triângulo
-    transform_.setRotation(glm::vec3(0.0f, 0.0f, transform_.rz + 0.3f));
+    transform_.setRotation(glm::vec3(0.0f, 0.0f, transform_.rz + 10.3f * (static_cast<float>(deltaTime))));
 }
 
 void entre_portais::TriObject::initialize() {

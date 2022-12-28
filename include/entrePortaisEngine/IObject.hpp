@@ -29,7 +29,7 @@ namespace entre_portais {
 
         void render() override;
 
-        void update() override = 0;
+        void update(double deltaTime) override = 0;
 
         void initialize() override = 0;
 

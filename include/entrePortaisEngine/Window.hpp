@@ -25,7 +25,7 @@ namespace entre_portais {
         void Run();
 
     protected:
-        void update();
+        void update(double deltaTime);
 
         void render();
 
@@ -49,6 +49,7 @@ namespace entre_portais {
         char *title_;
         std::shared_ptr<IScene> scene_;
         double targetFPS_ = DEFAULT_FPS;
+        double lastFrameTime_ = 0.0f;
     };
 }
 #endif  // ENTREPORTAIS_WINDOW_HPP
