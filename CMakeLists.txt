@@ -233,6 +233,7 @@ endif ()
 set(IM_GUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/imgui)
 add_library(imgui ${IM_GUI_DIR}/imgui.h ${IM_GUI_DIR}/imgui.cpp ${IM_GUI_DIR}/imgui_draw.cpp ${IM_GUI_DIR}/imgui_widgets.cpp ${IM_GUI_DIR}/imgui_tables.cpp ${IM_GUI_DIR}/imgui_demo.cpp ${IM_GUI_DIR}/backends/imgui_impl_glfw.cpp ${IM_GUI_DIR}/backends/imgui_impl_opengl3.cpp)
 include_directories(${IM_GUI_DIR} ${IM_GUI_DIR}/backends)
+target_link_libraries(imgui PUBLIC glfw)
 
 
 # Linking with the project's dependencies
