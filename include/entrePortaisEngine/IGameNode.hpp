@@ -14,7 +14,7 @@ namespace entre_portais {
          * propagação de eventos.*/
 
     public:
-        IGameNode() = default;
+        IGameNode(char *name) : name_(name) {}
 
         virtual ~IGameNode() = default;
 
@@ -26,9 +26,7 @@ namespace entre_portais {
 
         virtual void render() = 0;
 
-        virtual void preRender() {};
-
-        virtual void postRender() {};
+        virtual void renderImGui() = 0;
 
         void initializePropagate();
 
@@ -64,6 +62,8 @@ namespace entre_portais {
 
         virtual std::shared_ptr<IGameNode> getParent() { return parent_.lock(); }
 
+        virtual std::vector<std::shared_ptr<IGameNode>> getChildren() { return children_; }
+
         virtual bool isRoot() { return parent_.expired(); }
 
         virtual std::shared_ptr<IScene> getScene() = 0;
@@ -74,9 +74,15 @@ namespace entre_portais {
 
         virtual void setScene(std::shared_ptr<IScene> scene) = 0;
 
-    private:
-        std::weak_ptr<IGameNode> parent_;
+        char *getName() { return name_; }
+
+        void setName(char *name) { name_ = name; }
+
+    protected:
         std::vector<std::shared_ptr<IGameNode>> children_;
+    private:
+        char *name_;
+        std::weak_ptr<IGameNode> parent_;
         bool is_initialized_ = false;
     };
 

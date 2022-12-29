@@ -192,7 +192,6 @@ set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 set(EXT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/src)
 set(EXT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/include)
 
-add_library(glad ${EXT_INCLUDE_DIR}/glad/glad.h ${EXT_SRC_DIR}/glad/glad.c)
 
 # Auto GitSubmodules
 # FONTE: https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
@@ -211,26 +210,40 @@ if (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
   endif ()
 endif ()
 
+
+# GLAD
+add_library(glad ${EXT_INCLUDE_DIR}/glad/glad.h ${EXT_SRC_DIR}/glad/glad.c)
+target_include_directories(glad PUBLIC ${EXT_INCLUDE_DIR})
+
+# GLM
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
+message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")
 if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/glm/CMakeLists.txt")
   message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif ()
 
+# GLFW
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/glfw")
+message(STATUS "GLFW included at ${GLFW_INCLUDE_DIR}")
 if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/glfw/CMakeLists.txt")
   message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif ()
 
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/glm")
-add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/glfw")
-target_include_directories(glad PUBLIC ${EXT_INCLUDE_DIR})
-message(STATUS "GLM included at ${GLM_INCLUDE_DIR}")
-message(STATUS "GLFW included at ${GLFW_INCLUDE_DIR}")
-#target_include_directories(glm PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/external/glm)
+# IMGUI
+set(IM_GUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/imgui)
+add_library(imgui ${IM_GUI_DIR}/imgui.h ${IM_GUI_DIR}/imgui.cpp ${IM_GUI_DIR}/imgui_draw.cpp ${IM_GUI_DIR}/imgui_widgets.cpp ${IM_GUI_DIR}/imgui_tables.cpp ${IM_GUI_DIR}/imgui_demo.cpp ${IM_GUI_DIR}/backends/imgui_impl_glfw.cpp ${IM_GUI_DIR}/backends/imgui_impl_opengl3.cpp)
+include_directories(${IM_GUI_DIR} ${IM_GUI_DIR}/backends)
+
+
+# Linking with the project's dependencies
+# Executable linking
 if (WIN32)
-  target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw)
+  target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui)
   set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 else ()
-  target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw)
+  target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui)
 endif ()
+
 if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
   target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad glm)
 endif ()

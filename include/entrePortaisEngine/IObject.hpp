@@ -11,7 +11,7 @@ namespace entre_portais {
     class IObject : public IGameNode {
         /* Objeto tem um mesh*/
     public:
-        IObject() = default;
+        IObject(char *name) : IGameNode(name) {}
 
         virtual ~IObject() = default;
 
@@ -28,6 +28,8 @@ namespace entre_portais {
         }
 
         void render() override;
+
+        void renderImGui() override;
 
         void update(double deltaTime) override = 0;
 

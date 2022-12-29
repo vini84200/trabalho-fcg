@@ -40,3 +40,15 @@ void entre_portais::Transform::setRotation(glm::vec3 rotation) {
     ry = rotation.y;
     rz = rotation.z;
 }
+
+float *entre_portais::Transform::getPositionPtr() {
+    return &x;
+}
+
+float *entre_portais::Transform::getRotationPtr() {
+    return &rx;
+}
+
+float *entre_portais::Transform::getScalePtr() {
+    return &sx;
+}

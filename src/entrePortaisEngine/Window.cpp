@@ -22,6 +22,8 @@ namespace entre_portais {
             std::exit(EXIT_FAILURE);
         }
         glfwSetErrorCallback(onError);
+
+        const char *glsl_version = "#version 100";
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
@@ -78,8 +80,8 @@ namespace entre_portais {
             double deltaTime = currentFrame - lastFrameTime_;
             lastFrameTime_ = currentFrame;
             render();
-            glfwSwapBuffers(window_);
             update(deltaTime);
+            glfwSwapBuffers(window_);
             glfwPollEvents();
             if (deltaTime < 1.0 / targetFPS_) {
                 // Here we can do some work while waiting for the next frame.
@@ -93,6 +95,9 @@ namespace entre_portais {
     }
 
     void Window::update(double deltaTime) {
+        for (auto &component: registeredComponents_) {
+            component->update(deltaTime);
+        }
         scene_->updatePropagate(deltaTime);
     }
 
@@ -136,5 +141,34 @@ namespace entre_portais {
     void Window::onExit() {
         printf("Bye bye! See you soon...\n");
         scene_->exit();
+        UnregisterAllComponents();
+    }
+
+    void Window::RegisterComponent(std::shared_ptr<IPlugin> component) {
+        registeredComponents_.push_back(component);
+        component->SetWindow(shared_from_this());
+        component->onAttach();
+    }
+
+    void Window::UnregisterComponent(std::shared_ptr<IPlugin> component) {
+        printf("Unregistering component %p.\n", component.get());
+        printf("ERROR: UnregisterComponent() not implemented.\n");
+        std::exit(EXIT_FAILURE);
+    }
+
+    void Window::UnregisterAllComponents() {
+        while (!registeredComponents_.empty()) {
+            auto a = registeredComponents_.back();
+            a->onDetach();
+            registeredComponents_.pop_back();
+        }
+    }
+
+    GLFWwindow *Window::GetGLFWwindow() const {
+        return window_;
+    }
+
+    std::shared_ptr<IScene> Window::GetScene() const {
+        return scene_;
     }
 }  // namespace entre_portais

@@ -11,7 +11,7 @@ static const int HEIGHT = 600;
 int main() {
     std::string title = "Entre Portais";
     auto scene = std::make_shared<entre_portais::TriScene>();
-    std::unique_ptr<entre_portais::Window> janela(
+    std::shared_ptr<entre_portais::Window> janela(
             new entre_portais::Window(
                     WIDTH,
                     HEIGHT,
@@ -19,6 +19,7 @@ int main() {
                     std::move(scene)
             ));
 
+    janela->RegisterComponent(std::make_shared<entre_portais::ImGuiPlugin>());
     janela->Run();
     return 0;
 }

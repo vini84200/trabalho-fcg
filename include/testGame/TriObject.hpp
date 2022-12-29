@@ -6,7 +6,7 @@
 namespace entre_portais {
     class TriObject : public IObject {
     public:
-        TriObject();
+        TriObject(char *name);
 
         ~TriObject() override {
             log("TriObject destroyed");

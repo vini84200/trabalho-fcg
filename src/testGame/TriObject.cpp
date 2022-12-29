@@ -2,7 +2,7 @@
 #include "entrePortaisEngine/EasyMesh.hpp"
 #include "GLFW/glfw3.h"
 
-entre_portais::TriObject::TriObject() {
+entre_portais::TriObject::TriObject(char *name) : IObject(name) {
     auto vert = new entre_portais::ManyVertices();
     vert->vertices.push_back({-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f});
     vert->vertices.push_back({0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f});
@@ -13,11 +13,9 @@ entre_portais::TriObject::TriObject() {
     mesh_ = std::make_shared<EasyMesh>(*vert, "assets/shaders/tri.vert", "assets/shaders/tri.frag");
 
     delete vert;
-    Transform t = Transform();
-    t.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    t.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-    t.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
-    transform_ = t;
+    transform_.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    transform_.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
+    transform_.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void entre_portais::TriObject::update(double deltaTime) {

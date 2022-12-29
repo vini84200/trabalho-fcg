@@ -7,7 +7,12 @@ set(sources
 		src/entrePortaisEngine/EasyMesh.cpp
 		src/entrePortaisEngine/IObject.cpp
 		src/entrePortaisEngine/Transform.cpp
+		src/entrePortaisEngine/IPlugin.cpp
+		src/entrePortaisEngine/ImGuiPlugin.cpp
+		src/entrePortaisEngine/Event.cpp
+		src/entrePortaisEngine/IScene.cpp
 		src/utils/matrices.cpp
+
 
 		src/testGame/TriScene.cpp
 		src/testGame/TriObject.cpp
