@@ -19,7 +19,7 @@ int main() {
                     std::move(scene)
             ));
 
-    janela->RegisterComponent(std::make_shared<entre_portais::ImGuiPlugin>());
+    janela->RegisterPlugin(std::make_shared<entre_portais::ImGuiPlugin>());
     janela->Run();
     return 0;
 }

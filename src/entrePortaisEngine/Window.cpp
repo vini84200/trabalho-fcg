@@ -22,8 +22,6 @@ namespace entre_portais {
             std::exit(EXIT_FAILURE);
         }
         glfwSetErrorCallback(onError);
-
-        const char *glsl_version = "#version 100";
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
 
@@ -95,8 +93,8 @@ namespace entre_portais {
     }
 
     void Window::update(double deltaTime) {
-        for (auto &component: registeredComponents_) {
-            component->update(deltaTime);
+        for (auto &plugin: registeredPlugins_) {
+            plugin->update(deltaTime);
         }
         scene_->updatePropagate(deltaTime);
     }
@@ -144,23 +142,23 @@ namespace entre_portais {
         UnregisterAllComponents();
     }
 
-    void Window::RegisterComponent(std::shared_ptr<IPlugin> component) {
-        registeredComponents_.push_back(component);
-        component->SetWindow(shared_from_this());
-        component->onAttach();
+    void Window::RegisterPlugin(std::shared_ptr<IPlugin> plugin) {
+        registeredPlugins_.push_back(plugin);
+        plugin->SetWindow(shared_from_this());
+        plugin->onAttach();
     }
 
-    void Window::UnregisterComponent(std::shared_ptr<IPlugin> component) {
-        printf("Unregistering component %p.\n", component.get());
-        printf("ERROR: UnregisterComponent() not implemented.\n");
+    void Window::UnregisterPlugin(std::shared_ptr<IPlugin> plugin) {
+        printf("Unregistering component %p.\n", plugin.get());
+        printf("ERROR: UnregisterPlugin() not implemented.\n");
         std::exit(EXIT_FAILURE);
     }
 
-    void Window::UnregisterAllComponents() {
-        while (!registeredComponents_.empty()) {
-            auto a = registeredComponents_.back();
+    void Window::UnregisterAllPlugins() {
+        while (!registeredPlugins_.empty()) {
+            auto a = registeredPlugins_.back();
             a->onDetach();
-            registeredComponents_.pop_back();
+            registeredPlugins_.pop_back();
         }
     }
 

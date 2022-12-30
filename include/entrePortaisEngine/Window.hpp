@@ -25,11 +25,11 @@ namespace entre_portais {
 
         void Run();
 
-        void RegisterComponent(std::shared_ptr<IPlugin> component);
+        void RegisterPlugin(std::shared_ptr<IPlugin> component);
 
-        void UnregisterComponent(std::shared_ptr<IPlugin> component);
+        void UnregisterPlugin(std::shared_ptr<IPlugin> component);
 
-        void UnregisterAllComponents();
+        void UnregisterAllPlugins();
 
         GLFWwindow *GetGLFWwindow() const;
 
@@ -60,7 +60,7 @@ namespace entre_portais {
         int height_;
         char *title_;
         std::shared_ptr<IScene> scene_;
-        std::vector<std::shared_ptr<IPlugin>> registeredComponents_;
+        std::vector<std::shared_ptr<IPlugin>> registeredPlugins_;
         double targetFPS_ = DEFAULT_FPS;
         double lastFrameTime_ = 0.0f;
     };
