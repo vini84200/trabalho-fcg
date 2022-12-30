@@ -139,7 +139,7 @@ namespace entre_portais {
     void Window::onExit() {
         printf("Bye bye! See you soon...\n");
         scene_->exit();
-        UnregisterAllComponents();
+        UnregisterAllPlugins();
     }
 
     void Window::RegisterPlugin(std::shared_ptr<IPlugin> plugin) {
