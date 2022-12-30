@@ -1,6 +1,7 @@
 #include "testGame/TriObject.hpp"
 #include "entrePortaisEngine/EasyMesh.hpp"
 #include "GLFW/glfw3.h"
+#include "imgui.h"
 
 entre_portais::TriObject::TriObject(char *name) : IObject(name) {
     auto vert = new entre_portais::ManyVertices();
@@ -20,7 +21,8 @@ entre_portais::TriObject::TriObject(char *name) : IObject(name) {
 
 void entre_portais::TriObject::update(double deltaTime) {
     // Gira o triângulo
-    transform_.setRotation(glm::vec3(0.0f, 0.0f, transform_.rz + 10.3f * (static_cast<float>(deltaTime))));
+    transform_.setRotation(
+            glm::vec3(transform_.rx, transform_.ry, transform_.rz + velocity_ * (static_cast<float>(deltaTime))));
 }
 
 void entre_portais::TriObject::initialize() {
@@ -43,4 +45,8 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
     if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
         printf("Hi, I'm a triangle! And my scene is %d\n", scene_.lock().get());
     }
+}
+
+void entre_portais::TriObject::CustomImGui() {
+    ImGui::SliderFloat("Velocity", &velocity_, 0.0f, 200.0f);
 }

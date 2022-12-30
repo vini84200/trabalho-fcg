@@ -42,6 +42,7 @@ void entre_portais::IObject::renderImGui() {
             ImGui::Text("Mesh GUI not implemented");
             ImGui::TreePop();
         }
+        CustomImGui();
         if (ImGui::TreeNode("Children")) {
             for (auto &child: children_) {
                 child->renderImGui();

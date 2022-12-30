@@ -28,6 +28,8 @@ namespace entre_portais {
 
         virtual void renderImGui() = 0;
 
+        virtual void CustomImGui() {};
+
         void initializePropagate();
 
         virtual void initialize() = 0;
