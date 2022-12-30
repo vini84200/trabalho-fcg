@@ -21,7 +21,16 @@ void entre_portais::ImGuiPlugin::update(float deltaTime) {
     ImGui_ImplGlfw_NewFrame();
     ImGui::NewFrame();
 
+    // Mostra janela para a cena atual
     window_.lock()->GetScene()->renderImGui();
+
+    // Mostra janela de debug
+    if (demoWindow_) {
+        ImGui::ShowDemoWindow(&demoWindow_);
+    }
+
+    // Mostra janela de performance
+    ImGui::ShowMetricsWindow();
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

@@ -22,9 +22,7 @@ namespace entre_portais {
 
         void InitializeImGui();
 
-    private:
-        bool show_demo_window = true;
-        bool show_another_window = false;
+        bool demoWindow_ = false;
     };
 }
 
