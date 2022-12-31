@@ -18,6 +18,12 @@ namespace entre_portais {
         void setScale(glm::vec3 scale);
 
         void setRotation(glm::vec3 rotation);
+
+        float *getPositionPtr();
+
+        float *getRotationPtr();
+
+        float *getScalePtr();
     };
 }
 #endif //ENTREPORTAIS_TRANSFORM_HPP

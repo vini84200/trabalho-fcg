@@ -2,6 +2,7 @@
 #define ENTREPORTAIS_ISCENE_HPP
 
 #include "IGameNode.hpp"
+#include "imgui.h"
 #include <stdexcept>
 
 namespace entre_portais {
@@ -11,7 +12,7 @@ namespace entre_portais {
     public:
         virtual ~IScene() = default;
 
-        IScene() : IGameNode() {
+        IScene(char *name) : IGameNode(name) {
         }
 
         std::shared_ptr<IScene> getScene() {
@@ -32,6 +33,8 @@ namespace entre_portais {
         virtual void update(double deltaTime) = 0;
 
         virtual void render() = 0;
+
+        virtual void renderImGui() override;
 
         virtual void onResize(int width, int height) = 0;
 
@@ -56,6 +59,7 @@ namespace entre_portais {
             return true;
         }
     };
+
 }
 
 #endif //ENTREPORTAIS_ISCENE_HPP

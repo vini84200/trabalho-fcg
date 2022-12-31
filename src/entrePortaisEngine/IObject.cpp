@@ -1,6 +1,7 @@
 #include "entrePortaisEngine/IObject.hpp"
 #include "utils/matrices.h"
 #include "entrePortaisEngine/Logger.hpp"
+#include "imgui.h"
 
 
 void entre_portais::IObject::render() {
@@ -27,4 +28,28 @@ void entre_portais::IObject::setScene(std::shared_ptr<IScene> scene) {
 
 bool entre_portais::IObject::hasScene() {
     return !scene_.expired();
+}
+
+void entre_portais::IObject::renderImGui() {
+    if (ImGui::TreeNode(getName())) {
+        if (ImGui::TreeNode("Transform")) {
+            ImGui::DragFloat3("Position", transform_.getPositionPtr(), 0.1f);
+            ImGui::DragFloat3("Rotation", transform_.getRotationPtr(), 0.1f);
+            ImGui::DragFloat3("Scale", transform_.getScalePtr(), 0.1f);
+            ImGui::TreePop();
+        }
+        if (ImGui::TreeNode("Mesh")) {
+            ImGui::Text("Mesh GUI not implemented");
+            ImGui::TreePop();
+        }
+        CustomImGui();
+        if (ImGui::TreeNode("Children")) {
+            for (auto &child: children_) {
+                child->renderImGui();
+            }
+            ImGui::TreePop();
+        }
+        ImGui::TreePop();
+    }
+
 }

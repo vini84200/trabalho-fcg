@@ -5,13 +5,15 @@
 #include "testGame/TriObject.hpp"
 
 namespace entre_portais {
-    TriScene::TriScene() {
+    TriScene::TriScene() : IScene("TriScene") {
     }
 
     void TriScene::initialize() {
         printf("Initializing TriScene\n");
-        auto obj = std::make_shared<TriObject>();
-        auto obj2 = std::make_shared<TriObject>();
+        char *name1 = "TriObject 1";
+        char *name2 = "TriObject 2";
+        auto obj = std::make_shared<TriObject>(name1);
+        auto obj2 = std::make_shared<TriObject>(name2);
         addChild(obj);
         obj2->getTransform()->setPosition(glm::vec3(0.3f, 0.3f, 0.0f));
         obj2->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));

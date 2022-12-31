@@ -3,12 +3,13 @@
 
 #include "glad/glad.h"
 #include "IScene.hpp"
+#include "ImGuiPlugin.hpp"
 #include <GLFW/glfw3.h>
 
 namespace entre_portais {
     static const double DEFAULT_FPS = 60.0;
 
-    class Window {
+    class Window : public std::enable_shared_from_this<Window> {
     public:
         Window(int width, int height, const char *title, std::shared_ptr<IScene> scene);
 
@@ -23,6 +24,16 @@ namespace entre_portais {
         Window &operator=(Window &&other) = delete;
 
         void Run();
+
+        void RegisterPlugin(std::shared_ptr<IPlugin> component);
+
+        void UnregisterPlugin(std::shared_ptr<IPlugin> component);
+
+        void UnregisterAllPlugins();
+
+        GLFWwindow *GetGLFWwindow() const;
+
+        std::shared_ptr<IScene> GetScene() const;
 
     protected:
         void update(double deltaTime);
@@ -41,6 +52,7 @@ namespace entre_portais {
 
         void onExit();
 
+
     private:
         GLFWwindow *window_;
         bool running_;
@@ -48,6 +60,7 @@ namespace entre_portais {
         int height_;
         char *title_;
         std::shared_ptr<IScene> scene_;
+        std::vector<std::shared_ptr<IPlugin>> registeredPlugins_;
         double targetFPS_ = DEFAULT_FPS;
         double lastFrameTime_ = 0.0f;
     };

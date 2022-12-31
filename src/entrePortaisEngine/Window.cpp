@@ -78,8 +78,8 @@ namespace entre_portais {
             double deltaTime = currentFrame - lastFrameTime_;
             lastFrameTime_ = currentFrame;
             render();
-            glfwSwapBuffers(window_);
             update(deltaTime);
+            glfwSwapBuffers(window_);
             glfwPollEvents();
             if (deltaTime < 1.0 / targetFPS_) {
                 // Here we can do some work while waiting for the next frame.
@@ -93,6 +93,9 @@ namespace entre_portais {
     }
 
     void Window::update(double deltaTime) {
+        for (auto &plugin: registeredPlugins_) {
+            plugin->update(deltaTime);
+        }
         scene_->updatePropagate(deltaTime);
     }
 
@@ -136,5 +139,34 @@ namespace entre_portais {
     void Window::onExit() {
         printf("Bye bye! See you soon...\n");
         scene_->exit();
+        UnregisterAllPlugins();
+    }
+
+    void Window::RegisterPlugin(std::shared_ptr<IPlugin> plugin) {
+        registeredPlugins_.push_back(plugin);
+        plugin->SetWindow(shared_from_this());
+        plugin->onAttach();
+    }
+
+    void Window::UnregisterPlugin(std::shared_ptr<IPlugin> plugin) {
+        printf("Unregistering component %p.\n", plugin.get());
+        printf("ERROR: UnregisterPlugin() not implemented.\n");
+        std::exit(EXIT_FAILURE);
+    }
+
+    void Window::UnregisterAllPlugins() {
+        while (!registeredPlugins_.empty()) {
+            auto a = registeredPlugins_.back();
+            a->onDetach();
+            registeredPlugins_.pop_back();
+        }
+    }
+
+    GLFWwindow *Window::GetGLFWwindow() const {
+        return window_;
+    }
+
+    std::shared_ptr<IScene> Window::GetScene() const {
+        return scene_;
     }
 }  // namespace entre_portais

@@ -6,7 +6,7 @@
 namespace entre_portais {
     class TriObject : public IObject {
     public:
-        TriObject();
+        TriObject(char *name);
 
         ~TriObject() override {
             log("TriObject destroyed");
@@ -32,6 +32,11 @@ namespace entre_portais {
         void onMouseButton(int button, int action, int mods) override;
 
         void onExit() override;
+
+        void CustomImGui() override;
+
+    private:
+        float velocity_ = 10.3f;
     };
 
 };
