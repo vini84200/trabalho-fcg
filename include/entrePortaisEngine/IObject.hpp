@@ -24,10 +24,14 @@ namespace entre_portais {
         IObject &operator=(IObject &&other) = delete;
 
         void Draw() {
-            mesh_->Draw();
+            if (mesh_ != nullptr) {
+                mesh_->Draw();
+            }
         }
 
         void render() override;
+
+        void renderPropagate() override;
 
         void renderImGui() override;
 
@@ -47,10 +51,24 @@ namespace entre_portais {
 
         bool hasScene() override;
 
+        glm::mat4 *getParentModelMatrix();
+
+        void Hide();
+
+        void Show();
+
+        void ToggleVisibility();
+
+        void SetVisibility(bool visible);
+
+        bool IsVisible();
+
     protected:
         std::shared_ptr<IMesh> mesh_;
         Transform transform_;
+        glm::mat4 modelMatrix_;
         std::weak_ptr<IScene> scene_;
+        bool visible_ = true;
     };
 
 } // entre_portais

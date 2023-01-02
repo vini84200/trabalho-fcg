@@ -22,7 +22,7 @@ namespace entre_portais {
 
         virtual void update(double deltaTime) = 0;
 
-        void renderPropagate();
+        virtual void renderPropagate();
 
         virtual void render() = 0;
 
