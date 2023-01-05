@@ -2,15 +2,16 @@
 #include <memory>
 #include "entrePortaisEngine/Window.hpp"
 #include "entrePortaisEngine/ImGuiPlugin.hpp"
+#include "spdlog/spdlog.h"
 
 void entre_portais::ImGuiPlugin::onAttach() {
-    printf("ImGuiPlugin::onAttach\n");
+    getLogger()->trace("onAttach()");
     InitializeImGui();
 
 }
 
 void entre_portais::ImGuiPlugin::onDetach() {
-    printf("ImGuiPlugin::onDetach\n");
+    getLogger()->trace("onDetach()");
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
@@ -37,8 +38,6 @@ void entre_portais::ImGuiPlugin::update(float deltaTime) {
 }
 
 void entre_portais::ImGuiPlugin::onEvent(Event &event) {
-    printf("ImGuiPlugin::onEvent\n");
-
 }
 
 void entre_portais::ImGuiPlugin::InitializeImGui() {
@@ -52,11 +51,17 @@ void entre_portais::ImGuiPlugin::InitializeImGui() {
     ImGui::StyleColorsDark();
 
     if (window_.expired()) {
-        printf("ERROR: Window expired");
+        getLogger()->error("Window is expired");
         return;
     }
     GLFWwindow *window = window_.lock()->GetGLFWwindow();
 
     ImGui_ImplGlfw_InitForOpenGL(window, true);
     ImGui_ImplOpenGL3_Init("#version 330");
+}
+
+entre_portais::ImGuiPlugin::ImGuiPlugin() {
+    logger_ = Logger("ImGuiPlugin");
+    getLogger()->trace("ImGuiPlugin()");
+
 }
