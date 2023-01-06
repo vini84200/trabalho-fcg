@@ -23,14 +23,7 @@ int main() {
 
     janela->RegisterPlugin(std::make_shared<entre_portais::ImGuiPlugin>());
     janela->Run();
-    // Simula um erro
-    spdlog::info("-- Teste de erro --");
 
-    spdlog::warn("Aviso simulado");
-    spdlog::error("Erro simulado");
-
-
-    return -1;
     return 0;
 }
 

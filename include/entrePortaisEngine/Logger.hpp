@@ -9,6 +9,11 @@
 #define ENTREPORTAIS_LOGGER_HPP
 
 namespace entre_portais {
+    /* Logger
+     * Esta classe é um wrapper para o spdlog. Ela é usada para fazer log de mensagens na console e em um arquivo.
+     * A classe pode ser instanciada para criar um logger personalizado. Se não, o logger padrão é usado.
+     * Utilize os métodos estáticos para inicializar o logger padrão e para fazer log de mensagens.
+     */
     class Logger {
     public:
         static void initialize();
@@ -27,7 +32,7 @@ namespace entre_portais {
 
         Logger(const char *name);
 
-        std::shared_ptr<spdlog::logger> getLogger() {
+        std::shared_ptr<spdlog::logger> getLogger() const {
             return logger_;
         }
 

@@ -4,6 +4,7 @@
 #include "entrePortaisEngine/IScene.hpp"
 #include "entrePortaisEngine/Shader.hpp"
 #include "entrePortaisEngine/VertexArrayBuffer.hpp"
+#include "entrePortaisEngine/Logger.hpp"
 
 namespace entre_portais {
 
@@ -39,6 +40,7 @@ namespace entre_portais {
     private:
         std::shared_ptr<VertexArrayBuffer> vao_ = nullptr;
         Shader *shader_;
+        Logger logger_ = Logger("TriScene");
     };
 
 } // entre_portais

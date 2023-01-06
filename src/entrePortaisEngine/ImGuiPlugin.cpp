@@ -11,7 +11,7 @@ void entre_portais::ImGuiPlugin::onAttach() {
 }
 
 void entre_portais::ImGuiPlugin::onDetach() {
-    getLogger()->trace("onDetach()");
+    getLogger()->trace("onDettach()");
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();

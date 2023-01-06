@@ -9,23 +9,24 @@ namespace entre_portais {
 
     bool Logger::initialized_ = false;
 
-/*TODO: DEPRECATE THIS*/
+    /** @deprecated */
     void log(const char *message) {
 #ifdef DEBUG
+        spdlog::warn("DEPRECATION WARNING: Use spdlog::info() instead of entre_portais::log()");
         spdlog::trace(message);
 #endif
     }
 
-    /*TODO DEPRECATE THIS*/
+    /** @deprecated */
     void log(const char *message, int value) {
 #ifdef DEBUG
+        spdlog::warn("DEPRECATION WARNING: Use spdlog::info() instead of entre_portais::log()");
         spdlog::trace("{} {} DEPRECATE", message, value);
 #endif
     }
 
     void Logger::initialize() {
         if (initialized_) {
-            spdlog::warn("Logger already initialized");
             return;
         }
         try {
@@ -47,12 +48,12 @@ namespace entre_portais {
         } catch (const spdlog::spdlog_ex &ex) {
             printf("Log initialization failed: %s \n", ex.what());
         }
+        spdlog::info("Logger initialized");
         initialized_ = true;
     }
 
     Logger::Logger(const char *name) {
         if (!initialized_) {
-            spdlog::warn("Logger not initialized");
             initialize();
         }
         logger_ = std::make_shared<spdlog::logger>(spdlog::logger(name, {console_sink_, file_sink_}));

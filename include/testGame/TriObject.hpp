@@ -9,7 +9,7 @@ namespace entre_portais {
         TriObject(char *name);
 
         ~TriObject() override {
-            log("TriObject destroyed");
+            logger_.getLogger()->info("Destrutor de TriObject chamado");
         }
 
 
@@ -37,6 +37,7 @@ namespace entre_portais {
 
     private:
         float velocity_ = 10.3f;
+        Logger logger_;
     };
 
 };

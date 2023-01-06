@@ -16,8 +16,7 @@ void entre_portais::IObject::render() {
 
 std::shared_ptr<entre_portais::IScene> entre_portais::IObject::getScene() {
     if (scene_.expired()) {
-        log("IObject::getScene() - WARN: Scene is expired");
-        return nullptr;
+        throw std::runtime_error("A cena não existe mais.");
     }
     return scene_.lock();
 }

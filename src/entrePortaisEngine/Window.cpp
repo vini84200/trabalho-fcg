@@ -8,8 +8,7 @@ namespace entre_portais {
     Window::Window(int width, int height, const char *title, std::shared_ptr<IScene> scene) {
 
         if (scene == NULL) {
-            fprintf(stderr, "ERROR: scene is a null pointer.\n");
-            std::exit(EXIT_FAILURE);
+            throw std::invalid_argument("Scene cannot be null");
         }
         width_ = width;
         height_ = height;
@@ -18,8 +17,7 @@ namespace entre_portais {
         scene_ = scene;
         int success = glfwInit();
         if (!success) {
-            fprintf(stderr, "ERROR: glfwInit() failed.\n");
-            std::exit(EXIT_FAILURE);
+            throw std::runtime_error("Failed to initialize GLFW");
         }
         glfwSetErrorCallback(onError);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
@@ -31,10 +29,9 @@ namespace entre_portais {
         window_ = glfwCreateWindow(width_, height_, title_, NULL, NULL);
 
         if (!window_) {
-            log("glfwTerminate()");
+            getLogger()->error("Failed to create GLFW window");
             glfwTerminate();
-            fprintf(stderr, "ERROR: glfwCreateWindow() failed.\n");
-            std::exit(EXIT_FAILURE);
+            throw std::runtime_error("Failed to create GLFW window");
         }
         glfwMakeContextCurrent(window_);
         glfwSetWindowUserPointer(window_, this);
@@ -56,29 +53,58 @@ namespace entre_portais {
         });;
 
         if (!gladLoadGLLoader(reinterpret_cast<GLADloadproc>(glfwGetProcAddress))) {
-            fprintf(stderr, "ERROR: gladLoadGLLoader() failed.\n");
-            std::exit(EXIT_FAILURE);
+            getLogger()->error("Failed to initialize GLAD");
+            throw std::runtime_error("Failed to initialize GLAD");
         }
         glfwSwapInterval(1);
         scene_->initialize();
     }
 
     Window::~Window() {
-        log("Window::~Window()");
+        getLogger()->info("Destroying window");
         scene_.reset();
-        log("glfwTerminate()");
         glfwDestroyWindow(window_);
         glfwTerminate();
     }
 
     void Window::Run() {
         lastFrameTime_ = glfwGetTime() - 1.0 / targetFPS_;
+        getLogger()->info("Iniciando o loop principal");
         while (running_) {
+            // Calculate delta time
             double currentFrame = glfwGetTime();
             double deltaTime = currentFrame - lastFrameTime_;
             lastFrameTime_ = currentFrame;
-            render();
-            update(deltaTime);
+
+            // Render
+            try {
+                render();
+            }
+            catch (const std::exception &e) {
+                getLogger()->error("Exception while rendering: {}", e.what());
+                spdlog::dump_backtrace();
+                std::rethrow_exception(std::current_exception());
+            } catch (...) {
+                getLogger()->error("Unknown exception while rendering");
+                spdlog::dump_backtrace();
+                std::rethrow_exception(std::current_exception());
+            }
+
+            // Update
+            try {
+                update(deltaTime);
+            }
+            catch (const std::exception &e) {
+                getLogger()->error("Exception while updating: {}", e.what());
+                spdlog::dump_backtrace();
+                std::rethrow_exception(std::current_exception());
+            } catch (...) {
+                getLogger()->error("Unknown exception while updating");
+                spdlog::dump_backtrace();
+                std::rethrow_exception(std::current_exception());
+            }
+
+
             glfwSwapBuffers(window_);
             glfwPollEvents();
             if (deltaTime < 1.0 / targetFPS_) {
@@ -86,6 +112,10 @@ namespace entre_portais {
 
                 // Sleep for the remaining time.
                 usleep((1.0f / targetFPS_ - deltaTime) * 1000000);
+            } else {
+                // We are running behind, so we can't sleep.
+                // We can log a warning here.
+                getLogger()->warn("Running behind by {} ms", (deltaTime - 1.0 / targetFPS_) * 1000);
             }
         }
         scene_->onExit();
@@ -108,7 +138,7 @@ namespace entre_portais {
     void Window::onResize(int width, int height) {
         width_ = width;
         height_ = height;
-        printf("Window resized to %dx%d.\n", width_, height_);
+        getLogger()->info("Window resized to {} x {}", width_, height_);
         scene_->resize(width_, height_);
     }
 
@@ -116,20 +146,29 @@ namespace entre_portais {
         if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS) {
             running_ = false;
         } else {
-            printf("Key %d %s.\n", key, action == GLFW_PRESS ? "pressed" : "released");
-            scene_->keyPress(key, scancode, action, mods);
+            getLogger()->info("Key {} {}", key, action == GLFW_PRESS ? "pressed" : "released");
+            try {
+                scene_->keyPress(key, scancode, action, mods);
+            } catch (const std::exception &e) {
+                getLogger()->error("Exception while handling key press: {}", e.what());
+                spdlog::dump_backtrace();
+                std::rethrow_exception(std::current_exception());
+            } catch (...) {
+                getLogger()->error("Unknown exception while handling key press");
+                spdlog::dump_backtrace();
+                std::rethrow_exception(std::current_exception());
+            }
         }
     }
 
     void Window::onMouseButton(int button, int action, int mods) {
-        log("Pressed button");
-        log("action:", action);
-        log("mods:", mods);
+        getLogger()->info("Mouse button {} {}", button, action == GLFW_PRESS ? "pressed" : "released");
         scene_->mouseButton(button, action, mods);
     }
 
     void Window::onError(int /*error*/, const char *description) {
-        fprintf(stderr, "ERROR: %s\n", description);
+        spdlog::error("GLFW error: {}", description);
+        throw std::runtime_error(description);
     }
 
     void Window::onCloseWindow() {
@@ -137,7 +176,7 @@ namespace entre_portais {
     }
 
     void Window::onExit() {
-        printf("Bye bye! See you soon...\n");
+        getLogger()->info("Exiting");
         scene_->exit();
         UnregisterAllPlugins();
     }
@@ -149,12 +188,15 @@ namespace entre_portais {
     }
 
     void Window::UnregisterPlugin(std::shared_ptr<IPlugin> plugin) {
-        printf("Unregistering component %p.\n", plugin.get());
-        printf("ERROR: UnregisterPlugin() not implemented.\n");
-        std::exit(EXIT_FAILURE);
+        plugin->onDetach();
+        plugin->SetWindow(nullptr);
+        registeredPlugins_.erase(std::remove(registeredPlugins_.begin(), registeredPlugins_.end(), plugin),
+                                 registeredPlugins_.end());
+        getLogger()->info("Unregistered plugin");
     }
 
     void Window::UnregisterAllPlugins() {
+        getLogger()->info("Unregistering all plugins");
         while (!registeredPlugins_.empty()) {
             auto a = registeredPlugins_.back();
             a->onDetach();

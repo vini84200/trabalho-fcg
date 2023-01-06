@@ -9,7 +9,7 @@ namespace entre_portais {
     }
 
     void TriScene::initialize() {
-        printf("Initializing TriScene\n");
+        logger_.getLogger()->info("Initializing TriScene");
         char *name1 = "TriObject 1";
         char *name2 = "TriObject 2";
         auto obj = std::make_shared<TriObject>(name1);

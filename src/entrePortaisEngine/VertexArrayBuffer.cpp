@@ -6,16 +6,18 @@
 #include "entrePortaisEngine/VertexArrayBuffer.hpp"
 #include "entrePortaisEngine/Logger.hpp"
 
+
 namespace entre_portais {
+    Logger gLogger("VertexArrayBuffer");
     unsigned int VertexArrayBuffer::boundVAO_ = 0;
 
     VertexArrayBuffer::VertexArrayBuffer() {
-        log("VertexArrayBuffer::VertexArrayBuffer()");
+        gLogger.getLogger()->debug("VertexArrayBuffer::VertexArrayBuffer()");
         glGenVertexArrays(1, &id_);
     }
 
     VertexArrayBuffer::~VertexArrayBuffer() {
-        log("VertexArrayBuffer::~VertexArrayBuffer()");
+        gLogger.getLogger()->debug("VertexArrayBuffer::~VertexArrayBuffer()");
         glDeleteVertexArrays(1, &id_);
         // Delete all VBOs
         for (auto &vbo: buffers_) {
@@ -59,6 +61,7 @@ namespace entre_portais {
     }
 
     void VertexArrayBuffer::Commit() {
+        gLogger.getLogger()->debug("VertexArrayBuffer::Commit()");
         bind();
         auto buffersToCreate = static_cast<GLsizei>(buffersToBuild_.size());
         if (buffersToCreate != 0) {
@@ -132,7 +135,7 @@ namespace entre_portais {
         // Assumes that the id is already generated
         assert(("ID is not generated", id != 0));
 
-        log("VBOBuffer::VBOBuffer()");
+        gLogger.getLogger()->debug("VBOBuffer::VBOBuffer()");
         bind();
         if (builder.data_ != nullptr) {
             glBufferData(GL_ARRAY_BUFFER, builder.size_, builder.data_, builder.usage_);
@@ -148,7 +151,7 @@ namespace entre_portais {
     }
 
     VBOBuffer::~VBOBuffer() {
-        log("VBOBuffer::~VBOBuffer()");
+        gLogger.getLogger()->debug("VBOBuffer::~VBOBuffer()");
         glDeleteBuffers(1, &id_);
     }
 
@@ -165,12 +168,12 @@ namespace entre_portais {
     }
 
     void VBOBuffer::bind() const {
-        log("VBOBuffer::bind()");
+        gLogger.getLogger()->debug("VBOBuffer::bind()");
         glBindBuffer(GL_ARRAY_BUFFER, id_);
     }
 
     void VBOBuffer::unbind() {
-        log("VBOBuffer::unbind()");
+        gLogger.getLogger()->debug("VBOBuffer::unbind()");
         glBindBuffer(GL_ARRAY_BUFFER, 0);
     }
 
@@ -183,7 +186,7 @@ namespace entre_portais {
     }
 
     EBOBuffer::EBOBuffer(BufferBuilder builder, std::weak_ptr<VertexArrayBuffer> vao) : vao_(vao) {
-        log("EBOBuffer::EBOBuffer()");
+        gLogger.getLogger()->debug("EBOBuffer::EBOBuffer()");
         glGenBuffers(1, &id_);
         assert(("ID is not generated", id_ != 0));
         // Assumes that the vao is already bound
@@ -196,7 +199,7 @@ namespace entre_portais {
     }
 
     EBOBuffer::~EBOBuffer() {
-        log("EBOBuffer::~EBOBuffer()");
+        gLogger.getLogger()->debug("EBOBuffer::~EBOBuffer()");
         glDeleteBuffers(1, &id_);
     }
 
@@ -223,12 +226,12 @@ namespace entre_portais {
     }
 
     void EBOBuffer::bind() {
-        log("EBOBuffer::bind()");
+        gLogger.getLogger()->debug("EBOBuffer::bind()");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, id_);
     }
 
     void EBOBuffer::unbind() {
-        log("EBOBuffer::unbind()");
+        gLogger.getLogger()->debug("EBOBuffer::unbind()");
         glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
     }
 
