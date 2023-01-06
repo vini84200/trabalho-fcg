@@ -190,6 +190,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 set(EXT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/src)
+set(EXT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external)
 set(EXT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/include)
 
 
@@ -231,19 +232,27 @@ endif ()
 
 # IMGUI
 set(IM_GUI_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/imgui)
-add_library(imgui ${IM_GUI_DIR}/imgui.h ${IM_GUI_DIR}/imgui.cpp ${IM_GUI_DIR}/imgui_draw.cpp ${IM_GUI_DIR}/imgui_widgets.cpp ${IM_GUI_DIR}/imgui_tables.cpp ${IM_GUI_DIR}/imgui_demo.cpp ${IM_GUI_DIR}/backends/imgui_impl_glfw.cpp ${IM_GUI_DIR}/backends/imgui_impl_opengl3.cpp 
-	${CMAKE_CURRENT_SOURCE_DIR}/external/glfw)
+add_library(imgui ${IM_GUI_DIR}/imgui.h ${IM_GUI_DIR}/imgui.cpp ${IM_GUI_DIR}/imgui_draw.cpp ${IM_GUI_DIR}/imgui_widgets.cpp ${IM_GUI_DIR}/imgui_tables.cpp ${IM_GUI_DIR}/imgui_demo.cpp ${IM_GUI_DIR}/backends/imgui_impl_glfw.cpp ${IM_GUI_DIR}/backends/imgui_impl_opengl3.cpp
+        ${CMAKE_CURRENT_SOURCE_DIR}/external/glfw)
 include_directories(${IM_GUI_DIR} ${IM_GUI_DIR}/backends)
 target_link_libraries(imgui PUBLIC glfw)
+
+# SPDLOG
+set(SPDLOG_DIR ${EXT_DIR}/spdlog)
+set(SPDLOG_INCLUDE_DIR ${EXT_INCLUDE_DIR}/spdlog)
+add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/spdlog")
+message(STATUS "SPDLOG included at ${SPDLOG_INCLUDE_DIR}")
+if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/spdlog/CMakeLists.txt")
+  message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
+endif ()
+include_directories(${EXT_DIR}/spdlog/include)
 
 
 # Linking with the project's dependencies
 # Executable linking
+target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_header_only)
 if (WIN32)
-  target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui)
   set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
-else ()
-  target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui)
 endif ()
 
 if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)

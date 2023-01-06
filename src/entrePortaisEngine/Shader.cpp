@@ -1,7 +1,3 @@
-//
-// Created by vini84200 on 12/22/22.
-//
-
 #include <ios>
 #include <fstream>
 #include <sstream>
@@ -9,8 +5,9 @@
 #include "entrePortaisEngine/Logger.hpp"
 
 namespace entre_portais {
+    Logger gShaderLogger("Shader");
     Shader::Shader(const char *vertexPath, const char *fragmentPath) : program_(glCreateProgram()) {
-        log("Shader::Shader");
+        gShaderLogger.getLogger()->debug("Shader::Shader - vertexPath: {}, fragmentPath: {}", vertexPath, fragmentPath);
         GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
         GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 
@@ -26,7 +23,7 @@ namespace entre_portais {
     }
 
     Shader::~Shader() {
-        log("Shader::~Shader");
+        gShaderLogger.getLogger()->debug("Shader::~Shader()");
         glDeleteProgram(program_);
     }
 
@@ -39,9 +36,9 @@ namespace entre_portais {
         try {
             file.exceptions(std::ifstream::failbit);
             file.open(filename);
-        } catch (std::exception &e) {
-            fprintf(stderr, "ERROR: Cannot open file \"%s\".\n", filename);
-            std::exit(EXIT_FAILURE);
+        } catch (const std::exception &e) {
+            gShaderLogger.getLogger()->error("Shader::LoadShader - {}", e.what());
+            throw e;
         }
         std::stringstream shader;
         shader << file.rdbuf();

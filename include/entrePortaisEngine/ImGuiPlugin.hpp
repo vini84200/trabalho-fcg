@@ -10,7 +10,7 @@
 namespace entre_portais {
     class ImGuiPlugin : public IPlugin {
     public:
-        ImGuiPlugin() = default;
+        ImGuiPlugin();
 
         void onAttach() override;
 

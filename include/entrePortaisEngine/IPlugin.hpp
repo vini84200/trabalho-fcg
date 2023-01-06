@@ -2,6 +2,7 @@
 #define ENTREPORTAIS_IPLUGIN_HPP
 
 #include "Event.hpp"
+#include "Logger.hpp"
 #include <memory>
 
 namespace entre_portais {
@@ -21,8 +22,13 @@ namespace entre_portais {
 
         virtual void onEvent(Event &event) = 0;
 
+        std::shared_ptr<spdlog::logger> getLogger() {
+            return logger_.getLogger();
+        }
+
     protected:
         std::weak_ptr<Window> window_;
+        Logger logger_ = Logger("IPlugin");
     };
 }
 

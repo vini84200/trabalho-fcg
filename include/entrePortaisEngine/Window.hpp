@@ -52,6 +52,9 @@ namespace entre_portais {
 
         void onExit();
 
+        std::shared_ptr<spdlog::logger> getLogger() const {
+            return logger_.getLogger();
+        };
 
     private:
         GLFWwindow *window_;
@@ -63,6 +66,7 @@ namespace entre_portais {
         std::vector<std::shared_ptr<IPlugin>> registeredPlugins_;
         double targetFPS_ = DEFAULT_FPS;
         double lastFrameTime_ = 0.0f;
+        Logger logger_ = Logger("Window");
     };
 }
 #endif  // ENTREPORTAIS_WINDOW_HPP
