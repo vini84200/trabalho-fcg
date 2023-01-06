@@ -190,6 +190,7 @@ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>DLL")
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_SOURCE_DIR}/cmake/")
 
 set(EXT_SRC_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/src)
+set(EXT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external)
 set(EXT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/include)
 
 
@@ -237,11 +238,14 @@ include_directories(${IM_GUI_DIR} ${IM_GUI_DIR}/backends)
 target_link_libraries(imgui PUBLIC glfw)
 
 # SPDLOG
+set(SPDLOG_DIR ${EXT_DIR}/spdlog)
+set(SPDLOG_INCLUDE_DIR ${EXT_INCLUDE_DIR}/spdlog)
 add_subdirectory("${CMAKE_CURRENT_SOURCE_DIR}/external/spdlog")
 message(STATUS "SPDLOG included at ${SPDLOG_INCLUDE_DIR}")
 if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/spdlog/CMakeLists.txt")
   message(FATAL_ERROR "The submodules were not downloaded! GIT_SUBMODULE was turned off or failed. Please update submodules and try again.")
 endif ()
+include_directories(${EXT_DIR}/spdlog/include)
 
 
 # Linking with the project's dependencies
