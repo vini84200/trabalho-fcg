@@ -2,7 +2,6 @@
 #include "spdlog/sinks/stdout_color_sinks.h"
 #include "spdlog/sinks/basic_file_sink.h"
 #include "spdlog/cfg/env.h"
-#include "spdlog/async.h"
 #include "spdlog/fmt/ostr.h"
 
 #ifndef ENTREPORTAIS_LOGGER_HPP

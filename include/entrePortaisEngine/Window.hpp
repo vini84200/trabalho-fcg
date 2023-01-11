@@ -6,8 +6,11 @@
 #include "ImGuiPlugin.hpp"
 #include <GLFW/glfw3.h>
 
+#define VSYNC 1
+#define DEFAULT_FPS 60
+#define WARNING_FPS 28
+
 namespace entre_portais {
-    static const double DEFAULT_FPS = 60.0;
 
     class Window : public std::enable_shared_from_this<Window> {
     public:
