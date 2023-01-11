@@ -56,7 +56,16 @@ namespace entre_portais {
             getLogger()->error("Failed to initialize GLAD");
             throw std::runtime_error("Failed to initialize GLAD");
         }
-        glfwSwapInterval(1);
+
+        char *vendor = (char *) glGetString(GL_VENDOR);
+        char *renderer = (char *) glGetString(GL_RENDERER);
+        char *glversion = (char *) glGetString(GL_VERSION);
+        char *glslversion = (char *) glGetString(GL_SHADING_LANGUAGE_VERSION);
+
+        getLogger()->info("OpenGL Vendor: {} Renderer: {} Version: {} GLSL Version: {}", vendor, renderer, glversion,
+                          glslversion);
+
+        glfwSwapInterval(VSYNC);
         scene_->initialize();
     }
 
@@ -70,6 +79,7 @@ namespace entre_portais {
     void Window::Run() {
         lastFrameTime_ = glfwGetTime() - 1.0 / targetFPS_;
         getLogger()->info("Iniciando o loop principal");
+        getLogger()->info("Target FPS: {} / Target Frame Time: {}", targetFPS_, (1.0f / targetFPS_));
         while (running_) {
             // Calculate delta time
             double currentFrame = glfwGetTime();
@@ -111,12 +121,18 @@ namespace entre_portais {
                 // Here we can do some work while waiting for the next frame.
 
                 // Sleep for the remaining time.
-                usleep((1.0f / targetFPS_ - deltaTime) * 1000000);
+                usleep((1.0 / targetFPS_ - deltaTime) * 1000000);
             } else {
                 // We are running behind, so we can't sleep.
-                // We can log a warning here.
-                getLogger()->warn("Running behind by {} ms", (deltaTime - 1.0 / targetFPS_) * 1000);
+
+                if (deltaTime > 1.0 / WARNING_FPS) {
+                    // We are running behind by more than one frame.
+                    // We can log a warning here if this happens too often.
+                    getLogger()->warn("Running behind by {} seconds, expected {} seconds", deltaTime, 1.0 / targetFPS_);
+                }
+
             }
+
         }
         scene_->onExit();
         onExit();
