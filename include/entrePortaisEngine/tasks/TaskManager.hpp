@@ -77,18 +77,30 @@ namespace entre_portais {
         template<typename T, typename... Args>
         TaskHandler addTask(Args &&... args) {
             static_assert(std::is_base_of<ITask, T>::value, "T must inherit from ITask");
-            int taskID = nextTaskID_++;
+            int taskID;
+
+            {
+                std::lock_guard<std::mutex> lock(nextTaskIDMutex_);
+                taskID = nextTaskID_++;
+            }
+
             T *task = new T(std::forward<Args>(args)...);
             TaskHandler taskHandler(taskID, task);
 
-            tasks_[taskHandler] = task;
+            {
+                std::lock_guard<std::mutex> lock(tasksMutex_);
+                tasks_[taskHandler] = task;
+            }
+
             {
                 std::lock_guard<std::mutex> lock(queueMutex_);
                 taskQueue_.push(taskHandler);
                 queueCondition_.notify_one();
             }
-            task->setStatus(TaskStatus::WAITING);
-            task->setID(taskID);
+
+            logger_.getLogger()->info("Task added to the queue");
+            task->setStatus(TaskStatus::WAITING); // setStatus is thread-safe
+            task->setID(taskID); // setID is thread-safe
             return taskHandler;
         }
 
@@ -109,9 +121,13 @@ namespace entre_portais {
 
         ITask *GetTask(TaskHandler &taskHandler);
 
+        TaskHandler GetTaskHandler(int id);
+
         static TaskManager *instance_;
         std::map<TaskHandler, ITask *> tasks_;
+        std::mutex tasksMutex_;
         int nextTaskID_ = 0;
+        std::mutex nextTaskIDMutex_;
 
         // Thread pool
         std::vector<std::shared_ptr<WorkerStruct>> threads_;
@@ -120,6 +136,14 @@ namespace entre_portais {
         std::queue<TaskHandler> taskQueue_;
         std::mutex queueMutex_;
         std::condition_variable queueCondition_;
+
+        // Finished tasks
+        std::queue<TaskHandler> finishedTasksQueue_;
+        std::mutex finishedTasksMutex_;
+
+        // Blocking queue
+        std::map<TaskHandler, std::vector<TaskHandler>> blockingTasks_ = {};
+        std::mutex blockedTasksMutex_;
 
         // Logger
         Logger logger_ = Logger("TaskManager");

@@ -3,7 +3,7 @@
 #include "GLFW/glfw3.h"
 #include "imgui.h"
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
-#include "testGame/WaitAndFinishTask.hpp"
+#include "testGame/DependencyTask.hpp"
 #include "entrePortaisEngine/tasks/TaskHandler.hpp"
 
 entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name) {
@@ -59,7 +59,7 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
     }
     if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
         auto tm = entre_portais::TaskManager::getInstance();
-        auto a = tm->addTask<entre_portais::WaitAndFinishTask>();
+        auto a = tm->addTask<DependencyTask>();
     }
 }
 

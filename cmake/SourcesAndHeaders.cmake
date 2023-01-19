@@ -18,6 +18,7 @@ set(sources
 		src/testGame/TriScene.cpp
 		src/testGame/TriObject.cpp
 		src/testGame/WaitAndFinishTask.cpp
+		src/testGame/DependencyTask.cpp
 		)
 
 set(exe_sources

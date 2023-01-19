@@ -10,7 +10,14 @@ namespace entre_portais {
  */
     class TaskHandler {
     public:
+        TaskHandler() {
+
+        }
+
         TaskHandler(int taskID, class ITask *task) : taskID_(taskID), task_(task) {}
+
+        // Copy
+        TaskHandler(const TaskHandler &other) : taskID_(other.taskID_), task_(other.task_) {}
 
         bool operator==(const TaskHandler &other) const {
             return taskID_ == other.taskID_;

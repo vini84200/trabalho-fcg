@@ -63,6 +63,7 @@ namespace entre_portais {
                 continue;
             }
             logger.getLogger()->info("Running task {}", taskHandler.getTaskID());
+            std::lock_guard<std::mutex> lock(task->runMutex_);
             TaskRunResult result;
             try {
                 result = task->Run();
@@ -80,15 +81,35 @@ namespace entre_portais {
                 case TaskRunResult::SUCCESS:
                     task->setStatus(TaskStatus::SUCCESS);
                     task->OnFinish();
+                    {
+                        std::lock_guard<std::mutex> lock(blockedTasksMutex_);
+                        if (blockingTasks_.find(taskHandler) != blockingTasks_.end()) {
+                            for (auto &blockedTask: blockingTasks_[taskHandler]) {
+                                ITask *blockedTaskPtr = GetTask(blockedTask);
+                                blockedTaskPtr->unblockDependency(taskHandler.getTaskID());
+                                if (blockedTaskPtr->getBlockCount() == 0) {
+                                    std::lock_guard<std::mutex> lock(queueMutex_);
+                                    taskQueue_.push(blockedTask);
+                                }
+                            }
+                            blockingTasks_.erase(taskHandler);
+                        }
+                    }
                     break;
                 case TaskRunResult::FAILURE:
                     task->setStatus(TaskStatus::FAILURE);
                     break;
-                case TaskRunResult::BLOCKED:
+                case TaskRunResult::BLOCKED: {
                     task->setStatus(TaskStatus::BLOCKED);
-                    // TODO: Verificar se a task está bloqueada por tempo ou por outra task
-                    // e colocar na fila de acordo
+                    std::vector<int> blockedBy = task->getDependencies();
+                    for (int i = 0; i < blockedBy.size(); i++) {
+                        std::lock_guard<std::mutex> lock(blockedTasksMutex_);
+                        auto dependecy = GetTaskHandler(blockedBy[i]);
+                        blockingTasks_[dependecy].push_back(taskHandler);
+                    }
                     break;
+                }
+
                 case TaskRunResult::REPEAT:
                     task->setStatus(TaskStatus::RUNNING);
                     {
@@ -139,6 +160,14 @@ namespace entre_portais {
             return tasks_[taskHandler];
         }
         return nullptr;
+    }
+
+    TaskHandler TaskManager::GetTaskHandler(int id) {
+        for (auto &task: tasks_) {
+            if (task.first.getTaskID() == id) {
+                return task.first;
+            }
+        }
     }
 
 } // entre_portais

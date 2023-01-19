@@ -2,8 +2,12 @@
 #define ENTREPORTAIS_ITASK_HPP
 
 #include <mutex>
+#include <vector>
 
 namespace entre_portais {
+    class TaskHandler;
+
+
     enum class TaskStatus {
         WAITING,
         RUNNING,
@@ -54,10 +58,40 @@ namespace entre_portais {
             id_ = id;
         }
 
+        virtual std::vector<int> getDependencies() {
+            std::lock_guard<std::mutex> lock(mutex_);
+            return dependencies_;
+        }
+
+        virtual void addDependency(int taskId) {
+            std::lock_guard<std::mutex> lock(mutex_);
+            dependencies_.push_back(taskId);
+            blockCount_++;
+        }
+
+        virtual void unblockDependency(int taskId) {
+            std::lock_guard<std::mutex> lock(mutex_);
+            for (auto it = dependencies_.begin(); it != dependencies_.end(); it++) {
+                if (*it == taskId) {
+                    dependencies_.erase(it);
+                    blockCount_--;
+                    break;
+                }
+            }
+        }
+
+        virtual int getBlockCount() {
+            std::lock_guard<std::mutex> lock(mutex_);
+            return blockCount_;
+        }
+
         std::mutex mutex_;
+        std::mutex runMutex_;
     private:
         TaskStatus status_ = TaskStatus::RUNNING;
         int id_;
+        int blockCount_ = 0;
+        std::vector<int> dependencies_;
     };
 }
 #endif //ENTREPORTAIS_ITASK_HPP
