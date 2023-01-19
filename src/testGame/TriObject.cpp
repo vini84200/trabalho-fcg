@@ -2,6 +2,9 @@
 #include "entrePortaisEngine/EasyMesh.hpp"
 #include "GLFW/glfw3.h"
 #include "imgui.h"
+#include "entrePortaisEngine/tasks/TaskManager.hpp"
+#include "testGame/WaitAndFinishTask.hpp"
+#include "entrePortaisEngine/tasks/TaskHandler.hpp"
 
 entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name) {
     auto vert = new entre_portais::ManyVertices();
@@ -53,6 +56,10 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
         logger_.getLogger()->info("My scale is ({}, {}, {})", transform_.sx, transform_.sy, transform_.sz);
         auto scene = getScene();
         logger_.getLogger()->info("My scene is {}", scene);
+    }
+    if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
+        auto tm = entre_portais::TaskManager::getInstance();
+        auto a = tm->addTask<entre_portais::WaitAndFinishTask>();
     }
 }
 
