@@ -5,6 +5,7 @@
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
 #include "testGame/DependencyTask.hpp"
 #include "entrePortaisEngine/tasks/TaskHandler.hpp"
+#include "entrePortaisEngine/tasks/LambdaTask.hpp"
 
 entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name) {
     auto vert = new entre_portais::ManyVertices();
@@ -60,6 +61,38 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
     if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
         auto tm = entre_portais::TaskManager::getInstance();
         auto a = tm->addTask<DependencyTask>();
+
+        tm->addTask<LambdaTask<EmptyState>>([](EmptyState) -> TaskRunResult {
+            sleep(2);
+            return TaskRunResult::SUCCESS;
+        }, std::string("Simple Lambda Task"));
+
+        struct MyState {
+            int value = 0;
+
+            MyState() {
+                value = 0;
+            };
+        };
+
+        auto lambdaTaskWithState = tm->addTask<LambdaTask<MyState>>([](MyState &state) -> TaskRunResult {
+            if (state.value >= 1) {
+                sleep(2);
+                return TaskRunResult::SUCCESS;
+            }
+            state.value++;
+            spdlog::info("Value is {}", state.value);
+            sleep(1);
+            return TaskRunResult::REPEAT;
+        }, std::string("Lambda Task With State"));
+
+        tm->addTask<LambdaTask<MyState>>([=](MyState &state) -> TaskRunResult {
+            if (lambdaTaskWithState.getStatus() == TaskStatus::SUCCESS) {
+                return TaskRunResult::SUCCESS;
+            } else {
+                return TaskRunResult::REPEAT;
+            }
+        }, std::string("Lambda Task With Reference"));
     }
 }
 

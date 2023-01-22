@@ -114,7 +114,8 @@ namespace entre_portais {
                 }
 
                 case TaskRunResult::REPEAT:
-                    task->setStatus(TaskStatus::RUNNING);
+                    task->setStatus(TaskStatus::WAITING);
+                    logger.getLogger()->info("Task {} will be repeated", taskHandler.getTaskID());
                     {
                         std::lock_guard<std::mutex> lock(queueMutex_);
                         taskQueue_.push(taskHandler);

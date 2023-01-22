@@ -86,8 +86,9 @@ void entre_portais::ImGuiPlugin::renderTaskManagerImGui(entre_portais::TaskManag
         ImGui::SameLine();
         ImGui::Text("Running: %s", worker->isRunning ? "true" : "false");
         ImGui::SameLine();
-        if (worker->currentTask) {
-            ImGui::Text("Task: %s (%d)", worker->currentTask->getTaskName().c_str(), worker->currentTask->getID());
+        auto currentTask = worker->currentTask;
+        if (currentTask) {
+            ImGui::Text("Task: %s", currentTask->getTaskName().c_str());
         } else {
             ImGui::Text("Task: None");
         }
