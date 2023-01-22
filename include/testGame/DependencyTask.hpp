@@ -15,7 +15,9 @@ namespace entre_portais {
 
     class DependencyTask : public ITask {
     public:
-        DependencyTask() {};
+        DependencyTask() {
+            setTaskName("DependencyTask");
+        };
 
         TaskRunResult Run() override;
 

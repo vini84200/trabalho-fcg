@@ -3,6 +3,7 @@
 
 #include <mutex>
 #include <vector>
+#include "imgui.h"
 
 namespace entre_portais {
     class TaskHandler;
@@ -17,12 +18,6 @@ namespace entre_portais {
         BLOCKED
     };
 
-
-    enum class TaskPriority {
-        LOW,
-        MEDIUM,
-        HIGH
-    };
 
     enum class TaskRunResult {
         SUCCESS,
@@ -42,7 +37,6 @@ namespace entre_portais {
 
         virtual void OnCancel() = 0;
 
-
         void setStatus(TaskStatus status) {
             std::lock_guard<std::mutex> lock(mutex_);
             status_ = status;
@@ -56,6 +50,11 @@ namespace entre_portais {
         void setID(int id) {
             std::lock_guard<std::mutex> lock(mutex_);
             id_ = id;
+        }
+
+        int getID() {
+            std::lock_guard<std::mutex> lock(mutex_);
+            return id_;
         }
 
         virtual std::vector<int> getDependencies() {
@@ -85,8 +84,20 @@ namespace entre_portais {
             return blockCount_;
         }
 
+        void setTaskName(std::string name) {
+            std::lock_guard<std::mutex> lock(mutex_);
+            name_ = name;
+        }
+
+        std::string getTaskName() {
+            std::lock_guard<std::mutex> lock(mutex_);
+            return name_;
+        }
+
         std::mutex mutex_;
         std::mutex runMutex_;
+    protected:
+        std::string name_ = "Unnamed Task";
     private:
         TaskStatus status_ = TaskStatus::RUNNING;
         int id_;

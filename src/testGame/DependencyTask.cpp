@@ -9,6 +9,7 @@ namespace entre_portais {
     TaskRunResult DependencyTask::Run() {
         if (createdTask_ == false) {
             spdlog::info("Creating dependency task");
+            sleep(3);
             auto taskManager = entre_portais::TaskManager::getInstance();
             waitAndFinishTask_ = taskManager->addTask<WaitAndFinishTask>();
             addDependency(waitAndFinishTask_.value().getTaskID());
@@ -16,6 +17,8 @@ namespace entre_portais {
             return TaskRunResult::BLOCKED;
         }
         if (waitAndFinishTask_.value().getStatus() == TaskStatus::SUCCESS) {
+            spdlog::info("Dependency task finished");
+            sleep(5);
             return TaskRunResult::SUCCESS;
         }
 

@@ -18,7 +18,7 @@ namespace entre_portais {
         std::thread thread;
         bool isRunning = false;
         std::mutex mutex;
-        ITask *currentTask;
+        ITask *currentTask = nullptr;
 
         WorkerStruct(int id) : id(id) {}
 
@@ -85,12 +85,15 @@ namespace entre_portais {
             }
 
             T *task = new T(std::forward<Args>(args)...);
+            auto t = static_cast<ITask *>(task);
             TaskHandler taskHandler(taskID, task);
 
             {
                 std::lock_guard<std::mutex> lock(tasksMutex_);
                 tasks_[taskHandler] = task;
             }
+
+            t->setID(taskID);
 
             {
                 std::lock_guard<std::mutex> lock(queueMutex_);
@@ -107,6 +110,15 @@ namespace entre_portais {
         void removeTask(TaskHandler &taskHandler);
 
         TaskStatus isFinished(TaskHandler &taskHandler);
+
+        std::vector<std::shared_ptr<WorkerStruct>> getWorkers() {
+            std::lock_guard<std::mutex> lock(threadsMutex_);
+            return threads_;
+        }
+
+        std::queue<TaskHandler> &getQueue() {
+            return taskQueue_;
+        }
 
     private:
         TaskManager();
@@ -131,6 +143,7 @@ namespace entre_portais {
 
         // Thread pool
         std::vector<std::shared_ptr<WorkerStruct>> threads_;
+        std::mutex threadsMutex_;
 
         // Thread safe queue
         std::queue<TaskHandler> taskQueue_;

@@ -6,6 +6,7 @@
 #include "imgui_impl_opengl3.h"
 
 #include "IPlugin.hpp"
+#include "entrePortaisEngine/tasks/TaskManager.hpp"
 
 namespace entre_portais {
     class ImGuiPlugin : public IPlugin {
@@ -22,7 +23,11 @@ namespace entre_portais {
 
         void InitializeImGui();
 
+        void renderTaskManagerImGui(entre_portais::TaskManager *pManager);
+
         bool demoWindow_ = false;
+        bool taskManagerWindow_ = true;
+
     };
 }
 

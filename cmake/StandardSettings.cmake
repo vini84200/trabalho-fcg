@@ -11,6 +11,7 @@ option(${PROJECT_NAME}_USE_ALT_NAMES "Use alternative names for the project, suc
 #
 
 option(${PROJECT_NAME}_WARNINGS_AS_ERRORS "Treat compiler warnings as errors." OFF)
+#set(${PROJECT_NAME}_CXX_STANDARD 23 CACHE STRING "C++ standard to use.")
 
 #
 # Package managers

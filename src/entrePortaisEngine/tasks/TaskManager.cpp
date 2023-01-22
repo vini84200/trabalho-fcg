@@ -33,7 +33,10 @@ namespace entre_portais {
                 std::lock_guard<std::mutex> lock(signal->mutex);
                 signal->thread = std::move(thread);
             }
-            threads_.push_back(signal);
+            {
+                std::lock_guard<std::mutex> lock(threadsMutex_);
+                threads_.push_back(signal);
+            }
         }
 
     }
