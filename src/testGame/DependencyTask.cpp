@@ -26,7 +26,7 @@ namespace entre_portais {
             return TaskRunResult::FAILURE;
         }
 
-        if (waitAndFinishTask_.value().getStatus() == TaskStatus::CANCLELED) {
+        if (waitAndFinishTask_.value().getStatus() == TaskStatus::CANCELED) {
             return TaskRunResult::FAILURE;
         }
 

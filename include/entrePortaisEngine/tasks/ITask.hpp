@@ -14,7 +14,7 @@ namespace entre_portais {
         RUNNING,
         SUCCESS,
         FAILURE,
-        CANCLELED,
+        CANCELED,
         BLOCKED
     };
 
