@@ -1,0 +1,377 @@
+[
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/cc  -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -g -D_DEBUG -DDEBUG -o CMakeFiles/glad.dir/external/src/glad/glad.c.o -c /home/vini84200/projetos/trabalho-fcg/external/src/glad/glad.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/src/glad/glad.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -o CMakeFiles/imgui.dir/external/imgui/imgui.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/imgui/imgui.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/imgui/imgui.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -o CMakeFiles/imgui.dir/external/imgui/imgui_draw.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/imgui/imgui_draw.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/imgui/imgui_draw.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -o CMakeFiles/imgui.dir/external/imgui/imgui_widgets.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/imgui/imgui_widgets.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/imgui/imgui_widgets.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -o CMakeFiles/imgui.dir/external/imgui/imgui_tables.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/imgui/imgui_tables.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/imgui/imgui_tables.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -o CMakeFiles/imgui.dir/external/imgui/imgui_demo.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/imgui/imgui_demo.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/imgui/imgui_demo.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -o CMakeFiles/imgui.dir/external/imgui/backends/imgui_impl_glfw.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/imgui/backends/imgui_impl_glfw.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/imgui/backends/imgui_impl_glfw.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -o CMakeFiles/imgui.dir/external/imgui/backends/imgui_impl_opengl3.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/imgui/backends/imgui_impl_opengl3.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/imgui/backends/imgui_impl_opengl3.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/main.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/main.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/main.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/Window.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Window.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Window.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/Shader.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Shader.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Shader.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/Logger.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Logger.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Logger.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/VertexArrayBuffer.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/VertexArrayBuffer.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/VertexArrayBuffer.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/IGameNode.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IGameNode.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IGameNode.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/EasyMesh.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/EasyMesh.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/EasyMesh.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/IObject.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IObject.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IObject.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/Transform.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Transform.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Transform.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/IPlugin.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IPlugin.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IPlugin.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/ImGuiPlugin.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/ImGuiPlugin.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/ImGuiPlugin.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/Event.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Event.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Event.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/IScene.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IScene.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IScene.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/entrePortaisEngine/tasks/TaskManager.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/tasks/TaskManager.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/tasks/TaskManager.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/utils/matrices.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/utils/matrices.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/utils/matrices.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/testGame/TriScene.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/testGame/TriScene.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/testGame/TriScene.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/testGame/TriObject.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/testGame/TriObject.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/testGame/TriObject.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/testGame/WaitAndFinishTask.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/testGame/WaitAndFinishTask.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/testGame/WaitAndFinishTask.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -g -D_DEBUG -DDEBUG -Wall -Wextra -Wshadow -Wnon-virtual-dtor -Wold-style-cast -Wcast-align -Wunused -Woverloaded-virtual -Wpedantic -Wconversion -Wsign-conversion -Wnull-dereference -Wdouble-promotion -Wformat=2 -Wmisleading-indentation -Wduplicated-cond -Wduplicated-branches -Wlogical-op -Wuseless-cast -std=gnu++20 -o CMakeFiles/entrePortais.dir/src/testGame/DependencyTask.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/testGame/DependencyTask.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/testGame/DependencyTask.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/Window.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Window.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Window.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/Shader.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Shader.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Shader.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/Logger.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Logger.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Logger.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/VertexArrayBuffer.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/VertexArrayBuffer.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/VertexArrayBuffer.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/IGameNode.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IGameNode.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IGameNode.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/EasyMesh.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/EasyMesh.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/EasyMesh.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/IObject.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IObject.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IObject.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/Transform.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Transform.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Transform.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/IPlugin.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IPlugin.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IPlugin.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/ImGuiPlugin.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/ImGuiPlugin.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/ImGuiPlugin.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/Event.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Event.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/Event.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/IScene.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IScene.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/IScene.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/entrePortaisEngine/tasks/TaskManager.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/tasks/TaskManager.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/entrePortaisEngine/tasks/TaskManager.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/utils/matrices.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/utils/matrices.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/utils/matrices.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/testGame/TriScene.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/testGame/TriScene.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/testGame/TriScene.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/testGame/TriObject.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/testGame/TriObject.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/testGame/TriObject.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/testGame/WaitAndFinishTask.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/testGame/WaitAndFinishTask.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/testGame/WaitAndFinishTask.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build",
+  "command": "/usr/bin/c++  -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -I/home/vini84200/projetos/trabalho-fcg/include -I/home/vini84200/projetos/trabalho-fcg/src -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/include -I/home/vini84200/projetos/trabalho-fcg/external/glm -g -D_DEBUG -DDEBUG -std=gnu++20 -o CMakeFiles/entrePortais_LIB.dir/src/testGame/DependencyTask.cpp.o -c /home/vini84200/projetos/trabalho-fcg/src/testGame/DependencyTask.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/src/testGame/DependencyTask.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/context.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/context.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/context.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/init.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/init.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/init.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/input.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/input.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/input.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/monitor.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/monitor.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/monitor.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/platform.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/platform.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/platform.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/vulkan.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/vulkan.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/vulkan.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/window.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/window.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/window.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/egl_context.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/egl_context.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/egl_context.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/osmesa_context.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/osmesa_context.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/osmesa_context.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/null_init.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/null_init.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/null_init.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/null_monitor.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/null_monitor.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/null_monitor.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/null_window.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/null_window.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/null_window.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -Wdeclaration-after-statement -o CMakeFiles/glfw.dir/null_joystick.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/null_joystick.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/null_joystick.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/posix_module.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/posix_module.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/posix_module.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/posix_time.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/posix_time.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/posix_time.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/posix_thread.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/posix_thread.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/posix_thread.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/x11_init.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/x11_init.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/x11_init.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/x11_monitor.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/x11_monitor.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/x11_monitor.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/x11_window.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/x11_window.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/x11_window.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/xkb_unicode.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/xkb_unicode.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/xkb_unicode.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/glx_context.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/glx_context.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/glx_context.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/linux_joystick.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/linux_joystick.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/linux_joystick.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src",
+  "command": "/usr/bin/cc -D_DEFAULT_SOURCE -D_GLFW_X11 -I/home/vini84200/projetos/trabalho-fcg/external/glfw/include -I/home/vini84200/projetos/trabalho-fcg/external/glfw/src -I/home/vini84200/projetos/trabalho-fcg/build/external/glfw/src -g -fPIC -D_DEBUG -DDEBUG -Wall -std=c99 -o CMakeFiles/glfw.dir/posix_poll.c.o -c /home/vini84200/projetos/trabalho-fcg/external/glfw/src/posix_poll.c",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/glfw/src/posix_poll.c"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -g -D_DEBUG -DDEBUG -std=c++11 -o CMakeFiles/spdlog.dir/src/spdlog.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/spdlog/src/spdlog.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/spdlog/src/spdlog.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -g -D_DEBUG -DDEBUG -std=c++11 -o CMakeFiles/spdlog.dir/src/stdout_sinks.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/spdlog/src/stdout_sinks.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/spdlog/src/stdout_sinks.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -g -D_DEBUG -DDEBUG -std=c++11 -o CMakeFiles/spdlog.dir/src/color_sinks.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/spdlog/src/color_sinks.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/spdlog/src/color_sinks.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -g -D_DEBUG -DDEBUG -std=c++11 -o CMakeFiles/spdlog.dir/src/file_sinks.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/spdlog/src/file_sinks.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/spdlog/src/file_sinks.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -g -D_DEBUG -DDEBUG -std=c++11 -o CMakeFiles/spdlog.dir/src/async.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/spdlog/src/async.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/spdlog/src/async.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -g -D_DEBUG -DDEBUG -std=c++11 -o CMakeFiles/spdlog.dir/src/cfg.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/spdlog/src/cfg.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/spdlog/src/cfg.cpp"
+},
+{
+  "directory": "/home/vini84200/projetos/trabalho-fcg/build/external/spdlog",
+  "command": "/usr/bin/c++ -DSPDLOG_COMPILED_LIB -I/home/vini84200/projetos/trabalho-fcg/external/imgui -I/home/vini84200/projetos/trabalho-fcg/external/imgui/backends -I/home/vini84200/projetos/trabalho-fcg/external/spdlog/include -g -D_DEBUG -DDEBUG -std=c++11 -o CMakeFiles/spdlog.dir/src/bundled_fmtlib_format.cpp.o -c /home/vini84200/projetos/trabalho-fcg/external/spdlog/src/bundled_fmtlib_format.cpp",
+  "file": "/home/vini84200/projetos/trabalho-fcg/external/spdlog/src/bundled_fmtlib_format.cpp"
+}
+]
