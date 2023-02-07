@@ -4,6 +4,7 @@
 
 #include "testGame/DependencyTask.hpp"
 
+#include "entrePortaisEngine/Compatibility.hpp"
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
 
 namespace entre_portais
@@ -13,7 +14,7 @@ namespace entre_portais
     if (createdTask_ == false)
     {
       spdlog::info("Creating dependency task");
-      sleep(3);
+      entre_portais::sleep_for_millis(3);
       auto taskManager = entre_portais::TaskManager::getInstance();
       waitAndFinishTask_ = taskManager->addTask<WaitAndFinishTask>();
       addDependency(waitAndFinishTask_.value().getTaskID());
@@ -23,7 +24,7 @@ namespace entre_portais
     if (waitAndFinishTask_.value().getStatus() == TaskStatus::SUCCESS)
     {
       spdlog::info("Dependency task finished");
-      sleep(5);
+      entre_portais::sleep_for_millis(5);
       return TaskRunResult::SUCCESS;
     }
 

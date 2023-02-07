@@ -7,6 +7,7 @@
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
 #include "imgui.h"
 #include "testGame/DependencyTask.hpp"
+#include "entrePortaisEngine/Compatibility.hpp"
 
 entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name)
 {
@@ -72,7 +73,7 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
     tm->addTask<LambdaTask<EmptyState>>(
         [](EmptyState) -> TaskRunResult
         {
-          sleep(2);
+          entre_portais::sleep_for_millis(2);
           return TaskRunResult::SUCCESS;
         },
         std::string("Simple Lambda Task"));
@@ -92,12 +93,12 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
         {
           if (state.value >= 1)
           {
-            sleep(2);
+            entre_portais::sleep_for_millis(2);
             return TaskRunResult::SUCCESS;
           }
           state.value++;
           spdlog::info("Value is {}", state.value);
-          sleep(1);
+          entre_portais::sleep_for_millis(1);
           return TaskRunResult::REPEAT;
         },
         std::string("Lambda Task With State"));

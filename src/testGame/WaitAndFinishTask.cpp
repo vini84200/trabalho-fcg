@@ -1,14 +1,14 @@
 #include "testGame/WaitAndFinishTask.hpp"
 
-#include <csignal>
 
 #include "entrePortaisEngine/Logger.hpp"
+#include "entrePortaisEngine/Compatibility.hpp"
 
 namespace entre_portais
 {
   TaskRunResult WaitAndFinishTask::Run()
   {
-    usleep(5000000);  // 5 seconds
+    sleep_for_millis(5000000);  // 5 seconds
     {
       std::lock_guard<std::mutex> lock(mutex_);
       executionsLeft_--;

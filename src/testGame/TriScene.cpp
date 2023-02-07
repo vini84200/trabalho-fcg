@@ -1,7 +1,6 @@
 
 #include "testGame/TriScene.hpp"
 
-#include <cstdio>
 
 #include "glad/glad.h"
 #include "testGame/TriObject.hpp"

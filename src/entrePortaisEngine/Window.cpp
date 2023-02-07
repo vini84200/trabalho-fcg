@@ -5,6 +5,7 @@
 #include <cstdio>
 #include <cstdlib>
 
+#include "entrePortaisEngine/Compatibility.hpp"
 #include "entrePortaisEngine/Logger.hpp"
 
 namespace entre_portais
@@ -153,7 +154,7 @@ namespace entre_portais
         // Here we can do some work while waiting for the next frame.
 
         // Sleep for the remaining time.
-        usleep((1.0 / targetFPS_ - deltaTime) * 1000000);
+        entre_portais::sleep_for_nanosecods((1.0 / targetFPS_ - deltaTime) * 1000000);
       }
       else
       {
