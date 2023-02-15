@@ -25,8 +25,6 @@ namespace entre_portais {
 
         void update(double deltaTime) override;
 
-        void render() override;
-
         void initialize() override;
 
         void onResize(int width, int height) override;

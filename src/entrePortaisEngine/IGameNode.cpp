@@ -14,15 +14,6 @@ namespace entre_portais
     }
   }
 
-  void IGameNode::renderPropagate()
-  {
-    render();
-    for (auto &child : children_)
-    {
-      child->renderPropagate();
-    }
-  }
-
   void IGameNode::resize(int width, int height)
   {
     onResize(width, height);
@@ -61,7 +52,7 @@ namespace entre_portais
 
   void IGameNode::addChild(std::shared_ptr<IGameNode> child)
   {
-    auto s = shared_from_this();
+    auto s = std::enable_shared_from_this<IGameNode>::shared_from_this();
     if (s == child)
     {
       throw std::runtime_error("Cannot add self as child");
@@ -132,5 +123,20 @@ namespace entre_portais
     {
       child->setScenePropagate(scene);
     }
+  }
+
+  glm::mat4 *entre_portais::IGameNode::getParentModelMatrix()
+  {
+    auto parent_obj = getParent().get();
+    // Vai ser um nullptr se o parent não for do tipo IObject
+    if (parent_obj)
+    {
+      return nullptr; // FIXME: retornar a matriz correta
+    }
+    return nullptr;
+  }
+  std::shared_ptr<IGameNode> IGameNode::sharedPtrFromIGameNode()
+  {
+    return shared_from_this();
   }
 }  // namespace entre_portais

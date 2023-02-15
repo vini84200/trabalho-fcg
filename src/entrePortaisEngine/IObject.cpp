@@ -8,17 +8,16 @@ void entre_portais::IObject::render()
 {
   // Set uniforms
   mesh_->UseShader();
+  glm::mat4 modelMatrix;
   if (getParentModelMatrix() != nullptr)
   {
-    modelMatrix_ = (*getParentModelMatrix()) * transform_.getModelMatrix();
+    modelMatrix = (*getParentModelMatrix()) * transform_.getModelMatrix();
   }
   else
   {
-    modelMatrix_ = transform_.getModelMatrix();
+    modelMatrix = transform_.getModelMatrix();
   }
-  mesh_->GetShader()->setUniformMat4("model", modelMatrix_);
-  mesh_->GetShader()->setUniformMat4("view", matrices::Matrix_Identity());
-  mesh_->GetShader()->setUniformMat4("projection", matrices::Matrix_Identity());
+  mesh_->GetShader()->setUniformMat4("model", modelMatrix);
   Draw();
   mesh_->UnbindShader();
 }
@@ -70,29 +69,6 @@ void entre_portais::IObject::renderImGui()
     }
     ImGui::TreePop();
   }
-}
-
-void entre_portais::IObject::renderPropagate()
-{
-  if (visible_)
-  {
-    render();
-    for (auto &child : children_)
-    {
-      child->renderPropagate();
-    }
-  }
-}
-
-glm::mat4 *entre_portais::IObject::getParentModelMatrix()
-{
-  auto parent_obj = dynamic_cast<IObject *>(getParent().get());
-  // Vai ser um nullptr se o parent não for do tipo IObject
-  if (parent_obj)
-  {
-    return &parent_obj->modelMatrix_;
-  }
-  return nullptr;
 }
 
 void entre_portais::IObject::SetVisibility(bool visible)

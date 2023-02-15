@@ -2,13 +2,14 @@
 #define ENTREPORTAIS_IOBJECT_HPP
 
 #include "IGameNode.hpp"
+#include "render/IRenderable.hpp"
 #include "IMesh.hpp"
 #include "Transform.hpp"
 #include "Logger.hpp"
 
 namespace entre_portais {
 
-    class IObject : public IGameNode {
+    class IObject : public IGameNode, public IRenderable {
         /* Objeto tem um mesh*/
     public:
         IObject(char *name) : IGameNode(name) {}
@@ -31,8 +32,6 @@ namespace entre_portais {
 
         void render() override;
 
-        void renderPropagate() override;
-
         void renderImGui() override;
 
         void update(double deltaTime) override = 0;
@@ -41,17 +40,11 @@ namespace entre_portais {
 
         void onResize(int width, int height) override = 0;
 
-        Transform *getTransform() {
-            return &transform_;
-        }
-
         std::shared_ptr<IScene> getScene() override;
 
         void setScene(std::shared_ptr<IScene> scene) override;
 
         bool hasScene() override;
-
-        glm::mat4 *getParentModelMatrix();
 
         void Hide();
 
@@ -65,8 +58,6 @@ namespace entre_portais {
 
     protected:
         std::shared_ptr<IMesh> mesh_;
-        Transform transform_;
-        glm::mat4 modelMatrix_;
         std::weak_ptr<IScene> scene_;
         bool visible_ = true;
     };

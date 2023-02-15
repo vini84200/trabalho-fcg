@@ -88,7 +88,7 @@ namespace entre_portais
         "OpenGL Vendor: {} Renderer: {} Version: {} GLSL Version: {}", vendor, renderer, glversion, glslversion);
 
     glfwSwapInterval(VSYNC);
-    scene_->initialize();
+    scene_->initializePropagate();
   }
 
   Window::~Window()
@@ -185,7 +185,7 @@ namespace entre_portais
   {
     glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT);
-    scene_->renderPropagate();
+    scene_->render();
   }
 
   void Window::onResize(int width, int height)

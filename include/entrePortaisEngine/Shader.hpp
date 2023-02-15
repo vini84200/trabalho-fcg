@@ -13,15 +13,6 @@ namespace entre_portais {
 
         ~Shader();
 
-        // Remove os construtores e operadores de cópia e movimentação
-        Shader(const Shader &other) = delete;
-
-        Shader &operator=(const Shader &other) = delete;
-
-        Shader(Shader &&other) = delete;
-
-        Shader &operator=(Shader &&other) = delete;
-
         void use();
 
         void setUniformInt(const char *name, int value);
@@ -36,10 +27,16 @@ namespace entre_portais {
 
         void setUniformMat4(const char *name, const glm::mat4 &value);
 
+        void setID(int id);
+
+        int getID() const;
+
     private:
         void LoadShader(const char *filePath, GLuint shaderId);
 
         unsigned int program_;
+
+        int id_;
     };
 
 } // entre_portais

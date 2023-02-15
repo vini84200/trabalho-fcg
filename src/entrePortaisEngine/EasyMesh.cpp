@@ -2,9 +2,10 @@
 
 namespace entre_portais
 {
-  EasyMesh::EasyMesh(ManyVertices vertices, const char *vertexPath, const char *fragmentPath)
+  EasyMesh::EasyMesh(ManyVertices vertices, const char *name)
   {
-    auto shader = std::make_shared<Shader>(vertexPath, fragmentPath);
+    auto sm = ShadersManager::getInstance();
+    auto shader = std::make_shared<Shader>(sm->getShader(name));
     SetShader(shader);
     auto vao = std::make_shared<VertexArrayBuffer>();
     BufferBuilder vboPos;
