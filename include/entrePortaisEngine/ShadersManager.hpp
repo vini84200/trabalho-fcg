@@ -4,6 +4,7 @@
 #include <map>
 #include <string>
 #include "entrePortaisEngine/Shader.hpp"
+#include "unordered_map"
 
 namespace entre_portais
 {
@@ -18,8 +19,8 @@ namespace entre_portais
    private:
     ShadersManager() {};
     Shader createShader(std::string name);
-    std::map<int, Shader> shaders_;
-    std::map<std::string, int> names_;
+    std::unordered_map<int, Shader> shaders_;
+    std::unordered_map<std::string, int> names_;
     static ShadersManager* instance_;
     int lastID_ = 0;
   };
