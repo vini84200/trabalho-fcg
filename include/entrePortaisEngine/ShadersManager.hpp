@@ -12,6 +12,7 @@ namespace entre_portais
   class ShadersManager
   {
    public:
+    ~ShadersManager();
     static ShadersManager* getInstance();
     Shader getShader(std::string name);
     Shader getShaderByID(int id);

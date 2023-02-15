@@ -27,8 +27,6 @@ namespace entre_portais
 
   Shader::~Shader()
   {
-    gShaderLogger.getLogger()->debug("Shader::~Shader()");
-    // glDeleteProgram(program_); // FIXME deletar o programa da GPU
   }
 
   void Shader::use()
@@ -140,5 +138,10 @@ namespace entre_portais
   int Shader::getID() const
   {
     return id_;
+  }
+  void Shader::deleteShader()
+  {
+    glDeleteProgram(program_);
+    gShaderLogger.getLogger()->debug("Shader esta {} sendo removida da GPU", id_);
   }
 }  // namespace entre_portais
