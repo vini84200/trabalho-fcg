@@ -18,7 +18,7 @@ namespace entre_portais {
 
     class EasyMesh : public IMesh {
     public:
-        EasyMesh(ManyVertices vertices, const char *name);
+        EasyMesh(ManyVertices vertices, const char *name, std::string shaderName);
 
         ~EasyMesh() override {};
 

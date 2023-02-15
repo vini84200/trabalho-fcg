@@ -35,5 +35,11 @@ namespace entre_portais
   {
     return shaders_.at(id);
   }
+  ShadersManager::~ShadersManager()
+  {
+    for (auto [_,s]:shaders_){
+      s.deleteShader();
+    }
+  }
 
 }  // namespace entre_portais

@@ -6,11 +6,9 @@
 #include "glm/glm.hpp"
 
 namespace entre_portais {
-
+    class ShadersManager;
     class Shader {
     public:
-        Shader(const char *vertexPath, const char *fragmentPath);
-
         ~Shader();
 
         void use();
@@ -32,11 +30,17 @@ namespace entre_portais {
         int getID() const;
 
     private:
+        Shader(const char *vertexPath, const char *fragmentPath);
+
         void LoadShader(const char *filePath, GLuint shaderId);
+
+        void deleteShader();
 
         unsigned int program_;
 
         int id_;
+
+        friend class ShadersManager;
     };
 
 } // entre_portais

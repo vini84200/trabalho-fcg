@@ -18,7 +18,7 @@ entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name)
   vert->indices.push_back(0);
   vert->indices.push_back(1);
   vert->indices.push_back(2);
-  mesh_ = std::make_shared<EasyMesh>(*vert, "tri");
+  mesh_ = std::make_shared<EasyMesh>(*vert, "tri", "tri");
 
     delete vert;
     transform_.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));

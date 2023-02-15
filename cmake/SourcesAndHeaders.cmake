@@ -17,6 +17,7 @@ set(sources
 		src/entrePortaisEngine/ShadersManager.cpp
 		src/entrePortaisEngine/render/IRenderable.cpp
 		src/entrePortaisEngine/render/Renderer.cpp
+		src/entrePortaisEngine/IMesh.cpp
 
 
 		src/testGame/TriScene.cpp
