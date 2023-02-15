@@ -11,8 +11,12 @@ set(sources
 		src/entrePortaisEngine/ImGuiPlugin.cpp
 		src/entrePortaisEngine/Event.cpp
 		src/entrePortaisEngine/IScene.cpp
+		src/entrePortaisEngine/Camera.cpp
 		src/entrePortaisEngine/tasks/TaskManager.cpp
 		src/utils/matrices.cpp
+		src/entrePortaisEngine/ShadersManager.cpp
+		src/entrePortaisEngine/render/IRenderable.cpp
+		src/entrePortaisEngine/render/Renderer.cpp
 
 
 		src/testGame/TriScene.cpp

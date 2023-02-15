@@ -6,16 +6,19 @@
 #include "testGame/DependencyTask.hpp"
 #include "entrePortaisEngine/tasks/TaskHandler.hpp"
 #include "entrePortaisEngine/tasks/LambdaTask.hpp"
+#include "entrePortaisEngine/Compatibility.hpp"
+#include "entrePortaisEngine/IScene.hpp"
 
-entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name) {
-    auto vert = new entre_portais::ManyVertices();
-    vert->vertices.push_back({-0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f});
-    vert->vertices.push_back({0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f});
-    vert->vertices.push_back({0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f});
-    vert->indices.push_back(0);
-    vert->indices.push_back(1);
-    vert->indices.push_back(2);
-    mesh_ = std::make_shared<EasyMesh>(*vert, "assets/shaders/tri.vert", "assets/shaders/tri.frag");
+entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name)
+{
+  auto vert = new entre_portais::ManyVertices();
+  vert->vertices.push_back({ -0.5f, -0.5f, 0.0f, 1.0f, 0.0f, 0.0f });
+  vert->vertices.push_back({ 0.5f, -0.5f, 0.0f, 0.0f, 1.0f, 0.0f });
+  vert->vertices.push_back({ 0.0f, 0.5f, 0.0f, 0.0f, 0.0f, 1.0f });
+  vert->indices.push_back(0);
+  vert->indices.push_back(1);
+  vert->indices.push_back(2);
+  mesh_ = std::make_shared<EasyMesh>(*vert, "tri");
 
     delete vert;
     transform_.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -33,8 +36,12 @@ void entre_portais::TriObject::update(float deltaTime) {
     }
 }
 
-void entre_portais::TriObject::initialize() {
-
+void entre_portais::TriObject::initialize()
+{
+  auto renderer = IObject::getScene()->getRenderer();
+  loadShader(mesh_->getShader());
+  submit(renderer);
+  logger_.getLogger()->info("Submetendo para renderizacao TriObject");
 }
 
 void entre_portais::TriObject::onResize(int width, int height) {

@@ -1,9 +1,12 @@
 #ifndef ENTREPORTAIS_ISCENE_HPP
 #define ENTREPORTAIS_ISCENE_HPP
 
-#include "IGameNode.hpp"
-#include "imgui.h"
 #include <stdexcept>
+
+#include "Camera.hpp"
+#include "IGameNode.hpp"
+#include "entrePortaisEngine/render/Renderer.hpp"
+#include "imgui.h"
 
 namespace entre_portais {
     class IScene : public IGameNode {
@@ -12,8 +15,7 @@ namespace entre_portais {
     public:
         virtual ~IScene() = default;
 
-        IScene(char *name) : IGameNode(name) {
-        }
+        IScene(char *name);
 
         std::shared_ptr<IScene> getScene() {
             return std::dynamic_pointer_cast<IScene>(shared_from_this());
@@ -32,7 +34,7 @@ namespace entre_portais {
 
         virtual void update(float deltaTime) = 0;
 
-        virtual void render() = 0;
+        virtual void render();
 
         virtual void renderImGui(bool *p_open = nullptr) override;
 
@@ -58,6 +60,17 @@ namespace entre_portais {
         bool hasScene() override {
             return true;
         }
+
+        void setCamera(std::shared_ptr<Camera> camera){
+            camera_ = camera;
+        }
+
+       protected:
+        std::shared_ptr<Camera> camera_;
+        std::shared_ptr<Renderer> renderer_;
+
+       public:
+        const std::shared_ptr<Renderer> &getRenderer() const;
     };
 
 }

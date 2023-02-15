@@ -68,7 +68,15 @@ namespace entre_portais {
 
     private:
         std::shared_ptr<Shader> shader_;
-        unsigned int vertexCount_;
+
+    public:
+     Shader getShader() const
+     {
+            return *shader_;
+     }
+
+    private:
+     unsigned int vertexCount_;
         std::shared_ptr<VertexArrayBuffer> vertexArray_;
     };
 

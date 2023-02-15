@@ -5,6 +5,8 @@
 #include <utility>
 #include <vector>
 
+#include "Transform.hpp"
+
 namespace entre_portais {
 
     class IScene;
@@ -21,10 +23,6 @@ namespace entre_portais {
         void updatePropagate(float deltaTime);
 
         virtual void update(float deltaTime) = 0;
-
-        virtual void renderPropagate();
-
-        virtual void render() = 0;
 
         virtual void renderImGui(bool *p_open = nullptr) = 0;
 
@@ -80,9 +78,18 @@ namespace entre_portais {
 
         void setName(char *name) { name_ = name; }
 
+        inline Transform *getTransform() {
+          return &transform_;
+        }
+
+        glm::mat4 *getParentModelMatrix();
+
     protected:
         std::vector<std::shared_ptr<IGameNode>> children_;
-    private:
+     Transform transform_;
+
+       private:
+        std::shared_ptr<IGameNode> sharedPtrFromIGameNode();
         char *name_;
         std::weak_ptr<IGameNode> parent_;
         bool is_initialized_ = false;

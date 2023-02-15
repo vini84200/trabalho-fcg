@@ -28,7 +28,7 @@ namespace entre_portais
   Shader::~Shader()
   {
     gShaderLogger.getLogger()->debug("Shader::~Shader()");
-    glDeleteProgram(program_);
+    // glDeleteProgram(program_); // FIXME deletar o programa da GPU
   }
 
   void Shader::use()
@@ -132,5 +132,13 @@ namespace entre_portais
   void Shader::setUniformMat4(const char *name, const glm::mat4 &value)
   {
     glUniformMatrix4fv(glGetUniformLocation(program_, name), 1, GL_FALSE, &value[0][0]);
+  }
+  void Shader::setID(int id)
+  {
+    id_ = id;
+  }
+  int Shader::getID() const
+  {
+    return id_;
   }
 }  // namespace entre_portais

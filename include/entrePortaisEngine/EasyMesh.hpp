@@ -2,6 +2,7 @@
 #define ENTREPORTAIS_EASYMESH_HPP
 
 #include "IMesh.hpp"
+#include "ShadersManager.hpp"
 
 namespace entre_portais {
     struct EasyVertex {
@@ -17,7 +18,7 @@ namespace entre_portais {
 
     class EasyMesh : public IMesh {
     public:
-        EasyMesh(ManyVertices vertices, const char *vertexPath, const char *fragmentPath);
+        EasyMesh(ManyVertices vertices, const char *name);
 
         ~EasyMesh() override {};
 
