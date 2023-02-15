@@ -5,6 +5,7 @@
 #include "IRenderable.hpp"
 #include "../Shader.hpp"
 #include "../ShadersManager.hpp"
+#include "unordered_map"
 
 namespace entre_portais
 {
@@ -25,7 +26,8 @@ namespace entre_portais
 
    private:
     int lastID_ = 0;
-    std::map<int, std::map<int, IRenderable*>> renderables_;
+    std::unordered_map<int, std::unordered_map<int, IRenderable*>> renderables_;
+
   };
 
 }  // namespace entre_portais
