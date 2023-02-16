@@ -18,15 +18,15 @@ namespace entre_portais {
 
         virtual ~IGameNode() = default;
 
-        void updatePropagate(double deltaTime);
+        void updatePropagate(float deltaTime);
 
-        virtual void update(double deltaTime) = 0;
+        virtual void update(float deltaTime) = 0;
 
         virtual void renderPropagate();
 
         virtual void render() = 0;
 
-        virtual void renderImGui() = 0;
+        virtual void renderImGui(bool *open_p) = 0;
 
         virtual void CustomImGui() {};
 

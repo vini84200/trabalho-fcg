@@ -1,11 +1,7 @@
-#include "entrePortaisEngine/ImGuiPlugin.hpp"
-
-#include <cstdio>
 #include <memory>
-
 #include "entrePortaisEngine/Window.hpp"
+#include "entrePortaisEngine/ImGuiPlugin.hpp"
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
-#include "spdlog/spdlog.h"
 
 void entre_portais::ImGuiPlugin::onAttach()
 {
@@ -21,14 +17,22 @@ void entre_portais::ImGuiPlugin::onDetach()
   ImGui::DestroyContext();
 }
 
-void entre_portais::ImGuiPlugin::update(float deltaTime)
-{
-  ImGui_ImplOpenGL3_NewFrame();
-  ImGui_ImplGlfw_NewFrame();
-  ImGui::NewFrame();
+void entre_portais::ImGuiPlugin::render() {
+    ImGui_ImplOpenGL3_NewFrame();
+    ImGui_ImplGlfw_NewFrame();
+    ImGui::NewFrame();
 
-  // Mostra janela para a cena atual
-  window_.lock()->GetScene()->renderImGui();
+    if (debugConfigWindow_) {
+        renderDebugConfigWindow();
+    }
+
+    // Mostra janela para a cena atual
+    if (sceneDebugWindow_) {
+        auto scene = window_.lock()->GetScene();
+        if (scene) {
+            scene->renderImGui(&sceneDebugWindow_);
+        }
+    }
 
   // Mostra janela de debug
   if (demoWindow_)
@@ -36,8 +40,10 @@ void entre_portais::ImGuiPlugin::update(float deltaTime)
     ImGui::ShowDemoWindow(&demoWindow_);
   }
 
-  // Mostra janela de performance
-  ImGui::ShowMetricsWindow();
+    // Mostra janela de performance
+    if (mestricsWindow_) {
+        ImGui::ShowMetricsWindow(&mestricsWindow_);
+    }
 
   if (taskManagerWindow_)
   {
@@ -114,3 +120,32 @@ void entre_portais::ImGuiPlugin::renderTaskManagerImGui(entre_portais::TaskManag
 
   ImGui::End();
 }
+
+void entre_portais::ImGuiPlugin::onKey(int key, int scancode, int action, int mods) {
+    if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
+        debugConfigWindow_ = !debugConfigWindow_;
+    }
+}
+
+void entre_portais::ImGuiPlugin::renderDebugConfigWindow() {
+    ImGui::Begin("Debug", &debugConfigWindow_);
+
+    ImGui::Checkbox("Mostar janela da Scene atual", &sceneDebugWindow_);
+    ImGui::Checkbox("Mostar janela de Demo ImGui", &demoWindow_);
+    ImGui::Checkbox("Mostar janela de Performance ImGui", &mestricsWindow_);
+    ImGui::Checkbox("Mostar janela de Task Manager", &taskManagerWindow_);
+    ImGui::Checkbox("Mostar janela de Debug(this)", &debugConfigWindow_);
+
+    ImGui::Separator();
+    // Titulo: Métricas de performance
+    ImGui::Text("Métricas de performance");
+    // FPS
+    ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
+    // TODO: Calcular UPS
+
+    ImGui::End();
+}
+
+void entre_portais::ImGuiPlugin::update(float deltaTime) {
+}
+
