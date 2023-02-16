@@ -33,9 +33,9 @@ namespace entre_portais {
 
         void renderPropagate() override;
 
-        void renderImGui() override;
+        void renderImGui(bool *open_p) override;
 
-        void update(double deltaTime) override = 0;
+        void update(float deltaTime) override = 0;
 
         void initialize() override = 0;
 

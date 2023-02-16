@@ -20,7 +20,11 @@ namespace entre_portais {
 
         virtual void update(float deltaTime) = 0;
 
+        virtual void render() = 0;
+
         virtual void onEvent(Event &event) = 0;
+
+        virtual void onKey(int key, int scancode, int action, int mods) {};
 
         std::shared_ptr<spdlog::logger> getLogger() {
             return logger_.getLogger();

@@ -10,5 +10,11 @@ quebra-cabeças para avançar para o próximo nível.
 
 ## Autores
 
-Vinicius José Fritzen
-João Pedro Braun
+- Vinicius José Fritzen
+- João Pedro Braun
+
+## Referências
+
+Alguns dos materiais estudados para se criar esse jogo:
+
+- [Fix your timestep - Gaffer Games - Glenn Fiedler](https://gafferongames.com/post/fix_your_timestep/)

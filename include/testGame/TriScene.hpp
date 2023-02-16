@@ -23,7 +23,7 @@ namespace entre_portais {
 
         TriScene &operator=(TriScene &&other) = delete;
 
-        void update(double deltaTime) override;
+        void update(float deltaTime) override;
 
         void render() override;
 

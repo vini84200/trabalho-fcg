@@ -23,7 +23,7 @@ entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name) {
     transform_.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
-void entre_portais::TriObject::update(double deltaTime) {
+void entre_portais::TriObject::update(float deltaTime) {
     // Gira o triângulo
     transform_.setRotation(
             glm::vec3(transform_.rx, transform_.ry, transform_.rz + velocity_ * (static_cast<float>(deltaTime))));

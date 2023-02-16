@@ -34,7 +34,7 @@ bool entre_portais::IObject::hasScene() {
     return !scene_.expired();
 }
 
-void entre_portais::IObject::renderImGui() {
+void entre_portais::IObject::renderImGui(bool *open_p) {
     if (ImGui::TreeNode(getName())) {
         ImGui::Checkbox("Visible", &visible_);
         if (ImGui::TreeNode("Transform")) {
@@ -50,7 +50,7 @@ void entre_portais::IObject::renderImGui() {
         CustomImGui();
         if (ImGui::TreeNode("Children")) {
             for (auto &child: children_) {
-                child->renderImGui();
+                child->renderImGui(nullptr);
             }
             ImGui::TreePop();
         }

@@ -9,6 +9,7 @@
 #define VSYNC 1
 #define DEFAULT_FPS 60
 #define WARNING_FPS 28
+#define TARGET_UPS 60.0
 
 namespace entre_portais {
 
@@ -39,7 +40,7 @@ namespace entre_portais {
         std::shared_ptr<IScene> GetScene() const;
 
     protected:
-        void update(double deltaTime);
+        void update(float deltaTime);
 
         void render();
 

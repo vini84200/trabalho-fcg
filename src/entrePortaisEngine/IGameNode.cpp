@@ -3,7 +3,7 @@
 #include "entrePortaisEngine/IGameNode.hpp"
 
 namespace entre_portais {
-    void IGameNode::updatePropagate(double deltaTime) {
+    void IGameNode::updatePropagate(float deltaTime) {
         update(deltaTime);
         for (auto &child: children_) {
             child->updatePropagate(deltaTime);
