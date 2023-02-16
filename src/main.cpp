@@ -2,31 +2,25 @@
 #include <sstream>
 #include <string>
 
-#include "entrePortaisEngine/Window.hpp"
-#include "testGame/TriScene.hpp"
 #include "entrePortaisEngine/Logger.hpp"
+#include "entrePortaisEngine/Window.hpp"
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
+#include "testGame/TriScene.hpp"
 
 static const int WIDTH = 800;
 static const int HEIGHT = 600;
 
-int main() {
-    entre_portais::Logger::initialize();
-    std::string title = "Entre Portais";
-    auto scene = std::make_shared<entre_portais::TriScene>();
-    std::shared_ptr<entre_portais::Window> janela(
-            new entre_portais::Window(
-                    WIDTH,
-                    HEIGHT,
-                    title.c_str(),
-                    std::move(scene)
-            ));
+int main()
+{
+  entre_portais::Logger::initialize();
+  std::string title = "Entre Portais";
+  auto scene = std::make_shared<entre_portais::TriScene>();
+  std::shared_ptr<entre_portais::Window> janela(new entre_portais::Window(WIDTH, HEIGHT, title.c_str(), std::move(scene)));
 
-    auto tm = entre_portais::TaskManager::getInstance();
+  auto tm = entre_portais::TaskManager::getInstance();
 
-    janela->RegisterPlugin(std::make_shared<entre_portais::ImGuiPlugin>());
-    janela->Run();
+  janela->RegisterPlugin(std::make_shared<entre_portais::ImGuiPlugin>());
+  janela->Run();
 
-    return 0;
+  return 0;
 }
-

@@ -11,5 +11,12 @@ void entre_portais::IScene::renderImGui(bool *p_open) {
         ImGui::End();
     } else {
         ImGui::End();
+
     }
+    ImGui::End();
+  }
+  else
+  {
+    ImGui::End();
+  }
 }

@@ -122,7 +122,7 @@ namespace entre_portais {
             glfwPollEvents();
             if (timeDifference < 1.0 / targetFPS_) {
 #ifdef USE_OPSYS_SLEEP
-                usleep((1.0 / targetFPS_ - timeDifference) * 1000000);
+                entre_portais::sleep_for_nanosecods((1.0 / targetFPS_ - deltaTime) * 1000000);
 #endif
             } else if (timeDifference > 1.0 / WARNING_FPS) {
                 getLogger()->warn("Running behind by {} seconds, expected {} seconds", timeDifference,

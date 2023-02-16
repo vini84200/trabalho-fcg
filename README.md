@@ -8,7 +8,7 @@ Federal do Rio Grande do Sul (UFRGS).
 Usando a biblioteca OpenGL, desenvolver um jogo 3D em primeira pessoa, com o objetivo de explorar um ambiente e resolver
 quebra-cabeças para avançar para o próximo nível.
 
-## Autores
+## Motivação do jogo
 
 - Vinicius José Fritzen
 - João Pedro Braun
