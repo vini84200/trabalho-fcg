@@ -33,7 +33,7 @@ namespace entre_portais {
 
         void renderPropagate() override;
 
-        void renderImGui(bool *open_p) override;
+        void renderImGui(bool *p_open = nullptr) override;
 
         void update(float deltaTime) override = 0;
 

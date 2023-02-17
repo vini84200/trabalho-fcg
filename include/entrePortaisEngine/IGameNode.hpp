@@ -26,7 +26,7 @@ namespace entre_portais {
 
         virtual void render() = 0;
 
-        virtual void renderImGui(bool *open_p) = 0;
+        virtual void renderImGui(bool *p_open = nullptr) = 0;
 
         virtual void CustomImGui() {};
 

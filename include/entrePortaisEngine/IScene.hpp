@@ -34,7 +34,7 @@ namespace entre_portais {
 
         virtual void render() = 0;
 
-        virtual void renderImGui(bool *p_open) override;
+        virtual void renderImGui(bool *p_open = nullptr) override;
 
         virtual void onResize(int width, int height) = 0;
 

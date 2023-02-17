@@ -34,7 +34,7 @@ bool entre_portais::IObject::hasScene() {
     return !scene_.expired();
 }
 
-void entre_portais::IObject::renderImGui(bool *open_p) {
+void entre_portais::IObject::renderImGui(bool *p_open) {
     if (ImGui::TreeNode(getName())) {
         ImGui::Checkbox("Visible", &visible_);
         if (ImGui::TreeNode("Transform")) {
