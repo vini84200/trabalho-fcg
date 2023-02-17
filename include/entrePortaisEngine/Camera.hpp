@@ -17,12 +17,12 @@ namespace entre_portais
     Camera &operator=(const Camera &other) = delete;
     Camera(Camera &&other) = delete;
     Camera &operator=(Camera &&other) = delete;
-    void renderImGui() override;
+    void renderImGui(bool *p_open) override;
     void setUpCamera();
     void configureShaderUniforms(Shader shader);
     glm::mat4 getProjectionMatrix();
     glm::mat4 getViewMatrix();
-    void update(double deltaTime) override {};
+    void update(float deltaTime) override {};
     void initialize() override {};
     void onResize(int width, int height) override;
     void onKey(int key, int scancode, int action, int mods) override {};

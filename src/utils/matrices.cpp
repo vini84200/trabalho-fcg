@@ -437,3 +437,17 @@ void matrices::PrintMatrixVectorProductDivW(glm::mat4 M, glm::vec4 v)
       r[3],
       r[3] / w);
 }
+glm::vec4 matrices::Vector_From_Euler(float size, float alfa, float beta, float gama)
+{
+  glm::vec4 x = glm::vec4(size, 0, 0, 0);
+  float ca = cos(alfa), cb = cos(beta), cg = cos(gama);
+  float sa = sin(alfa), sb = sin(beta), sg = sin(gama);
+  glm::mat4 eulerMatrix = Matrix(
+      ca*cg-sa*cb*sg, sa*cg+ca*cb*sg, sb*sg, 0,
+      -ca*sg-sa*cb*cg, -sa*sg+ca*cb*cg, sb*cg, 0,
+      sa*sb, -ca*sb, cb, 0,
+      0, 0, 0, 1
+      );
+
+  return eulerMatrix * x;
+}

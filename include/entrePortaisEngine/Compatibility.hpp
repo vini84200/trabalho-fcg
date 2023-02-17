@@ -9,7 +9,7 @@ namespace entre_portais {
         std::this_thread::sleep_for(std::chrono::milliseconds(ms));
     };
 
-    inline void sleep_for_nanosecods(long int ns) {
+    inline void sleep_for_nanoseconds(long int ns) {
         std::this_thread::sleep_for(std::chrono::nanoseconds(ns));
     }
 

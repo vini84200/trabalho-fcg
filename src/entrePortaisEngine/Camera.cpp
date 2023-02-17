@@ -6,8 +6,7 @@
 namespace entre_portais
 {
 
-
-  void Camera::renderImGui()
+  void Camera::renderImGui(bool* p_open)
   {
     if (ImGui::TreeNode(getName()))
     {
@@ -111,6 +110,7 @@ namespace entre_portais
   }
   void Camera::onResize(int width, int height)
   {
+    glViewport(0, 0, width, height);
     aspectRatio_ = ((float) width) / ((float) height);
   }
   glm::mat4 Camera::getViewMatrix()
@@ -120,12 +120,7 @@ namespace entre_portais
 
   glm::vec4 Camera::getViewVector()
   {
-    return glm::vec4 (
-        cos(transform_.ry),
-        sin(transform_.ry)*cos(transform_.rz),
-        sin(transform_.ry)*sin(transform_.rz),
-        0
-        );
+    return matrices::Vector_From_Euler(1, transform_.rx, M_PI_2, transform_.rz);
   }
 
 }

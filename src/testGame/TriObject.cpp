@@ -70,7 +70,7 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
         auto a = tm->addTask<DependencyTask>();
 
         tm->addTask<LambdaTask<EmptyState>>([](EmptyState) -> TaskRunResult {
-            sleep(2);
+            sleep_for_millis(2000);
             return TaskRunResult::SUCCESS;
         }, std::string("Simple Lambda Task"));
 
@@ -84,12 +84,12 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
 
         auto lambdaTaskWithState = tm->addTask<LambdaTask<MyState>>([](MyState &state) -> TaskRunResult {
             if (state.value >= 1) {
-                sleep(2);
+                sleep_for_millis(2000);
                 return TaskRunResult::SUCCESS;
             }
             state.value++;
             spdlog::info("Value is {}", state.value);
-            sleep(1);
+            sleep_for_millis(1000);
             return TaskRunResult::REPEAT;
         }, std::string("Lambda Task With State"));
 
