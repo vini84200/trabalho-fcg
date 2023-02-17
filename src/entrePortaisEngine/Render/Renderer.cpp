@@ -29,8 +29,7 @@ namespace entre_portais
     for (auto [shaderID, objs]: renderables_){
       auto shader = sm->getShaderByID(shaderID);
       shader.use();
-      shader.setUniformMat4("view", matrices::Matrix_Identity());
-      shader.setUniformMat4("projection", matrices::Matrix_Identity());
+      camera->configureShaderUniforms(shader);
       for (auto [_, obj]: objs){
         obj->render();
       }
