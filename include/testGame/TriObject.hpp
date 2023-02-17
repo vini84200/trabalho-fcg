@@ -21,7 +21,7 @@ namespace entre_portais {
 
         TriObject &operator=(TriObject &&other) = delete;
 
-        void update(double deltaTime) override;
+        void update(float deltaTime) override;
 
         void initialize() override;
 

@@ -30,11 +30,11 @@ namespace entre_portais {
 
         virtual void initialize() = 0;
 
-        virtual void update(double deltaTime) = 0;
+        virtual void update(float deltaTime) = 0;
 
         virtual void render() = 0;
 
-        virtual void renderImGui() override;
+        virtual void renderImGui(bool *p_open = nullptr) override;
 
         virtual void onResize(int width, int height) = 0;
 
