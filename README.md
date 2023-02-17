@@ -11,7 +11,7 @@ quebra-cabeças para avançar para o próximo nível.
 ## Autores
 
 - Vinicius José Fritzen
-- João Pedro Braun
+- João Pedro Kuhn Braun
 
 ## Referências
 
