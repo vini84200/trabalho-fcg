@@ -86,7 +86,7 @@ namespace entre_portais {
 
     protected:
         std::vector<std::shared_ptr<IGameNode>> children_;
-     Transform transform_;
+        Transform transform_;
 
        private:
         std::shared_ptr<IGameNode> sharedPtrFromIGameNode();

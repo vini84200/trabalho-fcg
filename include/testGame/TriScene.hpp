@@ -5,6 +5,7 @@
 #include "entrePortaisEngine/Shader.hpp"
 #include "entrePortaisEngine/VertexArrayBuffer.hpp"
 #include "entrePortaisEngine/Logger.hpp"
+#include "math.h"
 
 namespace entre_portais {
 

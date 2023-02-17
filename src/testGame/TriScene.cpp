@@ -34,7 +34,7 @@ namespace entre_portais {
     obj3->addChild(obj4);
 
     char *camera_name = "Camera";
-    auto camera = std::make_shared<Camera>(camera_name);
+    auto camera = std::make_shared<Camera>(camera_name, M_PI_2, 0.5, 10000, 1.8);
     addChild(camera);
     setCamera(camera);
   }
