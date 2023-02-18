@@ -17,7 +17,7 @@ entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name) {
     vert->indices.push_back(0);
     vert->indices.push_back(1);
     vert->indices.push_back(2);
-    mesh_ = std::make_shared<EasyMesh>(*vert, "tri", "tri");
+    mesh_ = std::make_shared<EasyMesh>(*vert, "tri");
 
     delete vert;
     transform_.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -35,11 +35,12 @@ void entre_portais::TriObject::update(float deltaTime) {
     }
 }
 
-void entre_portais::TriObject::initialize() {
-    auto renderer = IObject::getScene()->getRenderer();
-    loadShader(mesh_->getShader());
-    submit(renderer);
-    logger_.getLogger()->info("Submetendo para renderizacao TriObject");
+void entre_portais::TriObject::initialize()
+{
+  auto renderer = IObject::getScene()->getRenderer();
+  loadShader(mesh_->getShader());
+  submit(renderer);
+  logger_.getLogger()->info("Submetendo para renderizacao TriObject");
 }
 
 void entre_portais::TriObject::onResize(int width, int height) {
@@ -65,7 +66,7 @@ void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods
     }
     if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
         auto tm = entre_portais::TaskManager::getInstance();
-        tm->addTask<DependencyTask>();
+        auto a = tm->addTask<DependencyTask>();
 
         tm->addTask<LambdaTask<EmptyState>>([](EmptyState) -> TaskRunResult {
             sleep_for_millis(2000);
