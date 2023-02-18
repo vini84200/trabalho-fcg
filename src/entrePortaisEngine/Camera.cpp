@@ -2,17 +2,13 @@
 
 #include "entrePortaisEngine/IScene.hpp"
 #include "utils/matrices.h"
+#include "glm/gtx/string_cast.hpp"
 
 namespace entre_portais {
 
     void Camera::renderImGui(bool *p_open) {
         if (ImGui::TreeNode(getName())) {
-            if (ImGui::TreeNode("Transform")) {
-                ImGui::DragFloat3("Position", transform_.getPositionPtr(), 0.1f);
-                ImGui::DragFloat3("Rotation", transform_.getRotationPtr(), 0.1f);
-                ImGui::DragFloat3("Scale", transform_.getScalePtr(), 0.1f);
-                ImGui::TreePop();
-            }
+            transform_.renderImGui();
             if (ImGui::TreeNode("Camera Options")) {
                 ImGui::DragFloat("Far", &far_);
                 ImGui::DragFloat("Near", &near_);
@@ -21,41 +17,22 @@ namespace entre_portais {
                 ImGui::TreePop();
             }
             if (ImGui::TreeNode("Camera Log")) {
+
                 glm::vec4 viewVector = getViewVector();
-                ImGui::Text("View Vector: x: %f y: %f z: %f w: %f", viewVector.x, viewVector.y, viewVector.z,
-                            viewVector.w);
+                ImGui::Text("View Vector: %s", glm::to_string(viewVector).c_str());
+
                 glm::mat4 viewMatrix = getViewMatrix();
                 ImGui::Text("View Matrix:\n");
-                ImGui::Text("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ]\n", viewMatrix[0][0], viewMatrix[1][0],
-                            viewMatrix[2][0], viewMatrix[3][0]);
-                ImGui::Text("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ]\n", viewMatrix[0][1], viewMatrix[1][1],
-                            viewMatrix[2][1], viewMatrix[3][1]);
-                ImGui::Text("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ]\n", viewMatrix[0][2], viewMatrix[1][2],
-                            viewMatrix[2][2], viewMatrix[3][2]);
-                ImGui::Text("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ]\n", viewMatrix[0][3], viewMatrix[1][3],
-                            viewMatrix[2][3], viewMatrix[3][3]);
+                ImGui::Text(" %s", glm::to_string(viewMatrix).c_str());
+
                 glm::mat4 projectionMatrix = getProjectionMatrix();
                 ImGui::Text("Projection Matrix:\n");
-                ImGui::Text("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ]\n",
-                            projectionMatrix[0][0],
-                            projectionMatrix[1][0],
-                            projectionMatrix[2][0],
-                            projectionMatrix[3][0]);
-                ImGui::Text("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ]\n",
-                            projectionMatrix[0][1],
-                            projectionMatrix[1][1],
-                            projectionMatrix[2][1],
-                            projectionMatrix[3][1]);
-                ImGui::Text("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ]\n",
-                            projectionMatrix[0][2],
-                            projectionMatrix[1][2],
-                            projectionMatrix[2][2],
-                            projectionMatrix[3][2]);
-                ImGui::Text("[ %+0.2f  %+0.2f  %+0.2f  %+0.2f ]\n",
-                            projectionMatrix[0][3],
-                            projectionMatrix[1][3],
-                            projectionMatrix[2][3],
-                            projectionMatrix[3][3]);
+                ImGui::Text(" %s", glm::to_string(projectionMatrix).c_str());
+
+                glm::mat4 viewProjectionMatrix = projectionMatrix * viewMatrix;
+                ImGui::Text("View Projection Matrix:\n");
+                ImGui::Text(" %s", glm::to_string(viewProjectionMatrix).c_str());
+
                 ImGui::TreePop();
             }
             if (ImGui::TreeNode("Children")) {
@@ -113,7 +90,7 @@ namespace entre_portais {
     }
 
     glm::vec4 Camera::getViewVector() {
-        return matrices::Vector_From_Euler(1, transform_.rx, M_PI_2, transform_.rz);
+        return normalize(glm::vec4(0, 0, -1, 0) * transform_.getRotation());
     }
 
 }

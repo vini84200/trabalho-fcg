@@ -8,6 +8,7 @@
 #include "glm/mat4x4.hpp"
 #include "glm/vec4.hpp"
 #include "glm/gtc/matrix_transform.hpp"
+#include "glm/fwd.hpp"
 
 namespace matrices {
 // Esta função Matrix() auxilia na criação de matrizes usando a biblioteca GLM.
@@ -91,6 +92,9 @@ namespace matrices {
     glm::mat4 Matrix_Rotate(float angle, glm::vec4 axis);
 
     glm::vec4 Vector_From_Euler(float size, float alfa, float beta, float gama);
+
+
+    glm::mat4 RotationFromQuat(glm::quat rotation);
 
     // Função que calcula a norma Euclidiana de um vetor cujos coeficientes são
     // definidos em uma base ortonormal qualquer.

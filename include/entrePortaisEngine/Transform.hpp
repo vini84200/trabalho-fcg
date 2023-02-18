@@ -2,12 +2,10 @@
 #define ENTREPORTAIS_TRANSFORM_HPP
 
 #include "glm/glm.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 namespace entre_portais {
     struct Transform {
-        float x, y, z;
-        float rx, ry, rz;
-        float sx, sy, sz;
 
         Transform();
 
@@ -19,6 +17,16 @@ namespace entre_portais {
 
         void setRotation(glm::vec3 rotation);
 
+        void setRotation(float x, float y, float z);
+
+        void setRotation(glm::quat rotation);
+
+        void rotateBy(glm::vec3 rotation);
+
+        void rotateBy(float x, float y, float z);
+
+        void rotateBy(glm::quat rotation);
+
         float *getPositionPtr();
 
         float *getRotationPtr();
@@ -26,6 +34,23 @@ namespace entre_portais {
         float *getScalePtr();
 
         glm::vec4 getPosition();
+
+        glm::quat getRotation();
+
+        glm::vec3 getScale();
+
+        glm::vec3 getForward();
+
+        glm::vec3 getRotationEuler();
+
+        void renderImGui();
+
+
+    private:
+        glm::vec3 position_;
+        glm::quat rotation_;
+        glm::vec3 scale_;
+        bool lock_rotation_;
     };
 }
 #endif //ENTREPORTAIS_TRANSFORM_HPP

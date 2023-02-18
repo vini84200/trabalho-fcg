@@ -35,6 +35,7 @@ namespace entre_portais {
 
         char *camera_name = "Camera";
         auto camera = std::make_shared<Camera>(camera_name, M_PI_2, 0.5, 10000, 1.8);
+        camera->getTransform()->setPosition(glm::vec3(0.0f, 0.0f, 1.5f));
         addChild(camera);
         setCamera(camera);
     }

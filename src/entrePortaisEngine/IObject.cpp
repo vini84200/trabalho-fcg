@@ -35,12 +35,7 @@ bool entre_portais::IObject::hasScene() {
 void entre_portais::IObject::renderImGui(bool *p_open) {
     if (ImGui::TreeNode(getName())) {
         ImGui::Checkbox("Visible", &visible_);
-        if (ImGui::TreeNode("Transform")) {
-            ImGui::DragFloat3("Position", transform_.getPositionPtr(), 0.1f);
-            ImGui::DragFloat3("Rotation", transform_.getRotationPtr(), 0.1f);
-            ImGui::DragFloat3("Scale", transform_.getScalePtr(), 0.1f);
-            ImGui::TreePop();
-        }
+        transform_.renderImGui();
         if (ImGui::TreeNode("Mesh")) {
             ImGui::Text("Mesh GUI not implemented");
             ImGui::TreePop();

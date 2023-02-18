@@ -1,59 +1,106 @@
 #include "entrePortaisEngine/Transform.hpp"
 
 #include "utils/matrices.h"
+#include "imgui.h"
+#include "glm/gtc/type_ptr.hpp"
+#include "glm/gtx/string_cast.hpp"
+#include "glm/gtx/quaternion.hpp"
 
 glm::mat4 entre_portais::Transform::getModelMatrix() {
     glm::mat4 model = matrices::Matrix_Identity();
-    model = matrices::Matrix_Scale(sx, sy, sz) * model;
-    model = matrices::Matrix_Rotate_X(glm::radians(rx)) * model;
-    model = matrices::Matrix_Rotate_Y(glm::radians(ry)) * model;
-    model = matrices::Matrix_Rotate_Z(glm::radians(rz)) * model;
-    model = matrices::Matrix_Translate(x, y, z) * model;
+    model = matrices::Matrix_Scale(scale_.x, scale_.y, scale_.z) * model;
+    model = matrices::RotationFromQuat(rotation_) * model;
+    model = matrices::Matrix_Translate(position_.x, position_.y, position_.z) * model;
     return model;
 }
 
 void entre_portais::Transform::setPosition(glm::vec3 position) {
-    x = position.x;
-    y = position.y;
-    z = position.z;
+    position_ = position;
 }
 
 entre_portais::Transform::Transform() {
-    x = 0.0f;
-    y = 0.0f;
-    z = 0.0f;
-    rx = 0.0f;
-    ry = 0.0f;
-    rz = 0.0f;
-    sx = 1.0f;
-    sy = 1.0f;
-    sz = 1.0f;
+    position_ = glm::vec3(0, 0, 0);
+    rotation_ = glm::quat(glm::vec3(0, 0, 0));
+    scale_ = glm::vec3(1, 1, 1);
 }
 
 void entre_portais::Transform::setScale(glm::vec3 scale) {
-    sx = scale.x;
-    sy = scale.y;
-    sz = scale.z;
+    scale_ = scale;
 }
 
 void entre_portais::Transform::setRotation(glm::vec3 rotation) {
-    rx = rotation.x;
-    ry = rotation.y;
-    rz = rotation.z;
+    rotation_ = glm::quat(rotation);
 }
 
 float *entre_portais::Transform::getPositionPtr() {
-    return &x;
+    return glm::value_ptr(position_);
 }
 
 float *entre_portais::Transform::getRotationPtr() {
-    return &rx;
+    return glm::value_ptr(rotation_);
 }
 
 float *entre_portais::Transform::getScalePtr() {
-    return &sx;
+    return glm::value_ptr(scale_);
 }
 
 glm::vec4 entre_portais::Transform::getPosition() {
-    return glm::vec4(x, y, z, 1);
+    return glm::vec4(position_, 1.0f);
+}
+
+
+glm::vec3 entre_portais::Transform::getScale() {
+    return scale_;
+}
+
+void entre_portais::Transform::setRotation(glm::quat rotation) {
+    rotation_ = normalize(rotation);
+}
+
+void entre_portais::Transform::setRotation(float x, float y, float z) {
+    rotation_ = glm::quat(glm::vec3(x, y, z));
+}
+
+glm::quat entre_portais::Transform::getRotation() {
+    return rotation_;
+}
+
+glm::vec3 entre_portais::Transform::getForward() {
+    return glm::vec3(0, 0, 1) * rotation_;
+}
+
+glm::vec3 entre_portais::Transform::getRotationEuler() {
+    return glm::eulerAngles(rotation_);
+}
+
+
+void entre_portais::Transform::renderImGui() {
+    if (ImGui::TreeNode("Transform")) {
+        glm::vec3 rotation = getRotationEuler();
+        ImGui::DragFloat3("Position", getPositionPtr(), 0.02f);
+        bool changed = (ImGui::DragFloat3("Rotation", glm::value_ptr(rotation), 0.02f));
+        ImGui::Checkbox("Lock Rotation", &lock_rotation_);
+        if (changed) {
+            if (lock_rotation_)
+                rotateBy(rotation - getRotationEuler());
+            else
+                setRotation(rotation);
+        }
+
+        ImGui::DragFloat3("Scale", getScalePtr(), 0.02f);
+
+        ImGui::TreePop();
+    }
+}
+
+void entre_portais::Transform::rotateBy(glm::quat rotation) {
+    rotation_ = rotation_ * rotation;
+}
+
+void entre_portais::Transform::rotateBy(glm::vec3 rotation) {
+    rotateBy(glm::quat(rotation));
+}
+
+void entre_portais::Transform::rotateBy(float x, float y, float z) {
+    rotateBy(glm::quat(glm::vec3(x, y, z)));
 }
