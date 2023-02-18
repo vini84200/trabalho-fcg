@@ -105,7 +105,7 @@ namespace entre_portais {
                 std::rethrow_exception(std::current_exception());
             }
 
-            // Render
+            // render
             try {
                 render();
             }
