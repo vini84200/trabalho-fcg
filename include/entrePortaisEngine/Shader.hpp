@@ -6,21 +6,10 @@
 #include "glm/glm.hpp"
 
 namespace entre_portais {
-
+    class ShadersManager;
     class Shader {
     public:
-        Shader(const char *vertexPath, const char *fragmentPath);
-
         ~Shader();
-
-        // Remove os construtores e operadores de cópia e movimentação
-        Shader(const Shader &other) = delete;
-
-        Shader &operator=(const Shader &other) = delete;
-
-        Shader(Shader &&other) = delete;
-
-        Shader &operator=(Shader &&other) = delete;
 
         void use();
 
@@ -36,10 +25,22 @@ namespace entre_portais {
 
         void setUniformMat4(const char *name, const glm::mat4 &value);
 
+        void setID(int id);
+
+        int getID() const;
+
     private:
+        Shader(const char *vertexPath, const char *fragmentPath);
+
         void LoadShader(const char *filePath, GLuint shaderId);
 
+        void deleteShader();
+
         unsigned int program_;
+
+        int id_;
+
+        friend class ShadersManager;
     };
 
 } // entre_portais

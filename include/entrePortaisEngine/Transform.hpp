@@ -24,6 +24,8 @@ namespace entre_portais {
         float *getRotationPtr();
 
         float *getScalePtr();
+
+        glm::vec4 getPosition();
     };
 }
 #endif //ENTREPORTAIS_TRANSFORM_HPP

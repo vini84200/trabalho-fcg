@@ -5,6 +5,7 @@
 #include "entrePortaisEngine/Shader.hpp"
 #include "entrePortaisEngine/VertexArrayBuffer.hpp"
 #include "entrePortaisEngine/Logger.hpp"
+#include "math.h"
 
 namespace entre_portais {
 
@@ -24,8 +25,6 @@ namespace entre_portais {
         TriScene &operator=(TriScene &&other) = delete;
 
         void update(float deltaTime) override;
-
-        void render() override;
 
         void initialize() override;
 

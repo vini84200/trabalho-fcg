@@ -10,12 +10,13 @@
 #include <utility>
 #include "VertexArrayBuffer.hpp"
 #include "Shader.hpp"
+#include "ShadersManager.hpp"
 
 namespace entre_portais {
 
     class IMesh {
     public:
-        IMesh() = default;
+        IMesh(std::string shaderName);
 
         virtual ~IMesh() = default;
 
@@ -34,16 +35,18 @@ namespace entre_portais {
             vertexCount_ = numVertices;
         }
 
-        virtual void SetShader(std::shared_ptr<Shader> shader) {
-            shader_ = std::move(shader);
+        virtual void SetShader(Shader shader) {
+            shader_ = shader;
         };
 
-        virtual void SetShader(const char *vertexPath, const char *fragmentPath) {
-            shader_ = std::make_shared<Shader>(vertexPath, fragmentPath);
+        virtual void SetShader(std::string name)
+        {
+            auto sm = ShadersManager::getInstance();
+            shader_ = sm->getShader(name);
         };
 
         virtual Shader *GetShader() {
-            return shader_.get();
+            return &shader_.value();
         };
 
         virtual void UseShader() {
@@ -66,11 +69,19 @@ namespace entre_portais {
             return vertexCount_;
         }
 
+    public:
+     Shader getShader() const
+     {
+            return shader_.value();
+     }
+
+
     private:
-        std::shared_ptr<Shader> shader_;
-        unsigned int vertexCount_;
-        std::shared_ptr<VertexArrayBuffer> vertexArray_;
+     std::optional<Shader> shader_;
+     unsigned int vertexCount_;
+     std::shared_ptr<VertexArrayBuffer> vertexArray_;
     };
+
 
 } // entre_portais
 

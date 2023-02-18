@@ -84,15 +84,17 @@ namespace matrices {
 // onde 'c' e 's' são o cosseno e o seno do ângulo de rotação, respectivamente.
     glm::mat4 Matrix_Rotate_Z(float angle);
 
-// Função que calcula a norma Euclidiana de um vetor cujos coeficientes são
-// definidos em uma base ortonormal qualquer.
-    float norm(glm::vec4 v);
-
 // Matriz R de "rotação de um ponto" em relação à origem do sistema de
 // coordenadas e em torno do eixo definido pelo vetor 'axis'. Esta matriz pode
 // ser definida pela fórmula de Rodrigues. Lembre-se que o vetor que define o
 // eixo de rotação deve ser normalizado!
     glm::mat4 Matrix_Rotate(float angle, glm::vec4 axis);
+
+    glm::vec4 Vector_From_Euler(float size, float alfa, float beta, float gama);
+
+    // Função que calcula a norma Euclidiana de um vetor cujos coeficientes são
+    // definidos em uma base ortonormal qualquer.
+    float norm(glm::vec4 v);
 
 // Produto vetorial entre dois vetores u e v definidos em um sistema de
 // coordenadas ortonormal.

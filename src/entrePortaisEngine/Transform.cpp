@@ -61,3 +61,7 @@ float *entre_portais::Transform::getScalePtr()
 {
   return &sx;
 }
+glm::vec4 entre_portais::Transform::getPosition()
+{
+  return glm::vec4(x, y, z, 1);
+}
