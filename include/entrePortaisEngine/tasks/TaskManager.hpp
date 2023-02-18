@@ -127,7 +127,7 @@ namespace entre_portais {
 
         void OnTaskFinished(TaskHandler &taskHandler);
 
-        void WorkerThread(WorkerStruct &signal);
+        [[noreturn]] void WorkerThread(WorkerStruct &signal);
 
         TaskHandler GetNextTask();
 

@@ -1,5 +1,6 @@
 #ifndef ENTREPORTAIS_COMPATIBILITY_HPP
 #define ENTREPORTAIS_COMPATIBILITY_HPP
+
 #include <chrono>
 #include <thread>
 

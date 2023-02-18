@@ -27,17 +27,17 @@ namespace entre_portais {
         obj3->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
         obj2->addChild(obj3);
 
-    char *name4 = "Child of Child of TriObject 2";
-    auto obj4 = std::make_shared<TriObject>(name4);
-    obj4->getTransform()->setPosition(glm::vec3(0.3f, 0.3f, 0.0f));
-    obj4->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
-    obj3->addChild(obj4);
+        char *name4 = "Child of Child of TriObject 2";
+        auto obj4 = std::make_shared<TriObject>(name4);
+        obj4->getTransform()->setPosition(glm::vec3(0.3f, 0.3f, 0.0f));
+        obj4->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
+        obj3->addChild(obj4);
 
-    char *camera_name = "Camera";
-    auto camera = std::make_shared<Camera>(camera_name, M_PI_2, 0.5, 10000, 1.8);
-    addChild(camera);
-    setCamera(camera);
-  }
+        char *camera_name = "Camera";
+        auto camera = std::make_shared<Camera>(camera_name, M_PI_2, 0.5, 10000, 1.8);
+        addChild(camera);
+        setCamera(camera);
+    }
 
     TriScene::~TriScene() = default;
 

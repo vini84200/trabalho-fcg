@@ -39,8 +39,7 @@ namespace entre_portais {
             shader_ = shader;
         };
 
-        virtual void SetShader(std::string name)
-        {
+        virtual void SetShader(std::string name) {
             auto sm = ShadersManager::getInstance();
             shader_ = sm->getShader(name);
         };
@@ -70,16 +69,15 @@ namespace entre_portais {
         }
 
     public:
-     Shader getShader() const
-     {
+        Shader getShader() const {
             return shader_.value();
-     }
+        }
 
 
     private:
-     std::optional<Shader> shader_;
-     unsigned int vertexCount_;
-     std::shared_ptr<VertexArrayBuffer> vertexArray_;
+        std::optional<Shader> shader_;
+        unsigned int vertexCount_;
+        std::shared_ptr<VertexArrayBuffer> vertexArray_;
     };
 
 

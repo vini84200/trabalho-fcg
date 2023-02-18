@@ -65,9 +65,9 @@ namespace entre_portais {
         getLogger()->info("OpenGL Vendor: {} Renderer: {} Version: {} GLSL Version: {}", vendor, renderer, glversion,
                           glslversion);
 
-    glfwSwapInterval(VSYNC);
-    scene_->initializePropagate();
-  }
+        glfwSwapInterval(VSYNC);
+        scene_->initializePropagate();
+    }
 
     Window::~Window() {
         getLogger()->info("Destroying window");
@@ -142,15 +142,14 @@ namespace entre_portais {
         scene_->updatePropagate(deltaTime);
     }
 
-  void Window::render()
-  {
-    glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    scene_->render();
-    for (auto &plugin: registeredPlugins_) {
+    void Window::render() {
+        glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+        scene_->render();
+        for (auto &plugin: registeredPlugins_) {
             plugin->render();
+        }
     }
-  }
 
     void Window::onResize(int width, int height) {
         width_ = width;

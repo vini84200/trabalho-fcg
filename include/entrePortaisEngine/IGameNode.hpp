@@ -79,7 +79,7 @@ namespace entre_portais {
         void setName(char *name) { name_ = name; }
 
         inline Transform *getTransform() {
-          return &transform_;
+            return &transform_;
         }
 
         glm::mat4 *getParentModelMatrix();
@@ -88,8 +88,9 @@ namespace entre_portais {
         std::vector<std::shared_ptr<IGameNode>> children_;
         Transform transform_;
 
-       private:
+    private:
         std::shared_ptr<IGameNode> sharedPtrFromIGameNode();
+
         char *name_;
         std::weak_ptr<IGameNode> parent_;
         bool is_initialized_ = false;

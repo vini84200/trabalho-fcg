@@ -12,12 +12,12 @@ namespace entre_portais {
     template<typename State>
     class LambdaTask : public entre_portais::ITask {
     public:
-        LambdaTask(std::function<entre_portais::TaskRunResult(State & )> lambda, const std::string name,
+        LambdaTask(std::function<entre_portais::TaskRunResult(State &)> lambda, const std::string name,
                    State initialState) : lambda_(lambda), state_(initialState) {
             setTaskName(name);
         }
 
-        LambdaTask(std::function<entre_portais::TaskRunResult(State & )> lambda, const std::string name) : lambda_(
+        LambdaTask(std::function<entre_portais::TaskRunResult(State &)> lambda, const std::string name) : lambda_(
                 lambda), state_(State()) {
             setTaskName(name);
         }
@@ -47,7 +47,7 @@ namespace entre_portais {
         }
 
     private:
-        std::function<entre_portais::TaskRunResult(State & )> lambda_;
+        std::function<entre_portais::TaskRunResult(State &)> lambda_;
         State state_;
         std::mutex stateMutex_;
     };

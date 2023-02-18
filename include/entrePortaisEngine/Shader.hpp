@@ -7,6 +7,7 @@
 
 namespace entre_portais {
     class ShadersManager;
+
     class Shader {
     public:
         ~Shader();

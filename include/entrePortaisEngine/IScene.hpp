@@ -61,15 +61,15 @@ namespace entre_portais {
             return true;
         }
 
-        void setCamera(std::shared_ptr<Camera> camera){
+        void setCamera(std::shared_ptr<Camera> camera) {
             camera_ = camera;
         }
 
-       protected:
+    protected:
         std::shared_ptr<Camera> camera_;
         std::shared_ptr<Renderer> renderer_;
 
-       public:
+    public:
         const std::shared_ptr<Renderer> &getRenderer() const;
     };
 
