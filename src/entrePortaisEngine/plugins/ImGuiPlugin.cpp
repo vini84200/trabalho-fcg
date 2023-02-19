@@ -1,6 +1,6 @@
 #include <memory>
 #include "entrePortaisEngine/Window.hpp"
-#include "entrePortaisEngine/ImGuiPlugin.hpp"
+#include "entrePortaisEngine/plugins/ImGuiPlugin.hpp"
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
 
 void entre_portais::ImGuiPlugin::onAttach() {

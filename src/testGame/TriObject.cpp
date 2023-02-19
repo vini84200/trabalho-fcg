@@ -1,5 +1,5 @@
 #include "testGame/TriObject.hpp"
-#include "entrePortaisEngine/EasyMesh.hpp"
+#include "entrePortaisEngine/meshes/EasyMesh.hpp"
 #include "GLFW/glfw3.h"
 #include "imgui.h"
 #include "entrePortaisEngine/tasks/TaskManager.hpp"

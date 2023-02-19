@@ -2,7 +2,7 @@
 // Created by vini84200 on 12/25/22.
 //
 
-#include "entrePortaisEngine/VertexArrayBuffer.hpp"
+#include "entrePortaisEngine/render/VertexArrayBuffer.hpp"
 
 #include <assert.h>
 

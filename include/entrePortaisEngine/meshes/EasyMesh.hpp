@@ -1,8 +1,8 @@
 #ifndef ENTREPORTAIS_EASYMESH_HPP
 #define ENTREPORTAIS_EASYMESH_HPP
 
-#include "IMesh.hpp"
-#include "ShadersManager.hpp"
+#include "entrePortaisEngine/meshes/IMesh.hpp"
+#include "entrePortaisEngine/render/ShadersManager.hpp"
 
 namespace entre_portais {
     struct EasyVertex {

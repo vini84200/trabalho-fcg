@@ -1,10 +1,10 @@
 #ifndef ENTREPORTAIS_RENDERER_H
 #define ENTREPORTAIS_RENDERER_H
 
-#include "../Camera.hpp"
+#include "Camera.hpp"
 #include "IRenderable.hpp"
-#include "../Shader.hpp"
-#include "../ShadersManager.hpp"
+#include "Shader.hpp"
+#include "ShadersManager.hpp"
 #include "unordered_map"
 
 namespace entre_portais {

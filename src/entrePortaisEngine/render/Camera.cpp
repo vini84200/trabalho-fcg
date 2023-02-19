@@ -1,4 +1,4 @@
-#include "entrePortaisEngine/Camera.hpp"
+#include "entrePortaisEngine/render/Camera.hpp"
 
 #include "entrePortaisEngine/IScene.hpp"
 #include "utils/matrices.h"

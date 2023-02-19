@@ -3,7 +3,7 @@
 
 #include "glad/glad.h"
 #include "IScene.hpp"
-#include "ImGuiPlugin.hpp"
+#include "entrePortaisEngine/plugins/ImGuiPlugin.hpp"
 #include <GLFW/glfw3.h>
 
 #define VSYNC 1

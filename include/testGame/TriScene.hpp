@@ -2,8 +2,8 @@
 #define ENTREPORTAIS_TRISCENE_HPP
 
 #include "entrePortaisEngine/IScene.hpp"
-#include "entrePortaisEngine/Shader.hpp"
-#include "entrePortaisEngine/VertexArrayBuffer.hpp"
+#include "entrePortaisEngine/render/Shader.hpp"
+#include "entrePortaisEngine/render/VertexArrayBuffer.hpp"
 #include "entrePortaisEngine/Logger.hpp"
 #include "math.h"
 

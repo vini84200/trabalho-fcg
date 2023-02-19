@@ -2,7 +2,7 @@
 #include <cstdio>
 #include "testGame/TriScene.hpp"
 
-#include "entrePortaisEngine/Camera.hpp"
+#include "entrePortaisEngine/render/Camera.hpp"
 #include "glad/glad.h"
 #include "testGame/TriObject.hpp"
 

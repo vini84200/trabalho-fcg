@@ -8,9 +8,9 @@
 
 #include <memory>
 #include <utility>
-#include "VertexArrayBuffer.hpp"
-#include "Shader.hpp"
-#include "ShadersManager.hpp"
+#include "entrePortaisEngine/render/VertexArrayBuffer.hpp"
+#include "entrePortaisEngine/render/Shader.hpp"
+#include "entrePortaisEngine/render/ShadersManager.hpp"
 
 namespace entre_portais {
 

@@ -1,4 +1,4 @@
-#include "entrePortaisEngine/EasyMesh.hpp"
+#include "entrePortaisEngine/meshes/EasyMesh.hpp"
 
 namespace entre_portais {
     EasyMesh::EasyMesh(ManyVertices vertices, std::string shaderName) : IMesh(shaderName) {

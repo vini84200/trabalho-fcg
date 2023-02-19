@@ -3,7 +3,7 @@
 
 #include <stdexcept>
 
-#include "Camera.hpp"
+#include "entrePortaisEngine/render/Camera.hpp"
 #include "IGameNode.hpp"
 #include "entrePortaisEngine/render/Renderer.hpp"
 #include "imgui.h"
