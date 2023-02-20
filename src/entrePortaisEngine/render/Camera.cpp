@@ -1,4 +1,4 @@
-#include "entrePortaisEngine/Camera.hpp"
+#include "entrePortaisEngine/render/Camera.hpp"
 
 #include "entrePortaisEngine/IScene.hpp"
 #include "utils/matrices.h"
@@ -49,7 +49,7 @@ namespace entre_portais {
         fov_ = fov;
         near_ = n;
         far_ = f;
-        aspectRatio_ = aspectRatio;
+        aspectRatio_ = aspectRatio; // FIXME: This should be initialized by the window size
     }
 
     std::shared_ptr<entre_portais::IScene> entre_portais::Camera::getScene() {

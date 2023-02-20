@@ -1,4 +1,4 @@
-#include "entrePortaisEngine/Shader.hpp"
+#include "entrePortaisEngine/render/Shader.hpp"
 
 #include <fstream>
 #include <ios>
@@ -127,5 +127,9 @@ namespace entre_portais {
     void Shader::deleteShader() {
         glDeleteProgram(program_);
         gShaderLogger.getLogger()->debug("Shader esta {} sendo removida da GPU", id_);
+    }
+
+    void Shader::UnbindShader() {
+        glUseProgram(0);
     }
 }  // namespace entre_portais

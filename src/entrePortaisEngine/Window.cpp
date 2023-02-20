@@ -34,6 +34,8 @@ namespace entre_portais {
             throw std::runtime_error("Failed to create GLFW window");
         }
         glfwMakeContextCurrent(window_);
+
+
         glfwSetWindowUserPointer(window_, this);
         glfwSetWindowSizeCallback(window_, [](GLFWwindow *window, int width, int height) {
             Window *self = static_cast<Window *>(glfwGetWindowUserPointer(window));
@@ -66,6 +68,8 @@ namespace entre_portais {
                           glslversion);
 
         glfwSwapInterval(VSYNC);
+        glEnable(GL_DEPTH_TEST);
+        glEnable(GL_CULL_FACE);
         scene_->initializePropagate();
     }
 
@@ -144,7 +148,7 @@ namespace entre_portais {
 
     void Window::render() {
         glClearColor(1.0f, 1.0f, 1.0f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         scene_->render();
         for (auto &plugin: registeredPlugins_) {
             plugin->render();

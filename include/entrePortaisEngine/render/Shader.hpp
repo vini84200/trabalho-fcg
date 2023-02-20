@@ -30,6 +30,7 @@ namespace entre_portais {
 
         int getID() const;
 
+        virtual void UnbindShader();
     private:
         Shader(const char *vertexPath, const char *fragmentPath);
 

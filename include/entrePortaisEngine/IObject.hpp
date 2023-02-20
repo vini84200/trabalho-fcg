@@ -3,7 +3,7 @@
 
 #include "IGameNode.hpp"
 #include "render/IRenderable.hpp"
-#include "IMesh.hpp"
+#include "entrePortaisEngine/meshes/IMesh.hpp"
 #include "Transform.hpp"
 #include "Logger.hpp"
 

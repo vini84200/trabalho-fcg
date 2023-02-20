@@ -1,9 +1,9 @@
 #ifndef ENTREPORTAIS_CAMERA_HPP
 #define ENTREPORTAIS_CAMERA_HPP
 
-#include <entrePortaisEngine/IGameNode.hpp>
+#include "entrePortaisEngine/IGameNode.hpp"
 #include <memory>
-#include "entrePortaisEngine/ShadersManager.hpp"
+#include "ShadersManager.hpp"
 #include "entrePortaisEngine/Logger.hpp"
 
 namespace entre_portais {

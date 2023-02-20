@@ -4,17 +4,16 @@
 #include "imgui.h"
 
 void entre_portais::IObject::render() {
+    if (!IsVisible()) return;
     // Set uniforms
-    mesh_->UseShader();
     glm::mat4 modelMatrix;
     if (getParentModelMatrix() != nullptr) {
         modelMatrix = (*getParentModelMatrix()) * transform_.getModelMatrix();
     } else {
         modelMatrix = transform_.getModelMatrix();
     }
-    mesh_->GetShader()->setUniformMat4("model", modelMatrix);
+    IRenderable::getShader().setUniformMat4("model", modelMatrix);
     Draw();
-    mesh_->UnbindShader();
 }
 
 std::shared_ptr<entre_portais::IScene> entre_portais::IObject::getScene() {
@@ -70,5 +69,10 @@ void entre_portais::IObject::ToggleVisibility() {
 }
 
 bool entre_portais::IObject::IsVisible() {
+    if (getParent() != nullptr) {
+        IObject *parent = dynamic_cast<IObject *>(getParent().get());
+        if (parent != nullptr)
+            return visible_ && parent->IsVisible();
+    }
     return visible_;
 }

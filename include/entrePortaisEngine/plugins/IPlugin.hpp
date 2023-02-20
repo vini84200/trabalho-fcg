@@ -1,8 +1,8 @@
 #ifndef ENTREPORTAIS_IPLUGIN_HPP
 #define ENTREPORTAIS_IPLUGIN_HPP
 
-#include "Event.hpp"
-#include "Logger.hpp"
+#include "entrePortaisEngine/Event.hpp"
+#include "entrePortaisEngine/Logger.hpp"
 #include <memory>
 
 namespace entre_portais {
