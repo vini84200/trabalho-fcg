@@ -27,6 +27,7 @@ namespace entre_portais {
             shader.use();
             camera->configureShaderUniforms(shader);
             for (auto [_, obj]: objs) {
+                shader.setUniformMat4("model", obj->getModelMatrix());
                 obj->render();
             }
         }

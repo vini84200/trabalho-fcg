@@ -30,12 +30,11 @@ void entre_portais::TriObject::update(float deltaTime) {
     transform_.rotateBy(velocity_ * deltaTime, 0.0f, 0.0f);
 }
 
-void entre_portais::TriObject::initialize()
-{
-  auto renderer = IObject::getScene()->getRenderer();
-  loadShader("tri");
+void entre_portais::TriObject::initialize() {
+    auto renderer = IObject::getScene()->getRenderer();
+    loadShader("tri");
     submit(renderer);
-  logger_.getLogger()->info("Submetendo para renderizacao TriObject");
+    logger_.getLogger()->info("Submetendo para renderizacao TriObject");
 }
 
 void entre_portais::TriObject::onResize(int width, int height) {

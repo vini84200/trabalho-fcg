@@ -27,6 +27,8 @@ namespace entre_portais {
 
         Shader getShader();
 
+        virtual glm::mat4 &getModelMatrix() = 0;
+
     private:
         bool isSubmitted_ = false;
         int id_;

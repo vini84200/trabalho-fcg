@@ -11,6 +11,17 @@ namespace entre_portais {
         }
     }
 
+    void IGameNode::preRender() {
+        calculateModelMatrix();
+    }
+
+    void IGameNode::preRenderPropagate() {
+        preRender();
+        for (auto &child: children_) {
+            child->preRenderPropagate();
+        }
+    }
+
     void IGameNode::resize(int width, int height) {
         onResize(width, height);
         for (auto &child: children_) {
@@ -103,12 +114,21 @@ namespace entre_portais {
         auto parent_obj = getParent().get();
         // Vai ser um nullptr se o parent não for do tipo IObject
         if (parent_obj) {
-            return nullptr; // FIXME: retornar a matriz correta
+            return &parent_obj->modelMatrix_;
         }
         return nullptr;
     }
 
     std::shared_ptr<IGameNode> IGameNode::sharedPtrFromIGameNode() {
         return shared_from_this();
+    }
+
+    void IGameNode::calculateModelMatrix() {
+        auto pm = getParentModelMatrix();
+        if (pm == nullptr) {
+            modelMatrix_ = transform_.getModelMatrix();
+        } else {
+            modelMatrix_ = (*pm) * transform_.getModelMatrix();
+        }
     }
 }  // namespace entre_portais

@@ -24,6 +24,10 @@ namespace entre_portais {
 
         virtual void update(float deltaTime) = 0;
 
+        virtual void preRender();
+
+        virtual void preRenderPropagate();
+
         virtual void renderImGui(bool *p_open = nullptr) = 0;
 
         virtual void CustomImGui() {};
@@ -87,6 +91,7 @@ namespace entre_portais {
     protected:
         std::vector<std::shared_ptr<IGameNode>> children_;
         Transform transform_;
+        glm::mat4 modelMatrix_;
 
     private:
         std::shared_ptr<IGameNode> sharedPtrFromIGameNode();
@@ -94,6 +99,8 @@ namespace entre_portais {
         char *name_;
         std::weak_ptr<IGameNode> parent_;
         bool is_initialized_ = false;
+
+        void calculateModelMatrix();
     };
 
 } // entre_portais

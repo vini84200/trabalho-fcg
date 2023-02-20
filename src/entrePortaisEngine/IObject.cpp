@@ -5,14 +5,6 @@
 
 void entre_portais::IObject::render() {
     if (!IsVisible()) return;
-    // Set uniforms
-    glm::mat4 modelMatrix;
-    if (getParentModelMatrix() != nullptr) {
-        modelMatrix = (*getParentModelMatrix()) * transform_.getModelMatrix();
-    } else {
-        modelMatrix = transform_.getModelMatrix();
-    }
-    IRenderable::getShader().setUniformMat4("model", modelMatrix);
     Draw();
 }
 
@@ -71,8 +63,11 @@ void entre_portais::IObject::ToggleVisibility() {
 bool entre_portais::IObject::IsVisible() {
     if (getParent() != nullptr) {
         IObject *parent = dynamic_cast<IObject *>(getParent().get());
-        if (parent != nullptr)
-            return visible_ && parent->IsVisible();
+        if (parent != nullptr) return visible_ && parent->IsVisible();
     }
     return visible_;
+}
+
+glm::mat4 &entre_portais::IObject::getModelMatrix() {
+    return modelMatrix_;
 }
