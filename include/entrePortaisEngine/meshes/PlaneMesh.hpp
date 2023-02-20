@@ -9,8 +9,16 @@
 
 namespace entre_portais {
 
+    typedef uint PlaneColor;
+#define PLANE_COLORIDO (entre_portais::PlaneColor) 1
+#define PLANE_BRANCO (entre_portais::PlaneColor) 2
+#define PLANE_CINZA (entre_portais::PlaneColor) 3
+
     class PlaneMesh : public IMesh {
     public:
+
+        PlaneMesh(float width, float height, int widthSegments, int heightSegments, PlaneColor cor);
+
         PlaneMesh(float width, float height, int widthSegments, int heightSegments);
 
         PlaneMesh(float width, float height, int segments); // widthSegments = heightSegments = segments

@@ -12,7 +12,7 @@ namespace entre_portais {
         UnbindVAO();
     }
 
-    PlaneMesh::PlaneMesh(float width, float height, int widthSegments, int heightSegments)
+    PlaneMesh::PlaneMesh(float width, float height, int widthSegments, int heightSegments, PlaneColor cor)
             : width_(width), height_(height), widthSegments_(widthSegments), heightSegments_(heightSegments) {
         auto vao = std::make_shared<VertexArrayBuffer>();
         BufferBuilder vboPos, vboColor, ebo;
@@ -26,13 +26,24 @@ namespace entre_portais {
                                                  {w,  0, h},
                                                  {-w, 0, h}
                                          });
-
-        std::vector<glm::vec3> colors({
-                                              {1, 0, 0},
-                                              {0, 1, 0},
-                                              {0, 0, 1},
-                                              {1, 1, 1}
-                                      });
+        std::vector<glm::vec3> colors;
+        switch (cor) {
+            case PLANE_BRANCO:
+                colors.insert(colors.end(), 4, {1, 1, 1});
+                break;
+            case PLANE_COLORIDO:
+                colors.insert(colors.end(), {
+                        {1, 0, 0},
+                        {0, 1, 0},
+                        {0, 0, 1},
+                        {1, 1, 1}
+                });
+                break;
+            default:
+            case PLANE_CINZA:
+                colors.insert(colors.end(), 4, {0.9, 0.9, 0.9});
+                break;
+        }
 
         std::vector<uint> indices({
                                           2, 1, 0,
@@ -105,12 +116,19 @@ namespace entre_portais {
     }
 
     PlaneMesh::PlaneMesh(float width, float height, int segments)
-            : PlaneMesh(width, height, segments, segments) {
+            : PlaneMesh(width, height, segments, segments, PLANE_BRANCO) {
 
     }
 
     PlaneMesh::PlaneMesh(float width, float height)
-            : PlaneMesh(width, height, 1, 1) {
+            : PlaneMesh(width, height, 1, 1, PLANE_BRANCO) {
+
+    }
+
+    PlaneMesh::PlaneMesh(float width, float height, int widthSegments, int heightSegments) : PlaneMesh(width, height,
+                                                                                                       widthSegments,
+                                                                                                       heightSegments,
+                                                                                                       PLANE_BRANCO) {
 
     }
 } // entre_portais

@@ -18,7 +18,7 @@ namespace entre_portais {
 
     Ground::Ground() : IObject("Ground") {
         loadShader("primitive");
-        mesh_ = std::make_shared<PlaneMesh>(10.0f, 10.0f, 20);
+        mesh_ = std::make_shared<PlaneMesh>(10.0f, 10.0f, 20, 20, PLANE_COLORIDO);
         transform_.setPosition(glm::vec3(0, 0, 0));
         transform_.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
         transform_.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
