@@ -27,6 +27,8 @@ namespace entre_portais {
 
         void rotateBy(glm::quat rotation);
 
+        glm::vec3 rotateVector(glm::vec3 vector);
+
         float *getPositionPtr();
 
         float *getRotationPtr();
@@ -45,6 +47,8 @@ namespace entre_portais {
 
         void renderImGui();
 
+
+        void move(glm::vec3 vector);
 
     private:
         glm::vec3 position_;
