@@ -32,6 +32,8 @@ namespace entre_portais {
 
         void render() override;
 
+        glm::mat4 &getModelMatrix() override;
+
         void renderImGui(bool *p_open = nullptr) override;
 
         void update(float deltaTime) override = 0;

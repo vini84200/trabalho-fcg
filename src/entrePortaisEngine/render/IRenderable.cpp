@@ -39,4 +39,5 @@ namespace entre_portais {
         renderer_->unSubmit(id_, shaderID_);
         isSubmitted_ = false;
     }
+
 }  // namespace entre_portais

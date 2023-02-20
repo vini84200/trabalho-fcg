@@ -7,7 +7,8 @@ namespace entre_portais {
         UseVAO();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // Draw Segments with GL_LINES
-        glDrawElements(GL_LINES, 8 * (widthSegments_ * heightSegments_), GL_UNSIGNED_INT, (void *) (6 * sizeof(unsigned int)));
+        glDrawElements(GL_LINES, 8 * (widthSegments_ * heightSegments_), GL_UNSIGNED_INT,
+                       (void *) (6 * sizeof(unsigned int)));
 
         UnbindVAO();
     }
@@ -46,9 +47,9 @@ namespace entre_portais {
         }
 
         std::vector<unsigned int> indices({
-                                          2, 1, 0,
-                                          0, 3, 2
-                                  });
+                                                  2, 1, 0,
+                                                  0, 3, 2
+                                          });
 
         // Segments
         float xStep = width / widthSegments;
