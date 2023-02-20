@@ -20,6 +20,7 @@ set(sources
 		src/entrePortaisEngine/meshes/IMesh.cpp
 		src/entrePortaisEngine/meshes/CubeMesh.cpp
 		src/entrePortaisEngine/meshes/CylinderMesh.cpp
+		src/entrePortaisEngine/meshes/PlaneMesh.cpp
 
 		src/testGame/TriScene.cpp
 		src/testGame/TriObject.cpp
@@ -27,6 +28,7 @@ set(sources
 		src/testGame/DependencyTask.cpp
 		src/testGame/CubeObject.cpp
 		src/testGame/CylinderObject.cpp
+		src/testGame/Ground.cpp
 		)
 
 set(exe_sources

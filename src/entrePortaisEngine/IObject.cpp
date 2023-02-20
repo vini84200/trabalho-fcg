@@ -69,5 +69,10 @@ void entre_portais::IObject::ToggleVisibility() {
 }
 
 bool entre_portais::IObject::IsVisible() {
+    if (getParent() != nullptr) {
+        IObject *parent = dynamic_cast<IObject *>(getParent().get());
+        if (parent != nullptr)
+            return visible_ && parent->IsVisible();
+    }
     return visible_;
 }

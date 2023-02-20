@@ -1,6 +1,7 @@
 #include "testGame/CylinderObject.hpp"
 #include "entrePortaisEngine/IScene.hpp"
 #include "entrePortaisEngine/meshes/CylinderMesh.hpp"
+#include "entrePortaisEngine/meshes/PlaneMesh.hpp"
 
 namespace entre_portais {
     void CylinderObject::CustomImGui() {

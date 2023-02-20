@@ -44,8 +44,8 @@ namespace entre_portais {
         // Upper face
         for (int i = 0; i < edges; i++) {
             indices[edges * 3 + i * 3] = edges * 2 + 1;
-            indices[edges * 3 + i * 3 + 1] = edges + i;
-            indices[edges * 3 + i * 3 + 2] = edges + (i + 1) % edges;
+            indices[edges * 3 + i * 3 + 1] = edges + (i + 1) % edges;
+            indices[edges * 3 + i * 3 + 2] = edges + i;
         }
         // Sides
         for (int i = 0; i < edges; i++) {
