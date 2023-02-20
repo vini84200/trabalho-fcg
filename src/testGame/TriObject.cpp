@@ -33,8 +33,8 @@ void entre_portais::TriObject::update(float deltaTime) {
 void entre_portais::TriObject::initialize()
 {
   auto renderer = IObject::getScene()->getRenderer();
-  loadShader(mesh_->getShader());
-  submit(renderer);
+  loadShader("tri");
+    submit(renderer);
   logger_.getLogger()->info("Submetendo para renderizacao TriObject");
 }
 

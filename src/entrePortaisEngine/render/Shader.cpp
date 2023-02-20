@@ -128,4 +128,8 @@ namespace entre_portais {
         glDeleteProgram(program_);
         gShaderLogger.getLogger()->debug("Shader esta {} sendo removida da GPU", id_);
     }
+
+    void Shader::UnbindShader() {
+        glUseProgram(0);
+    }
 }  // namespace entre_portais

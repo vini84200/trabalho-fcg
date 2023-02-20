@@ -18,12 +18,15 @@ set(sources
 		src/entrePortaisEngine/render/IRenderable.cpp
 		src/entrePortaisEngine/render/Renderer.cpp
 		src/entrePortaisEngine/meshes/IMesh.cpp
-
+		src/entrePortaisEngine/meshes/CubeMesh.cpp
+		src/entrePortaisEngine/meshes/CylinderMesh.cpp
 
 		src/testGame/TriScene.cpp
 		src/testGame/TriObject.cpp
 		src/testGame/WaitAndFinishTask.cpp
 		src/testGame/DependencyTask.cpp
+		src/testGame/CubeObject.cpp
+		src/testGame/CylinderObject.cpp
 		)
 
 set(exe_sources

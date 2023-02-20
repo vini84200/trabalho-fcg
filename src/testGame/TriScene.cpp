@@ -5,6 +5,8 @@
 #include "entrePortaisEngine/render/Camera.hpp"
 #include "glad/glad.h"
 #include "testGame/TriObject.hpp"
+#include "testGame/CubeObject.hpp"
+#include "testGame/CylinderObject.hpp"
 
 namespace entre_portais {
     TriScene::TriScene() : IScene("TriScene") {
@@ -32,6 +34,14 @@ namespace entre_portais {
         obj4->getTransform()->setPosition(glm::vec3(0.3f, 0.3f, 0.0f));
         obj4->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
         obj3->addChild(obj4);
+
+        char *cuboname = "Cubo";
+        auto cube = std::make_shared<CubeObject>(cuboname);
+        addChild(cube);
+
+        char *cylinname = "Cilindro";
+        auto cylin = std::make_shared<CylinderObject>(cylinname);
+        addChild(cylin);
 
         char *camera_name = "Camera";
         auto camera = std::make_shared<Camera>(camera_name, M_PI_2, 0.5, 10000, 1.8);

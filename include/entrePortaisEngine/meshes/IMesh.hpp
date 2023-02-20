@@ -14,9 +14,13 @@
 
 namespace entre_portais {
 
+#define POSITIONS_LOCATION 0
+#define COLORS_LOCATION 1
+#define NORMALS_LOCATION 2
+
     class IMesh {
     public:
-        IMesh(std::string shaderName);
+        IMesh();
 
         virtual ~IMesh() = default;
 
@@ -35,23 +39,6 @@ namespace entre_portais {
             vertexCount_ = numVertices;
         }
 
-        virtual void SetShader(Shader shader) {
-            shader_ = shader;
-        };
-
-        virtual void SetShader(std::string name) {
-            auto sm = ShadersManager::getInstance();
-            shader_ = sm->getShader(name);
-        };
-
-        virtual Shader *GetShader() {
-            return &shader_.value();
-        };
-
-        virtual void UseShader() {
-            shader_->use();
-        }
-
         virtual void UseVAO() {
             vertexArray_->bind();
         }
@@ -60,22 +47,12 @@ namespace entre_portais {
             vertexArray_->unbind();
         }
 
-        virtual void UnbindShader() {
-            glUseProgram(0);
-        }
 
         virtual int GetNumVertices() {
             return vertexCount_;
         }
 
-    public:
-        Shader getShader() const {
-            return shader_.value();
-        }
-
-
     private:
-        std::optional<Shader> shader_;
         unsigned int vertexCount_;
         std::shared_ptr<VertexArrayBuffer> vertexArray_;
     };

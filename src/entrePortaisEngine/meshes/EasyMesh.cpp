@@ -1,17 +1,19 @@
 #include "entrePortaisEngine/meshes/EasyMesh.hpp"
 
 namespace entre_portais {
-    EasyMesh::EasyMesh(ManyVertices vertices, std::string shaderName) : IMesh(shaderName) {
+    EasyMesh::EasyMesh(ManyVertices vertices, std::string shaderName) : IMesh() {
         auto vao = std::make_shared<VertexArrayBuffer>();
         BufferBuilder vboPos;
         BufferBuilder vboColor;
         BufferBuilder ebo;
-        vboPos.addAttribute(0, 3, GL_FLOAT, GL_FALSE, sizeof(EasyVertex), (void *) offsetof(EasyVertex, x));
+        vboPos.addAttribute(POSITIONS_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(EasyVertex),
+                            (void *) offsetof(EasyVertex, x));
         vboPos.setData(vertices.vertices.data(), sizeof(EasyVertex) * vertices.vertices.size());
         vboPos.setUsage(GL_STATIC_DRAW);
         vao->addBufferToQueue(&vboPos);
 
-        vboColor.addAttribute(1, 3, GL_FLOAT, GL_FALSE, sizeof(EasyVertex), (void *) offsetof(EasyVertex, r));
+        vboColor.addAttribute(COLORS_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(EasyVertex),
+                              (void *) offsetof(EasyVertex, r));
         vboColor.setData(vertices.vertices.data(), sizeof(EasyVertex) * vertices.vertices.size());
         vboColor.setUsage(GL_STATIC_DRAW);
         vao->addBufferToQueue(&vboColor);
