@@ -27,12 +27,7 @@ entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name) {
 
 void entre_portais::TriObject::update(float deltaTime) {
     // Gira o triângulo
-    transform_.setRotation(
-            glm::vec3(transform_.rx, transform_.ry, transform_.rz + velocity_ * (static_cast<float>(deltaTime))));
-
-    if (transform_.rz > 360.0f) {
-        transform_.rz -= 360.0f;
-    }
+    transform_.rotateBy(velocity_ * deltaTime, 0.0f, 0.0f);
 }
 
 void entre_portais::TriObject::initialize()
@@ -56,14 +51,6 @@ void entre_portais::TriObject::onMouseButton(int button, int action, int mods) {
 }
 
 void entre_portais::TriObject::onKey(int key, int scancode, int action, int mods) {
-    if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
-        logger_.getLogger()->info("Hi, I'm a triangle! And my name is {}", getName());
-        logger_.getLogger()->info("My position is ({}, {}, {})", transform_.x, transform_.y, transform_.z);
-        logger_.getLogger()->info("My rotation is ({}, {}, {})", transform_.rx, transform_.ry, transform_.rz);
-        logger_.getLogger()->info("My scale is ({}, {}, {})", transform_.sx, transform_.sy, transform_.sz);
-        auto scene = getScene();
-        logger_.getLogger()->info("My scene is {}", scene);
-    }
     if (key == GLFW_KEY_F5 && action == GLFW_PRESS) {
         auto tm = entre_portais::TaskManager::getInstance();
         auto a = tm->addTask<DependencyTask>();

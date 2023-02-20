@@ -8,8 +8,6 @@
 #include "IPlugin.hpp"
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
 
-#define DELTA_TIME_PERFORMACE_ARRAY_SIZE 50
-
 namespace entre_portais {
     class ImGuiPlugin : public IPlugin {
     public:
