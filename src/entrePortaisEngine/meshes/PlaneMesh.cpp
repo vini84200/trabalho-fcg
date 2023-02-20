@@ -7,7 +7,7 @@ namespace entre_portais {
         UseVAO();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // Draw Segments with GL_LINES
-        glDrawElements(GL_LINES, 8 * (widthSegments_ * heightSegments_), GL_UNSIGNED_INT, (void *) (6 * sizeof(uint)));
+        glDrawElements(GL_LINES, 8 * (widthSegments_ * heightSegments_), GL_UNSIGNED_INT, (void *) (6 * sizeof(unsigned int)));
 
         UnbindVAO();
     }
@@ -45,7 +45,7 @@ namespace entre_portais {
                 break;
         }
 
-        std::vector<uint> indices({
+        std::vector<unsigned int> indices({
                                           2, 1, 0,
                                           0, 3, 2
                                   });
@@ -55,7 +55,7 @@ namespace entre_portais {
         float zStep = height / heightSegments;
         glm::vec3 lineColor = {0, 0, 0};
 
-        uint offset = 4;
+        unsigned int offset = 4;
         // FIXME: This is not the best way to do this
         // Tip: Use a single line to draw the segments
         // instead of drawing a small part of the line for each square
@@ -105,7 +105,7 @@ namespace entre_portais {
 
         vao->addBufferToQueue(&vboColor);
 
-        ebo.setData(indices.data(), indices.size() * sizeof(uint));
+        ebo.setData(indices.data(), indices.size() * sizeof(unsigned int));
         ebo.setUsage(GL_STATIC_DRAW);
 
         vao->addEBOToQueue(&ebo);

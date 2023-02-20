@@ -27,7 +27,7 @@ namespace entre_portais {
                 color,
                 color,
         };
-        uint indices[] = {
+        unsigned int indices[] = {
                 // Front
                 0, 2, 1,
                 0, 3, 2,

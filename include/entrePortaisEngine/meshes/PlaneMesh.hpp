@@ -9,7 +9,7 @@
 
 namespace entre_portais {
 
-    typedef uint PlaneColor;
+    typedef unsigned int PlaneColor;
 #define PLANE_COLORIDO (entre_portais::PlaneColor) 1
 #define PLANE_BRANCO (entre_portais::PlaneColor) 2
 #define PLANE_CINZA (entre_portais::PlaneColor) 3

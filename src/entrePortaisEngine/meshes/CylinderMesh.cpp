@@ -1,8 +1,6 @@
-//
-// Created by vini84200 on 2/19/23.
-//
-
 #include "entrePortaisEngine/meshes/CylinderMesh.hpp"
+
+# define M_PIf        3.14159265358979323846f    /* pi */
 
 namespace entre_portais {
     void CylinderMesh::Draw() {
@@ -33,7 +31,7 @@ namespace entre_portais {
             colors[i] = color;
         }
 
-        uint indices[edges * 12];
+        unsigned int indices[edges * 12];
 
         // Lower face
         for (int i = 0; i < edges; i++) {
@@ -73,6 +71,6 @@ namespace entre_portais {
 
         vao->Commit();
 
-        SetVAO(std::move(vao), sizeof(indices) / sizeof(uint));
+        SetVAO(std::move(vao), sizeof(indices) / sizeof(unsigned int));
     }
 } // entre_portais
