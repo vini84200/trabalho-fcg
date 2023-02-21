@@ -8,6 +8,7 @@
 #include "testGame/CubeObject.hpp"
 #include "testGame/CylinderObject.hpp"
 #include "testGame/Ground.hpp"
+#include "testGame/Player.hpp"
 
 namespace entre_portais {
     TriScene::TriScene() : IScene("TriScene") {
@@ -48,11 +49,11 @@ namespace entre_portais {
         auto grnd = std::make_shared<Ground>();
         addChild(grnd);
 
-        char *camera_name = "Camera";
-        auto camera = std::make_shared<Camera>(camera_name, M_PI_2, 0.5, 10000, 1.8);
-        camera->getTransform()->setPosition(glm::vec3(0.0f, 1.0f, 1.5f));
-        addChild(camera);
-        setCamera(camera);
+        char *charName = "Leoncio";
+        auto character = std::make_shared<Player>(charName);
+        addChild(character);
+        character->initializePropagate();
+        setCamera(character->getCamera());
     }
 
     TriScene::~TriScene() = default;

@@ -86,7 +86,8 @@ namespace entre_portais {
     }
 
     glm::mat4 Camera::getViewMatrix() {
-        return matrices::Matrix_Camera_View(transform_.getPosition(), getViewVector(), glm::vec4(0, 1, 0, 0));
+        auto model = glm::inverse(modelMatrix_);
+        return model * matrices::Matrix_Camera_View(glm::vec4(0, 0, 0, 1), getViewVector(), glm::vec4(0, 1, 0, 0));
     }
 
     glm::vec4 Camera::getViewVector() {

@@ -104,3 +104,11 @@ void entre_portais::Transform::rotateBy(glm::vec3 rotation) {
 void entre_portais::Transform::rotateBy(float x, float y, float z) {
     rotateBy(glm::quat(glm::vec3(x, y, z)));
 }
+
+glm::vec3 entre_portais::Transform::rotateVector(glm::vec3 vector) {
+    return matrices::RotationFromQuat(rotation_) * glm::vec4(vector, 0);
+}
+
+void entre_portais::Transform::move(glm::vec3 vector) {
+    position_ += vector;
+}
