@@ -12,3 +12,6 @@
 	path = external/spdlog
 	url = https://github.com/gabime/spdlog.git
 	branch = v1.x
+[submodule "external/tinyobjloader"]
+	path = external/tinyobjloader
+	url = https://github.com/tinyobjloader/tinyobjloader.git

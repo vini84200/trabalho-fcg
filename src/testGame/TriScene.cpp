@@ -9,6 +9,8 @@
 #include "testGame/CylinderObject.hpp"
 #include "testGame/Ground.hpp"
 #include "testGame/Player.hpp"
+#include "testGame/TeapotObject.hpp"
+#include "testGame/Cuelho.hpp"
 
 namespace entre_portais {
     TriScene::TriScene() : IScene("TriScene") {
@@ -48,6 +50,14 @@ namespace entre_portais {
 
         auto grnd = std::make_shared<Ground>();
         addChild(grnd);
+
+        char *teapotName = "Teapot";
+        auto teapot = std::make_shared<TeapotObject>(teapotName);
+        addChild(teapot);
+
+        char *cuelhoNome = "Cuelho";
+        auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
+        addChild(cuelho);
 
         char *charName = "Leoncio";
         auto character = std::make_shared<Player>(charName);

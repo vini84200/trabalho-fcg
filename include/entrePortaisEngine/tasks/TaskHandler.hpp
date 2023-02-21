@@ -1,6 +1,8 @@
 #ifndef ENTREPORTAIS_TASKHANDLER_HPP
 #define ENTREPORTAIS_TASKHANDLER_HPP
 
+#include "ITask.hpp"
+
 namespace entre_portais {
 
 /** Task Handler

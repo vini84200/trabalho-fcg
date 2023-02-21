@@ -21,6 +21,7 @@ set(sources
 		src/entrePortaisEngine/meshes/CubeMesh.cpp
 		src/entrePortaisEngine/meshes/CylinderMesh.cpp
 		src/entrePortaisEngine/meshes/PlaneMesh.cpp
+		src/entrePortaisEngine/meshes/MeshFromObj.cpp
 		src/entrePortaisEngine/Characters/FirstPersonCharacter.cpp
 
 		src/testGame/TriScene.cpp
@@ -31,6 +32,8 @@ set(sources
 		src/testGame/CylinderObject.cpp
 		src/testGame/Ground.cpp
 		src/testGame/Player.cpp
+		src/testGame/TeapotObject.cpp
+		src/testGame/Cuelho.cpp
 		)
 
 set(exe_sources
