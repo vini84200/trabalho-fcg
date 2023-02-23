@@ -60,6 +60,6 @@ namespace entre_portais {
         logger_ = std::make_shared<spdlog::logger>(spdlog::logger(name, {console_sink_, file_sink_}));
         logger_->set_level(spdlog::level::trace);
         logger_->flush_on(spdlog::level::warn);
-        spdlog::register_logger(logger_);
+//        spdlog::register_logger(logger_);
     }
 }  // namespace entre_portais

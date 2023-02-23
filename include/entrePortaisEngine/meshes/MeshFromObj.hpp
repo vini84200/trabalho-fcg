@@ -10,8 +10,27 @@
 #include "entrePortaisEngine/tasks/TaskHandler.hpp"
 #include "entrePortaisEngine/tasks/ITask.hpp"
 #include "tiny_obj_loader.h"
+#include "entrePortaisEngine/Compatibility.hpp"
+
+#define GLM_ENABLE_EXPERIMENTAL
+
+#include <glm/gtx/hash.hpp>
+
 
 namespace entre_portais {
+    struct ObjVertex {
+        glm::vec3 pos;
+        glm::vec2 texCoord;
+        glm::vec3 normals;
+        glm::vec3 color;
+
+        ObjVertex(glm::vec3 pos, glm::vec2 texCoord, glm::vec3 normals, glm::vec3 color) :
+                pos(pos), texCoord(texCoord), normals(normals), color(color) {};
+
+        bool operator==(const ObjVertex &other) const {
+            return pos == other.pos && texCoord == other.texCoord && normals == other.normals && color == other.color;
+        }
+    };
 
     class ParseObjTask : public ITask {
     public:
@@ -37,8 +56,8 @@ namespace entre_portais {
         void FinishedLoading(tinyobj::ObjReader reader);
 
     private:
-        _Atomic bool loaded_ = false;
-        _Atomic bool canInitialize_ = false;
+        atomic_bool loaded_ = false;
+        atomic_bool canInitialize_ = false;
         TaskHandler loadTask_;
         std::string assetName_;
         tinyobj::ObjReader reader_;
@@ -47,5 +66,17 @@ namespace entre_portais {
     };
 
 } // entre_portais
+
+namespace std {
+    template<>
+    struct hash<entre_portais::ObjVertex> {
+        size_t operator()(entre_portais::ObjVertex const &vertex) const {
+            return ((hash<glm::vec3>()(vertex.pos) ^
+                     (hash<glm::vec2>()(vertex.texCoord) << 1)) >> 1) ^
+                   (hash<glm::vec3>()(vertex.normals) << 1) ^
+                   (hash<glm::vec3>()(vertex.color) << 1);
+        }
+    };
+}
 
 #endif //ENTREPORTAIS_MESHFROMOBJ_HPP

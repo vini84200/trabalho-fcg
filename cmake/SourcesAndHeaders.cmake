@@ -22,6 +22,7 @@ set(sources
 		src/entrePortaisEngine/meshes/CylinderMesh.cpp
 		src/entrePortaisEngine/meshes/PlaneMesh.cpp
 		src/entrePortaisEngine/meshes/MeshFromObj.cpp
+		src/entrePortaisEngine/meshes/ComputeNormals.cpp
 		src/entrePortaisEngine/Characters/FirstPersonCharacter.cpp
 
 		src/testGame/TriScene.cpp
