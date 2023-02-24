@@ -17,6 +17,7 @@ namespace entre_portais {
 #define POSITIONS_LOCATION 0
 #define COLORS_LOCATION 1
 #define NORMALS_LOCATION 2
+#define TEXTURE_COORDINATES_LOCATION 3
 
     class IMesh {
     public:
@@ -32,7 +33,7 @@ namespace entre_portais {
 
         IMesh &operator=(IMesh &&other) = delete;
 
-        virtual void Draw() = 0;
+        virtual void Draw(Shader shaderInUse) = 0;
 
         virtual void SetVAO(std::shared_ptr<VertexArrayBuffer> vao, unsigned int numVertices = 0) {
             vertexArray_ = std::move(vao);

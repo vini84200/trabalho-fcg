@@ -67,7 +67,7 @@ namespace entre_portais {
         SetVAO(std::move(vao), 12 * 3);
     }
 
-    void CubeMesh::Draw() {
+    void CubeMesh::Draw(Shader shaderInUse) {
         UseVAO();
         glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
         UnbindVAO();

@@ -13,7 +13,7 @@ namespace entre_portais {
     public:
         CubeMesh(float size, glm::vec3 color);
 
-        void Draw() override;
+        void Draw(Shader shaderInUse) override;
 
 
     };

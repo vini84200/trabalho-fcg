@@ -23,7 +23,7 @@ namespace entre_portais {
 
         PlaneMesh(float width, float height, int segments); // widthSegments = heightSegments = segments
         PlaneMesh(float width, float height); // segments = 1
-        void Draw() override;
+        void Draw(Shader shaderInUse) override;
 
     private:
         float width_;

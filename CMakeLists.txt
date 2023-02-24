@@ -194,22 +194,22 @@ set(EXT_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external)
 set(EXT_INCLUDE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/external/include)
 
 
-# Auto GitSubmodules
-# FONTE: https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
-find_package(Git QUIET)
-if (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
-  # Update submodules as needed
-  option(GIT_SUBMODULE "Check submodules during build" ON)
-  if (GIT_SUBMODULE)
-    message(STATUS "Submodule update")
-    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
-            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
-            RESULT_VARIABLE GIT_SUBMOD_RESULT)
-    if (NOT GIT_SUBMOD_RESULT EQUAL "0")
-      message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
-    endif ()
-  endif ()
-endif ()
+## Auto GitSubmodules
+## FONTE: https://cliutils.gitlab.io/modern-cmake/chapters/projects/submodule.html
+#find_package(Git QUIET)
+#if (GIT_FOUND AND EXISTS "${PROJECT_SOURCE_DIR}/.git")
+#  # Update submodules as needed
+#  option(GIT_SUBMODULE "Check submodules during build" ON)
+#  if (GIT_SUBMODULE)
+#    message(STATUS "Submodule update")
+#    execute_process(COMMAND ${GIT_EXECUTABLE} submodule update --init --recursive
+#            WORKING_DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}
+#            RESULT_VARIABLE GIT_SUBMOD_RESULT)
+#    if (NOT GIT_SUBMOD_RESULT EQUAL "0")
+#      message(FATAL_ERROR "git submodule update --init --recursive failed with ${GIT_SUBMOD_RESULT}, please checkout submodules")
+#    endif ()
+#  endif ()
+#endif ()
 
 
 # GLAD
@@ -247,25 +247,28 @@ if (NOT EXISTS "${CMAKE_CURRENT_SOURCE_DIR}/external/spdlog/CMakeLists.txt")
 endif ()
 include_directories(${EXT_DIR}/spdlog/include)
 
-# Tiny Obj Loadern
+# Tiny Obj Loader
 set(TINY_OBJ_LOADER ${EXT_DIR}/tinyobjloader)
 add_subdirectory("${TINY_OBJ_LOADER}")
 message(STATUS "TINYOBJLOADER included at ${TINY_OBJ_LOADER}")
 if (NOT EXISTS "${TINY_OBJ_LOADER}/CMakeLists.txt")
-  message(FATAL_ERROR "The submodule were not downloaded! ")
+    message(FATAL_ERROR "The submodule were not downloaded! ")
 endif ()
 include_directories(${TINY_OBJ_LOADER})
 
+# STB
+set(STB_DIR ${EXT_DIR}/stb)
+include_directories(${STB_DIR})
 
 # Linking with the project's dependencies
 # Executable linking
 target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_header_only tinyobjloader)
 if (WIN32)
-  set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
+    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 endif ()
 
 if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
-  target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad glm)
+    target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad glm)
 endif ()
 
 verbose_message("Successfully added all dependencies and linked against them.")

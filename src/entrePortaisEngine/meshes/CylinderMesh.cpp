@@ -3,7 +3,7 @@
 # define M_PIf        3.14159265358979323846f    /* pi */
 
 namespace entre_portais {
-    void CylinderMesh::Draw() {
+    void CylinderMesh::Draw(Shader shaderInUse) {
         UseVAO();
         glDrawElements(GL_TRIANGLES, GetNumVertices(), GL_UNSIGNED_INT, 0);
         UnbindVAO();

@@ -26,7 +26,7 @@ namespace entre_portais {
 
         void Draw() {
             if (mesh_ != nullptr) {
-                mesh_->Draw();
+                mesh_->Draw(getShader());
             }
         }
 

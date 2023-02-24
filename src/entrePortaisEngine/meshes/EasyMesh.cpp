@@ -27,7 +27,7 @@ namespace entre_portais {
         SetVAO(std::move(vao), vertices.indices.size());
     }
 
-    void EasyMesh::Draw() {
+    void EasyMesh::Draw(Shader shaderInUse) {
         UseVAO();
         glDrawElements(GL_TRIANGLES, GetNumVertices(), GL_UNSIGNED_INT, 0);
         UnbindVAO();

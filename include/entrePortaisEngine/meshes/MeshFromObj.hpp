@@ -11,6 +11,7 @@
 #include "entrePortaisEngine/tasks/ITask.hpp"
 #include "tiny_obj_loader.h"
 #include "entrePortaisEngine/Compatibility.hpp"
+#include "entrePortaisEngine/render/Texture.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
 
@@ -51,7 +52,7 @@ namespace entre_portais {
     public:
         MeshFromObj(std::string assetName);
 
-        void Draw() override;
+        void Draw(Shader shaderInUse) override;
 
         void FinishedLoading(tinyobj::ObjReader reader);
 
@@ -61,8 +62,12 @@ namespace entre_portais {
         TaskHandler loadTask_;
         std::string assetName_;
         tinyobj::ObjReader reader_;
+        std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> materialRanges_;
+        std::unordered_map<unsigned int, Texture> textures_;
 
         void initializeMesh();
+
+        void StartTextureLoading(std::vector<tinyobj::material_t> materials);
     };
 
 } // entre_portais

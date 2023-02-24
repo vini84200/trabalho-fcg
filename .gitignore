@@ -377,3 +377,4 @@ cmake-build-debug/
 /cmake-build-debug-clang/
 /cmake-build-release-clang/
 /cmake-build-release/
+/build/
