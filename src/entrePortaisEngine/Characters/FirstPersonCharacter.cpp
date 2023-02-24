@@ -1,6 +1,7 @@
 #include "entrePortaisEngine/Characters/FirstPersonCharacter.hpp"
 #include "GLFW/glfw3.h"
 #include "entrePortaisEngine/IScene.hpp"
+#include "entrePortaisEngine/Window.hpp"
 
 namespace entre_portais {
     FirstPersonCharacter::FirstPersonCharacter(char *name) : IObject(name) {
@@ -37,6 +38,13 @@ namespace entre_portais {
                     direction_ -= glm::vec3(1, 0, 0);
                 }
                 break;
+            case GLFW_KEY_LEFT_ALT:
+                if (action == GLFW_PRESS) {
+                    IObject::getScene()->getWindow()->showCursor(true);
+                } else if (action == GLFW_RELEASE) {
+                    IObject::getScene()->getWindow()->showCursor(false);
+                }
+                break;
         }
     }
 
@@ -70,5 +78,13 @@ namespace entre_portais {
 
     void FirstPersonCharacter::onResize(int width, int height) {
 
+    }
+
+    void FirstPersonCharacter::onMouseDeltaMovement(glm::vec2 delta) {
+        glm::vec2 d = 0.001f * delta;
+        glm::quat rotationHead = glm::quat(glm::vec3(0, 0, -d.y));
+        glm::quat rotationBody = glm::quat(glm::vec3(0, -d.x, 0));
+        camera_->getTransform()->rotateBy(rotationHead);
+        getTransform()->rotateBy(rotationBody);
     }
 } // entre_portais

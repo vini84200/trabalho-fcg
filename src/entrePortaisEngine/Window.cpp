@@ -15,6 +15,8 @@ namespace entre_portais {
         title_ = (char *) title;
         running_ = true;
         scene_ = scene;
+        mousePos_.x = width_ / 2;
+        mousePos_.y = height_ / 2;
         int success = glfwInit();
         if (!success) {
             throw std::runtime_error("Failed to initialize GLFW");
@@ -35,6 +37,8 @@ namespace entre_portais {
         }
         glfwMakeContextCurrent(window_);
 
+        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+
 
         glfwSetWindowUserPointer(window_, this);
         glfwSetWindowSizeCallback(window_, [](GLFWwindow *window, int width, int height) {
@@ -44,6 +48,10 @@ namespace entre_portais {
         glfwSetKeyCallback(window_, [](GLFWwindow *window, int key, int scancode, int action, int mods) {
             Window *self = static_cast<Window *>(glfwGetWindowUserPointer(window));
             self->onKey(key, scancode, action, mods);
+        });
+        glfwSetCursorPosCallback(window_, [](GLFWwindow *window, double xpos, double ypos) {
+            Window *self = static_cast<Window *>(glfwGetWindowUserPointer(window));
+            self->onMouseMovement(xpos, ypos);
         });
         glfwSetMouseButtonCallback(window_, [](GLFWwindow *window, int button, int action, int mods) {
             Window *self = static_cast<Window *>(glfwGetWindowUserPointer(window));
@@ -70,6 +78,7 @@ namespace entre_portais {
         glfwSwapInterval(VSYNC);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
+        scene_->setWindow(this);
         scene_->initializePropagate();
     }
 
@@ -192,6 +201,18 @@ namespace entre_portais {
         scene_->mouseButton(button, action, mods);
     }
 
+    void Window::onMouseMovement(double xpos, double ypos) {
+        scene_->mouseMovementPropagate(xpos, ypos);
+        glm::vec2 mousePos(xpos, ypos);
+        glm::vec2 delta = mousePos - mousePos_;
+        mousePos_ = mousePos;
+        onMouseDeltaMovement(delta);
+    }
+
+    void Window::onMouseDeltaMovement(glm::vec2 delta) {
+        scene_->mouseDeltaMovementPropagate(delta);
+    }
+
     void Window::onError(int /*error*/, const char *description) {
         spdlog::error("GLFW error: {}", description);
         throw std::runtime_error(description);
@@ -235,5 +256,13 @@ namespace entre_portais {
 
     std::shared_ptr<IScene> Window::GetScene() const {
         return scene_;
+    }
+
+    void Window::showCursor(bool show) {
+        if (show) {
+            glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
+        } else {
+            glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        }
     }
 }  // namespace entre_portais

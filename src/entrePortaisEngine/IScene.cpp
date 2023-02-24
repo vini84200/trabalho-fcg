@@ -25,3 +25,11 @@ const std::shared_ptr<entre_portais::Renderer> &entre_portais::IScene::getRender
 entre_portais::IScene::IScene(char *name) : IGameNode(name) {
     renderer_ = std::make_shared<Renderer>();
 }
+
+entre_portais::Window * entre_portais::IScene::getWindow() {
+    return window_;
+}
+
+void entre_portais::IScene::setWindow(entre_portais::Window *window) {
+    window_ = window;
+}

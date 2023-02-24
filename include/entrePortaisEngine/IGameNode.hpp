@@ -48,6 +48,14 @@ namespace entre_portais {
 
         virtual void onMouseButton(int button, int action, int mods) = 0;
 
+        void mouseMovementPropagate(float xpos, float ypos);
+
+        virtual void onMouseMovement(float xpos, float ypos) {};
+
+        void mouseDeltaMovementPropagate(glm::vec2 delta);
+
+        virtual void onMouseDeltaMovement(glm::vec2 delta) {};
+
         void exit();
 
         virtual void onExit() = 0;

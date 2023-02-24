@@ -94,7 +94,7 @@ void entre_portais::Transform::renderImGui() {
 }
 
 void entre_portais::Transform::rotateBy(glm::quat rotation) {
-    rotation_ = rotation_ * rotation;
+    rotation_ = rotation * rotation_;
 }
 
 void entre_portais::Transform::rotateBy(glm::vec3 rotation) {
