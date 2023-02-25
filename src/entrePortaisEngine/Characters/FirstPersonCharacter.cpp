@@ -2,6 +2,7 @@
 #include "GLFW/glfw3.h"
 #include "entrePortaisEngine/IScene.hpp"
 #include "entrePortaisEngine/Window.hpp"
+#include "glm/gtx/string_cast.hpp"
 
 namespace entre_portais {
     FirstPersonCharacter::FirstPersonCharacter(char *name) : IObject(name) {
@@ -82,9 +83,14 @@ namespace entre_portais {
 
     void FirstPersonCharacter::onMouseDeltaMovement(glm::vec2 delta) {
         glm::vec2 d = 0.001f * delta;
+        glm::vec3 rightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());
         glm::quat rotationHead = glm::quat(glm::vec3(0, 0, -d.y));
         glm::quat rotationBody = glm::quat(glm::vec3(0, -d.x, 0));
         camera_->getTransform()->rotateBy(rotationHead);
+        glm::vec3 newRightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());
+        if (glm::dot(rightCamera, newRightCamera) < 0) {
+            camera_->getTransform()->rotateBy(conjugate(rotationHead));
+        }
         getTransform()->rotateBy(rotationBody);
     }
 } // entre_portais
