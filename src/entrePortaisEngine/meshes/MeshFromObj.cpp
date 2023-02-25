@@ -127,7 +127,7 @@ namespace entre_portais {
     TaskRunResult ParseObjTask::Run() {
         tinyobj::ObjReader reader;
         tinyobj::ObjReaderConfig config;
-        config.mtl_search_path = "./assets/materials/"; //TODO: Setar a posição correta dos materiais
+        config.mtl_search_path = "./assets/materials/";
 
         std::string loggerName = "ParseObjTask::" + fileName_;
         Logger l = Logger(loggerName.c_str());
