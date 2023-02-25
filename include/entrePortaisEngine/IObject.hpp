@@ -12,7 +12,7 @@ namespace entre_portais {
     class IObject : public IGameNode, public IRenderable {
         /* Objeto tem um mesh*/
     public:
-        IObject(char *name) : IGameNode(name) {}
+        IObject(const char *name) : IGameNode(name) {}
 
         virtual ~IObject() = default;
 
@@ -26,7 +26,7 @@ namespace entre_portais {
 
         void Draw() {
             if (mesh_ != nullptr) {
-                mesh_->Draw();
+                mesh_->Draw(getShader());
             }
         }
 

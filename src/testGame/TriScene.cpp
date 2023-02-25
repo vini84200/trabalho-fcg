@@ -11,6 +11,7 @@
 #include "testGame/Player.hpp"
 #include "testGame/TeapotObject.hpp"
 #include "testGame/Cuelho.hpp"
+#include "entrePortaisEngine/Objects/ObjFromFile.hpp"
 
 namespace entre_portais {
     TriScene::TriScene() : IScene("TriScene") {
@@ -58,6 +59,14 @@ namespace entre_portais {
         char *cuelhoNome = "Cuelho";
         auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
         addChild(cuelho);
+
+        char *path = "assets/objs/Intercity1.obj";
+        char *name = "Train";
+        auto train = std::make_shared<ObjFromFile>(name, path);
+        addChild(train);
+
+        addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
+
 
         char *charName = "Leoncio";
         auto character = std::make_shared<Player>(charName);

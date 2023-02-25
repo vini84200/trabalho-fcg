@@ -16,7 +16,7 @@ namespace entre_portais {
          * propagação de eventos.*/
 
     public:
-        IGameNode(char *name) : name_(name) {}
+        IGameNode(const char *name) : name_(name) {}
 
         virtual ~IGameNode() = default;
 
@@ -78,7 +78,7 @@ namespace entre_portais {
 
         virtual void setScene(std::shared_ptr<IScene> scene) = 0;
 
-        char *getName() { return name_; }
+        const char *getName() { return name_; }
 
         void setName(char *name) { name_ = name; }
 
@@ -96,7 +96,7 @@ namespace entre_portais {
     private:
         std::shared_ptr<IGameNode> sharedPtrFromIGameNode();
 
-        char *name_;
+        const char *name_;
         std::weak_ptr<IGameNode> parent_;
         bool is_initialized_ = false;
 

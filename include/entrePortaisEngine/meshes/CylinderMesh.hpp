@@ -13,7 +13,7 @@ namespace entre_portais {
     public:
         CylinderMesh(float radius, float height, int edges, glm::vec3 color);
 
-        void Draw() override;
+        void Draw(Shader shaderInUse) override;
     };
 
 } // entre_portais

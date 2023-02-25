@@ -3,7 +3,7 @@
 #include "glm/gtc/type_ptr.hpp"
 
 namespace entre_portais {
-    void PlaneMesh::Draw() {
+    void PlaneMesh::Draw(Shader shaderInUse) {
         UseVAO();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // Draw Segments with GL_LINES
