@@ -72,6 +72,8 @@ namespace entre_portais {
 
         void FinishedLoading();
 
+        void RenderImGui(bool *p_open) override;
+
     private:
         atomic_bool loaded_ = false;
         atomic_bool canInitialize_ = false;

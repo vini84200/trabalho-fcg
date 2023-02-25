@@ -2,12 +2,15 @@
 #define ENTREPORTAIS_TEXTURE_HPP
 
 #include <string>
+#include "imgui.h"
 
 namespace entre_portais {
 
     class Texture {
     public:
-        unsigned int getId() const;
+        unsigned int GetTextureID() const;
+
+        ImTextureID GetImTextureID() const;
 
         std::string getName() const;
 

@@ -42,8 +42,10 @@ namespace entre_portais {
             case GLFW_KEY_LEFT_ALT:
                 if (action == GLFW_PRESS) {
                     IObject::getScene()->getWindow()->showCursor(true);
+                    altMode_ = true;
                 } else if (action == GLFW_RELEASE) {
                     IObject::getScene()->getWindow()->showCursor(false);
+                    altMode_ = false;
                 }
                 break;
         }
@@ -82,6 +84,9 @@ namespace entre_portais {
     }
 
     void FirstPersonCharacter::onMouseDeltaMovement(glm::vec2 delta) {
+        if (altMode_) {
+            return;
+        }
         glm::vec2 d = 0.001f * delta;
         glm::vec3 rightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());
         glm::quat rotationHead = glm::quat(glm::vec3(0, 0, -d.y));
