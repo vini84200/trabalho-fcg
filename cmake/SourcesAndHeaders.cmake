@@ -26,6 +26,7 @@ set(sources
         src/entrePortaisEngine/meshes/MeshFromObj.cpp
         src/entrePortaisEngine/meshes/ComputeNormals.cpp
         src/entrePortaisEngine/Characters/FirstPersonCharacter.cpp
+		src/entrePortaisEngine/Objects/ObjFromFile.cpp
 
         src/testGame/TriScene.cpp
         src/testGame/TriObject.cpp
