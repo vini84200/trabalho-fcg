@@ -52,14 +52,15 @@ namespace entre_portais {
 
         bool hasScene() override;
 
+        glm::vec4 getViewVector();
+
+
     private:
         std::weak_ptr<IScene> scene_;
         float far_;
         float near_;
         float fov_;
         float aspectRatio_;
-
-        glm::vec4 getViewVector();
     };
 
 }  // namespace entre_Portais

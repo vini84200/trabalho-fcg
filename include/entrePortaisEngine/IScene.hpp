@@ -9,6 +9,8 @@
 #include "imgui.h"
 
 namespace entre_portais {
+    class Window;
+
     class IScene : public IGameNode {
         /* Cena exibida, e pode ser trocada.
          * Pode ser uma tela de menu, de jogo, etc. */
@@ -44,6 +46,10 @@ namespace entre_portais {
 
         virtual void onMouseButton(int button, int action, int mods) = 0;
 
+        virtual void onMouseMovement(float xpos, float ypos) {};
+
+        virtual void onMouseDeltaMovement(glm::vec2 delta) {};
+
         // TODO: Adicionar mais eventos
         virtual void onExit() = 0;
 
@@ -65,7 +71,16 @@ namespace entre_portais {
             camera_ = camera;
         }
 
+        std::shared_ptr<Camera> getCamera() const {
+            return camera_;
+        }
+
+        Window * getWindow();
+
+        void setWindow(Window *window);
+
     protected:
+        Window *window_;
         std::shared_ptr<Camera> camera_;
         std::shared_ptr<Renderer> renderer_;
 

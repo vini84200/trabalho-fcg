@@ -43,6 +43,20 @@ namespace entre_portais {
         }
     }
 
+    void IGameNode::mouseMovementPropagate(float xpos, float ypos) {
+        onMouseMovement(xpos, ypos);
+        for (auto &child: children_) {
+            child->mouseMovementPropagate(xpos, ypos);
+        }
+    }
+
+    void IGameNode::mouseDeltaMovementPropagate(glm::vec2 delta) {
+        onMouseDeltaMovement(delta);
+        for (auto &child: children_) {
+            child->mouseDeltaMovementPropagate(delta);
+        }
+    }
+
     void IGameNode::exit() {
         onExit();
         for (auto &child: children_) {

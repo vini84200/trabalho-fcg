@@ -66,7 +66,7 @@ glm::quat entre_portais::Transform::getRotation() {
 }
 
 glm::vec3 entre_portais::Transform::getForward() {
-    return glm::vec3(0, 0, 1) * rotation_;
+    return matrices::RotationFromQuat(rotation_) * glm::vec4(0, 0, 1, 0);
 }
 
 glm::vec3 entre_portais::Transform::getRotationEuler() {
@@ -94,7 +94,7 @@ void entre_portais::Transform::renderImGui() {
 }
 
 void entre_portais::Transform::rotateBy(glm::quat rotation) {
-    rotation_ = rotation_ * rotation;
+    rotation_ = rotation * rotation_;
 }
 
 void entre_portais::Transform::rotateBy(glm::vec3 rotation) {

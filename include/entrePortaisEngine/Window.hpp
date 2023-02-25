@@ -39,6 +39,8 @@ namespace entre_portais {
 
         std::shared_ptr<IScene> GetScene() const;
 
+        void showCursor(bool show);
+
     protected:
         void update(float deltaTime);
 
@@ -60,6 +62,10 @@ namespace entre_portais {
             return logger_.getLogger();
         };
 
+        void onMouseMovement(double xpos, double ypos);
+
+        void onMouseDeltaMovement(glm::vec2 delta);
+
     private:
         GLFWwindow *window_;
         bool running_;
@@ -71,6 +77,7 @@ namespace entre_portais {
         double targetFPS_ = DEFAULT_FPS;
         double lastFrameTime_ = 0.0f;
         Logger logger_ = Logger("Window");
+        glm::vec2 mousePos_;
     };
 }
 #endif  // ENTREPORTAIS_WINDOW_HPP

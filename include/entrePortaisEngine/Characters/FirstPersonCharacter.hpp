@@ -25,6 +25,9 @@ namespace entre_portais {
 
         std::shared_ptr<Camera> getCamera();
 
+        void onMouseDeltaMovement(glm::vec2 delta) override;
+
+
     private:
         glm::vec3 direction_ = {0, 0, 0};
         std::shared_ptr<Camera> camera_;
