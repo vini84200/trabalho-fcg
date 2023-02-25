@@ -66,10 +66,6 @@ glm::quat entre_portais::Transform::getRotation() {
 }
 
 glm::vec3 entre_portais::Transform::getForward() {
-//    return glm::conjugate(rotation_) * glm::vec3(0, 0, 1) * rotation_;
-//    glm::vec3 vecZ(0.0, 0.0, 1.0);
-//    glm::vec3 rotationXYZ (rotation_.x, rotation_.y, rotation_.z);
-//    return vecZ + 2.0f * cross(rotationXYZ, cross(rotationXYZ, vecZ) + rotation_.w * vecZ);
     return matrices::RotationFromQuat(rotation_) * glm::vec4(0, 0, 1, 0);
 }
 

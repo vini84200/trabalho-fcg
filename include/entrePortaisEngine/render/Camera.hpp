@@ -54,10 +54,8 @@ namespace entre_portais {
 
         glm::vec4 getViewVector();
 
-        void preRender() override;
 
     private:
-        glm::mat4 viewMatrix_;
         std::weak_ptr<IScene> scene_;
         float far_;
         float near_;
