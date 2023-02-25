@@ -28,7 +28,7 @@ namespace entre_portais {
     }
 
     TeapotObject::TeapotObject(char *name) : IObject(name) {
-        mesh_ = std::make_shared<MeshFromObj>("assets/objs/cottage_obj.obj");
+        mesh_ = std::make_shared<MeshFromObj>("assets/objs/hinata4.obj");
         transform_.setScale({1, 1, 1});
         transform_.setPosition({0, 1, 0});
 

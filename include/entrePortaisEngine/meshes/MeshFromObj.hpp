@@ -1,7 +1,3 @@
-//
-// Created by vini84200 on 2/21/23.
-//
-
 #ifndef ENTREPORTAIS_MESHFROMOBJ_HPP
 #define ENTREPORTAIS_MESHFROMOBJ_HPP
 
@@ -12,6 +8,7 @@
 #include "tiny_obj_loader.h"
 #include "entrePortaisEngine/Compatibility.hpp"
 #include "entrePortaisEngine/render/Texture.hpp"
+#include "spdlog/spdlog.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 
@@ -33,9 +30,22 @@ namespace entre_portais {
         }
     };
 
+    struct ParsedObjResult {
+        std::vector<glm::vec3> positions;
+        std::vector<glm::vec3> normals;
+        std::vector<glm::vec2> texCoords;
+        std::vector<unsigned int> indices;
+        std::vector<tinyobj::material_t> materials;
+        std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> materialRanges_;
+
+        ~ParsedObjResult() {
+            spdlog::info("Deleting ParsedObjResult");
+        }
+    };
+
     class ParseObjTask : public ITask {
     public:
-        ParseObjTask(std::string fileName, std::function<void(tinyobj::ObjReader)>);
+        ParseObjTask(std::string fileName, std::function<void()>, ParsedObjResult &resultPtr);
 
         TaskRunResult Run() override;
 
@@ -44,8 +54,14 @@ namespace entre_portais {
         void OnCancel() override;
 
         std::string fileName_;
-        tinyobj::ObjReader reader_;
-        std::function<void(tinyobj::ObjReader)> callback_;
+        ParsedObjResult &result_;
+        std::function<void()> callback_;
+
+        void RecalculateNormals(tinyobj::attrib_t &original_attrib, std::vector<tinyobj::shape_t> &original_shapes,
+                                tinyobj::attrib_t &new_attrib, std::vector<tinyobj::shape_t> &new_shapes);
+
+        void CreateIndices(tinyobj::attrib_t &attrib, std::vector<tinyobj::shape_t> &shapes,
+                           std::vector<tinyobj::material_t> materials);
     };
 
     class MeshFromObj : public IMesh {
@@ -54,14 +70,16 @@ namespace entre_portais {
 
         void Draw(Shader shaderInUse) override;
 
-        void FinishedLoading(tinyobj::ObjReader reader);
+        void FinishedLoading();
 
     private:
         atomic_bool loaded_ = false;
         atomic_bool canInitialize_ = false;
-        TaskHandler loadTask_;
         std::string assetName_;
-        tinyobj::ObjReader reader_;
+        std::unique_ptr<ParsedObjResult> result_;
+
+
+        std::vector<tinyobj::material_t> materials_;
         std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> materialRanges_;
         std::unordered_map<unsigned int, Texture> textures_;
 
