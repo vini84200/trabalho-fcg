@@ -224,6 +224,7 @@ namespace entre_portais {
 
     void Window::onExit() {
         getLogger()->info("Exiting");
+        TaskManager::getInstance()->stop();
         scene_->exit();
         UnregisterAllPlugins();
     }

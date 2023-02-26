@@ -1,4 +1,6 @@
 #include "entrePortaisEngine/physics/BoxCollider.hpp"
+#include "spdlog/spdlog.h"
+#include "entrePortaisEngine/physics/SphereCollider.hpp"
 
 namespace entre_portais {
     void BoxCollider::Draw() {
@@ -33,12 +35,29 @@ namespace entre_portais {
         return new_bbo;
     }
 
-    BoxCollider::BoxCollider(glm::vec3 size) {
+    BoxCollider::BoxCollider(glm::vec3 size, glm::mat4 &modelMatrix)
+            : ICollider(modelMatrix) {
         size_ = size;
     }
 
     BoundingBox BoxCollider::getBoundingBox() {
         return {glm::vec3(-size_ / 2.0f), glm::vec3(size_ / 2.0f)};
+    }
+
+    collisions::PossibleCollision BoxCollider::isColliding(ICollider *other) {
+        return other->isColliding(this);
+    }
+
+    collisions::PossibleCollision BoxCollider::isColliding(glm::vec4 point) {
+        return collisions::checkCollisionBoxPoint(modelMatrix_, point);
+    }
+
+    collisions::PossibleCollision BoxCollider::isColliding(BoxCollider box) {
+        return collisions::checkCollisionBoxBox(modelMatrix_, box.modelMatrix_);
+    }
+
+    collisions::PossibleCollision BoxCollider::isColliding(SphereCollider sphere) {
+        return collisions::checkCollisionBoxSphere(modelMatrix_, sphere.getModelMatrix());
     }
 
 } // entre_portais

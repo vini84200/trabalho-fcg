@@ -32,6 +32,7 @@ set(sources
 		src/entrePortaisEngine/physics/RigidBody.cpp
 		src/entrePortaisEngine/physics/ICollider.cpp
 		src/entrePortaisEngine/physics/BoxCollider.cpp
+		src/entrePortaisEngine/physics/SphereCollider.cpp
 		src/entrePortaisEngine/physics/collisions.cpp
 
 		src/testGame/TriScene.cpp
@@ -45,6 +46,7 @@ set(sources
 		src/testGame/TeapotObject.cpp
 		src/testGame/Cuelho.cpp
         src/testGame/EmptyObject.cpp
+		src/testGame/Ball.cpp
 		)
 
 set(exe_sources

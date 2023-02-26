@@ -12,6 +12,7 @@
 #include "testGame/TeapotObject.hpp"
 #include "testGame/Cuelho.hpp"
 #include "entrePortaisEngine/Objects/ObjFromFile.hpp"
+#include "testGame/Ball.hpp"
 
 namespace entre_portais {
     TriScene::TriScene() : IScene("TriScene") {
@@ -45,28 +46,38 @@ namespace entre_portais {
         cube->getTransform()->setPosition(glm::vec3(0.0f, 0.5f, 0.0f));
         addChild(cube);
 
-        char *cylinname = "Cilindro";
-        auto cylin = std::make_shared<CylinderObject>(cylinname);
-        addChild(cylin);
-
+//        char *cylinname = "Cilindro";
+//        auto cylin = std::make_shared<CylinderObject>(cylinname);
+//        addChild(cylin);
+//
         auto grnd = std::make_shared<Ground>();
         addChild(grnd);
+//
+//        char *teapotName = "Teapot";
+//        auto teapot = std::make_shared<TeapotObject>(teapotName);
+//        addChild(teapot);
+//
+//        char *cuelhoNome = "Cuelho";
+//        auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
+//        addChild(cuelho);
+//
+//        char *path = "assets/objs/Intercity1.obj";
+//        char *name = "Train";
+//        auto train = std::make_shared<ObjFromFile>(name, path);
+//        addChild(train);
+//
+//        addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
 
-        char *teapotName = "Teapot";
-        auto teapot = std::make_shared<TeapotObject>(teapotName);
-        addChild(teapot);
+        auto b1 = std::make_shared<Ball>("Ball 1");
+        b1->getTransform()->setPosition(glm::vec3(0.0f, 0.5f, 0.0f));
+        addChild(b1);
+        auto b2 = std::make_shared<Ball>("Ball 2");
+        b2->getTransform()->setPosition(glm::vec3(0.0f, 2.5f, 0.0f));
+        addChild(b2);
 
-        char *cuelhoNome = "Cuelho";
-        auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
-        addChild(cuelho);
-
-        char *path = "assets/objs/Intercity1.obj";
-        char *name = "Train";
-        auto train = std::make_shared<ObjFromFile>(name, path);
-        addChild(train);
-
-        addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
-
+        auto b3 = std::make_shared<Ball>("Ball 3");
+        b3->getTransform()->setPosition(glm::vec3(0.0f, 4.5f, 0.0f));
+        addChild(b3);
 
         char *charName = "Leoncio";
         auto character = std::make_shared<Player>(charName);

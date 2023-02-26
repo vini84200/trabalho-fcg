@@ -88,6 +88,8 @@ namespace entre_portais {
         }
         if (is_initialized_) {
             child->initializePropagate();
+        } else {
+            child->calculateModelMatrix();
         }
     }
 
@@ -110,8 +112,8 @@ namespace entre_portais {
 
     void IGameNode::initializePropagate() {
         if (!is_initialized_) {
-            initialize();
             calculateModelMatrix();
+            initialize();
             is_initialized_ = true;
         }
         for (auto &child: children_) {

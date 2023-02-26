@@ -120,6 +120,8 @@ namespace entre_portais {
             return taskQueue_;
         }
 
+        void stop();
+
     private:
         TaskManager();
 
@@ -160,6 +162,7 @@ namespace entre_portais {
 
         // Logger
         Logger logger_ = Logger("TaskManager");
+        bool stop_ = false;
     };
 
 

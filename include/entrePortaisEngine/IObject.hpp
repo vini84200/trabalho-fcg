@@ -13,7 +13,8 @@ namespace entre_portais {
     class IObject : public IGameNode, public IRenderable {
         /* Objeto tem um mesh*/
     public:
-        IObject(const char *name) : IGameNode(name) {}
+        IObject(const char *name) : IGameNode(name) {
+        }
 
         ~IObject();;
 

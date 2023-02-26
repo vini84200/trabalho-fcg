@@ -36,6 +36,12 @@ void entre_portais::IObject::renderImGui(bool *p_open) {
             }
             ImGui::TreePop();
         }
+        if (rigidBody_ != nullptr) {
+            if (ImGui::TreeNode("RigidBody")) {
+                rigidBody_->renderImGui();
+                ImGui::TreePop();
+            }
+        }
         CustomImGui();
         if (ImGui::TreeNode("Children")) {
             for (auto &child: children_) {

@@ -58,6 +58,13 @@ namespace entre_portais {
             ITask *task = GetTask(taskHandler);
             {
                 std::unique_lock<std::mutex> lock(signal.mutex);
+                if (signal.isRunning == false) {
+                    logger.getLogger()->info("Worker thread stopped");
+                    return;
+                }
+            }
+            {
+                std::unique_lock<std::mutex> lock(signal.mutex);
                 signal.currentTask = task;
             }
             if (task == nullptr) {
@@ -133,12 +140,19 @@ namespace entre_portais {
                 std::unique_lock<std::mutex> lock(signal.mutex);
                 signal.currentTask = nullptr;
             }
+            {
+                std::unique_lock<std::mutex> lock(signal.mutex);
+                if (signal.isRunning == false) {
+                    logger.getLogger()->info("Worker thread stopped");
+                    return;
+                }
+            }
         }
     }
 
     TaskHandler TaskManager::GetNextTask() {
         std::unique_lock<std::mutex> lock(queueMutex_);
-        queueCondition_.wait(lock, [this] { return !taskQueue_.empty(); });
+        queueCondition_.wait(lock, [this] { return !taskQueue_.empty() || stop_; });
         TaskHandler taskHandler = taskQueue_.front();
         taskQueue_.pop();
         return taskHandler;
@@ -168,6 +182,32 @@ namespace entre_portais {
                 return task.first;
             }
         }
+    }
+
+    void TaskManager::stop() {
+        spdlog::info("Stopping task manager");
+        stop_ = true;
+        {
+            std::lock_guard<std::mutex> lock(queueMutex_);
+            while (!taskQueue_.empty()) {
+                taskQueue_.pop();
+            }
+        }
+        {
+            std::lock_guard<std::mutex> lock(threadsMutex_);
+            for (auto &thread: threads_) {
+                std::unique_lock<std::mutex> lock(thread->mutex);
+                thread->isRunning = 0;
+            }
+            {
+                std::lock_guard<std::mutex> lock(queueMutex_);
+                queueCondition_.notify_all();
+            }
+            for (auto &thread: threads_) {
+                thread->thread.join();
+            }
+        }
+
     }
 
 }  // namespace entre_portais

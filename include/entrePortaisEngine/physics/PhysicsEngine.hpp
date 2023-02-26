@@ -4,7 +4,7 @@
 #include <vector>
 #include "OctreeAdaptor.hpp"
 
-#define MAX_OCTREE_DEPTH 7
+#define MAX_OCTREE_DEPTH 10
 #define MAX_OCTREE_OBJECTS 10
 
 #define MAX_OCTREE_SIZE 10000
