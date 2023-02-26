@@ -78,7 +78,7 @@ namespace entre_portais {
     TriScene::~TriScene() = default;
 
     void TriScene::update(float deltaTime) {
-
+        IScene::update(deltaTime);
     }
 
     void TriScene::onExit() {

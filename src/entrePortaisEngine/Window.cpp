@@ -37,7 +37,7 @@ namespace entre_portais {
         }
         glfwMakeContextCurrent(window_);
 
-        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
 
 
         glfwSetWindowUserPointer(window_, this);
@@ -177,7 +177,7 @@ namespace entre_portais {
             running_ = false;
         }
 
-        getLogger()->trace("Key {} {}", key, action == GLFW_PRESS ? "pressed" : "released");
+//        getLogger()->trace("Key {} {}", key, action == GLFW_PRESS ? "pressed" : "released");
 
         for (auto plugin: registeredPlugins_) {
             plugin->onKey(key, scancode, action, mods);
@@ -197,7 +197,7 @@ namespace entre_portais {
     }
 
     void Window::onMouseButton(int button, int action, int mods) {
-        getLogger()->info("Mouse button {} {}", button, action == GLFW_PRESS ? "pressed" : "released");
+//        getLogger()->info("Mouse button {} {}", button, action == GLFW_PRESS ? "pressed" : "released");
         scene_->mouseButton(button, action, mods);
     }
 

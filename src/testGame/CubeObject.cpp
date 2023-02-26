@@ -1,11 +1,9 @@
-//
-// Created by vini84200 on 2/19/23.
-//
-
 #include "testGame/CubeObject.hpp"
 #include "entrePortaisEngine/meshes/CubeMesh.hpp"
 #include "entrePortaisEngine/IScene.hpp"
 #include "entrePortaisEngine/meshes/CylinderMesh.hpp"
+#include "entrePortaisEngine/physics/RigidBody.hpp"
+#include "entrePortaisEngine/physics/BoxCollider.hpp"
 
 namespace entre_portais {
     CubeObject::CubeObject(char *name) : IObject(name) {
@@ -35,6 +33,9 @@ namespace entre_portais {
 
     void CubeObject::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
+        std::unique_ptr<ICollider> cubeCollider = std::make_unique<BoxCollider>(glm::vec3(1.0f, 1.0f, 1.0f));
+        rigidBody_ = std::make_unique<RigidBody>(&modelMatrix_, std::move(cubeCollider),
+                                                 *this->getScene()->getPhysicsEngine().get());
         loadShader("primitive");
         submit(renderer);
 

@@ -6,7 +6,7 @@
 namespace entre_portais {
     /**
      * @brief A 3D box, witch is aligned with the world axes. It is used to
-     * represent the bounding box of a object.
+     * represent the bounding box of an object.
      */
     struct BoundingBox {
         glm::vec3 min;
@@ -25,6 +25,11 @@ namespace entre_portais {
         BoundingBox(glm::vec3 center, float radius) {
             min = center - glm::vec3(radius);
             max = center + glm::vec3(radius);
+        };
+
+        BoundingBox(glm::vec3 point) {
+            min = point;
+            max = point;
         };
 
         bool operator==(const BoundingBox &other) const {
@@ -48,6 +53,15 @@ namespace entre_portais {
         bool intersects(const BoundingBox &other) const {
             return (other.min.x <= max.x && other.min.y <= max.y && other.min.z <= max.z &&
                     other.max.x >= min.x && other.max.y >= min.y && other.max.z >= min.z);
+        }
+
+        void addPoint(const glm::vec3 point) {
+            if (point.x < min.x) min.x = point.x;
+            if (point.y < min.y) min.y = point.y;
+            if (point.z < min.z) min.z = point.z;
+            if (point.x > max.x) max.x = point.x;
+            if (point.y > max.y) max.y = point.y;
+            if (point.z > max.z) max.z = point.z;
         }
     };
 }

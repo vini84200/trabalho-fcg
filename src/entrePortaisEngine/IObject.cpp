@@ -1,6 +1,7 @@
 #include "entrePortaisEngine/IObject.hpp"
 #include "utils/matrices.h"
 #include "entrePortaisEngine/Logger.hpp"
+#include "entrePortaisEngine/IScene.hpp"
 #include "imgui.h"
 
 void entre_portais::IObject::render() {
@@ -74,4 +75,22 @@ bool entre_portais::IObject::IsVisible() {
 
 glm::mat4 &entre_portais::IObject::getModelMatrix() {
     return modelMatrix_;
+}
+
+entre_portais::IObject::~IObject() {
+    if (mesh_ != nullptr) {
+        mesh_.reset();
+    }
+    if (rigidBody_ != nullptr) {
+        if (!scene_.expired())
+            scene_.lock()->getPhysicsEngine()->removeRigidBody(rigidBody_.get());
+        rigidBody_.reset();
+    }
+}
+
+void entre_portais::IObject::onTransformChange() {
+    if (rigidBody_ != nullptr) {
+        rigidBody_->onChange();
+    }
+
 }

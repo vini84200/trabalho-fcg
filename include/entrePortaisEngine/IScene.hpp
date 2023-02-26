@@ -7,6 +7,7 @@
 #include "IGameNode.hpp"
 #include "entrePortaisEngine/render/Renderer.hpp"
 #include "imgui.h"
+#include "entrePortaisEngine/physics/PhysicsEngine.hpp"
 
 namespace entre_portais {
     class Window;
@@ -34,7 +35,7 @@ namespace entre_portais {
 
         virtual void initialize() = 0;
 
-        virtual void update(float deltaTime) = 0;
+        virtual void update(float deltaTime);;
 
         virtual void render();
 
@@ -75,17 +76,21 @@ namespace entre_portais {
             return camera_;
         }
 
-        Window * getWindow();
+        Window *getWindow();
 
         void setWindow(Window *window);
+
+        const std::shared_ptr<Renderer> &getRenderer() const;
+
+        const std::shared_ptr<PhysicsEngine> &getPhysicsEngine() const;
+
+        void setPhysicsEngine(const std::shared_ptr<PhysicsEngine> &physicsEngine);
 
     protected:
         Window *window_;
         std::shared_ptr<Camera> camera_;
         std::shared_ptr<Renderer> renderer_;
-
-    public:
-        const std::shared_ptr<Renderer> &getRenderer() const;
+        std::shared_ptr<PhysicsEngine> physicsEngine_;
     };
 
 }
