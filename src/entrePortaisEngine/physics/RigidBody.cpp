@@ -133,6 +133,8 @@ namespace entre_portais {
                      glm::to_string(possibleCollision.normal));
 //        applyForce(impulse);
         velocity_ += j * possibleCollision.normal / mass_;
+        // Uncollide
+        transformToModify_.move(possibleCollision.pointA - possibleCollision.pointB);
     }
 
     float RigidBody::getMass() const {
