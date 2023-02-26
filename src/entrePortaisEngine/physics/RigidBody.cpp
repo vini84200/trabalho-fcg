@@ -1,5 +1,7 @@
 #include "entrePortaisEngine/physics/RigidBody.hpp"
 #include "imgui.h"
+#include "spdlog/spdlog.h"
+#include "glm/gtx/string_cast.hpp"
 
 namespace entre_portais {
     BoundingBox RigidBody::getBoundingBox() {
@@ -94,5 +96,58 @@ namespace entre_portais {
 
     bool RigidBody::isStatic() const {
         return isStatic_;
+    }
+
+    bool RigidBody::onCollision(RigidBody *const other) {
+        return true;
+    }
+
+    void RigidBody::resolveCollision(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
+                                     glm::vec3 velDiff) {
+        // Outro objeto é dinâmico
+        // http://www.chrishecker.com/images/e/e7/Gdmphys3.pdf, pag 4
+        glm::vec3 diff = velDiff;
+        float e = glm::min(other->getRestitution(), getRestitution());
+        float j = -(1 + e) * glm::dot(diff, possibleCollision.normal) /
+                  (1 / mass_ + 1 / other->mass_);
+
+        glm::vec3 impulse = j * possibleCollision.normal;
+//        applyForce(impulse);
+        velocity_ += j * possibleCollision.normal / mass_;
+        // TODO: Friction
+        // TODO: Do rotation
+
+    }
+
+    void RigidBody::resolveCollisionWithStatic(RigidBody *const other,
+                                               const collisions::PossibleCollision &possibleCollision) {
+        // Outro objeto é estático
+        // http://www.chrishecker.com/images/e/e7/Gdmphys3.pdf, pag 4
+
+        glm::vec3 diff = velocity_;
+        float e = 1.0f; // Estático não tem restituição, para evitar que o objeto fique "rebobinando"
+        float j = -(1 + e) * glm::dot(diff, possibleCollision.normal) /
+                  (1 / mass_); // Outro objeto é estático, logo a massa dele é infinita
+        glm::vec3 impulse = j * possibleCollision.normal;
+        spdlog::info("Impulse: {} J: {} Normal: {}", glm::to_string(impulse), j,
+                     glm::to_string(possibleCollision.normal));
+//        applyForce(impulse);
+        velocity_ += j * possibleCollision.normal / mass_;
+    }
+
+    float RigidBody::getMass() const {
+        return mass_;
+    }
+
+    float RigidBody::getRestitution() const {
+        return restitution_;
+    }
+
+    float RigidBody::getFriction() const {
+        return friction_;
+    }
+
+    const glm::vec3 &RigidBody::getVelocity() const {
+        return velocity_;
     }
 } // entre_portais

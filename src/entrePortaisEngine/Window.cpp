@@ -37,7 +37,7 @@ namespace entre_portais {
         }
         glfwMakeContextCurrent(window_);
 
-        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_HIDDEN);
+        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 
 
         glfwSetWindowUserPointer(window_, this);

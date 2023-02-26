@@ -8,10 +8,14 @@ namespace entre_portais::collisions {
     struct PossibleCollision {
         glm::vec3 pointA;
         glm::vec3 pointB;
-        glm::vec3 normal; // Normal of the collision, A to B
+        glm::vec3 normal; // Normal of the collision, normalized, pointing from A to B
         bool isColliding;
 
         PossibleCollision() : isColliding(false) {}
+
+        PossibleCollision reverse() const {
+            return PossibleCollision(pointB, pointA, -normal, isColliding);
+        }
 
         PossibleCollision(glm::vec3 pointA, glm::vec3 pointB, glm::vec3 normal) : pointA(pointA), pointB(pointB),
                                                                                   normal(normal), isColliding(true) {}

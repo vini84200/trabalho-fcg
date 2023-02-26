@@ -27,10 +27,14 @@ namespace entre_portais {
         // DYNAMICS
         bool isStatic_ = true;
         glm::vec3 velocity_ = glm::vec3(0.0f, 0.0f, 0.0f);
+    public:
+        const glm::vec3 &getVelocity() const;
+
+    private:
         glm::vec3 force_ = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 lastForce_ = glm::vec3(0.0f, 0.0f, 0.0f);
-        float mass_ = 1.0f;
         glm::vec3 gravity_ = glm::vec3(0, -9.8, 0); // in m/s^2
+
 
         void updateDynamics(float deltaTime);
 
@@ -67,6 +71,28 @@ namespace entre_portais {
         void setId(int id);
 
         int getID() const;
+
+        bool onCollision(RigidBody *const other);
+
+        void resolveCollision(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
+                              glm::vec3 velDiff);
+
+        void resolveCollisionWithStatic(RigidBody *const other, const collisions::PossibleCollision &possibleCollision);
+
+    public:
+
+    private:
+        float mass_ = 1.0f;
+        float restitution_ = 0.8f;
+    public:
+        float getMass() const;
+
+        float getRestitution() const;
+
+        float getFriction() const;
+
+    private:
+        float friction_ = 0.5f;
 
     };
 
