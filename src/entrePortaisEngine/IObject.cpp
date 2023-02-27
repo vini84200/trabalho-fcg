@@ -28,7 +28,11 @@ void entre_portais::IObject::renderImGui(bool *p_open) {
         ImGui::Checkbox("Visible", &visible_);
         transform_.renderImGui();
         if (ImGui::TreeNode("Mesh")) {
-            ImGui::Text("Mesh GUI not implemented");
+            if (mesh_ != nullptr) {
+                mesh_->RenderImGui();
+            } else {
+                ImGui::Text("No mesh");
+            }
             ImGui::TreePop();
         }
         CustomImGui();

@@ -42,4 +42,12 @@ namespace entre_portais {
         glBindTexture(GL_TEXTURE_2D, 0);
 
     }
+
+    unsigned int Texture::GetTextureID() const {
+        return id_;
+    }
+
+    ImTextureID Texture::GetImTextureID() const {
+        return (ImTextureID) id_;
+    }
 } // entre_portais

@@ -31,6 +31,7 @@ namespace entre_portais {
     private:
         glm::vec3 direction_ = {0, 0, 0};
         std::shared_ptr<Camera> camera_;
+        bool altMode_;
     };
 
 } // entre_portais

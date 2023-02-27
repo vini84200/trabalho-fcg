@@ -41,7 +41,7 @@ namespace entre_portais {
             }
             UnbindVAO();
         } else if (canInitialize_) {
-            initializeMesh();
+            initializeMesh(); // TODO: Encontrar um outro lugar para chamar a inicialização
         }
     }
 
@@ -121,6 +121,65 @@ namespace entre_portais {
                 continue;
             }
             textures_.insert({i, TextureManager::instance().getTexture(material.diffuse_texname)});
+        }
+    }
+
+    void MeshFromObj::RenderImGui(bool *p_open) {
+        ImGui::Text("Mesh From Obj");
+        ImGui::Text("Asset Name: %s", assetName_.c_str());
+        if (loaded_) {
+            ImGui::Text("Loaded");
+            ImGui::Text("Material Count: %d", materials_.size());
+            ImGui::Text("Texture Count: %d", textures_.size());
+            ImGui::Text("Material Ranges: %d", materialRanges_.size());
+            ImGui::Text("Index Count: %d", GetNumVertices());
+
+            if (ImGui::TreeNode("Materials:")) {
+                if (materials_.size() > 0) {
+                    int selectedMaterial = ImGui::GetStateStorage()->GetInt(ImGui::GetID("##Material"), 0);
+                    ImGui::Combo("Material", &selectedMaterial, [](void *data, int idx, const char **out_text) {
+                        auto &materials = *static_cast<std::vector<tinyobj::material_t> *>(data);
+                        *out_text = materials[idx].name.c_str();
+                        return true;
+                    }, static_cast<void *>(&materials_), materials_.size());
+                    {
+                        if (selectedMaterial < 0 || selectedMaterial >= materials_.size()) {
+                            selectedMaterial = 0;
+                        }
+                        auto &material = materials_[selectedMaterial];
+                        ImGui::Text("Name: %s", material.name.c_str());
+                        ImGui::ColorEdit3("Ka", material.ambient);
+                        ImGui::ColorEdit3("Kd", material.diffuse);
+                        ImGui::ColorEdit3("Ks", material.specular);
+                        ImGui::DragFloat("q", &material.shininess, 0.1f, 0.0f, 100.0f, "%.1f",
+                                         ImGuiSliderFlags_Logarithmic);
+                        ImGui::Text("Texture: %s", material.diffuse_texname.c_str());
+                        if (textures_.count(selectedMaterial) > 0)
+                            ImGui::Image(textures_.at(selectedMaterial).GetImTextureID(), ImVec2(128, 128),
+                                         ImVec2(0, 1), ImVec2(1, 0));
+                    }
+                    ImGui::GetStateStorage()->SetInt(ImGui::GetID("##Material"), selectedMaterial);
+                } else {
+                    ImGui::Text("No Materials");
+                }
+
+                ImGui::TreePop();
+            }
+
+            if (ImGui::TreeNode("Textures:")) {
+                if (textures_.size() == 0) {
+                    ImGui::Text("No Textures");
+                }
+                for (auto &[mat, tex]: textures_) {
+                    ImGui::Text("Material: %d", mat);
+                    ImGui::Text("Texture: %s", materials_[mat].diffuse_texname.c_str());
+                    ImGui::Image(tex.GetImTextureID(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));
+                }
+                ImGui::TreePop();
+            }
+
+        } else {
+            ImGui::Text("Loading...");
         }
     }
 

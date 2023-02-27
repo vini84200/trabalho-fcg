@@ -11,6 +11,7 @@
 #include "entrePortaisEngine/render/VertexArrayBuffer.hpp"
 #include "entrePortaisEngine/render/Shader.hpp"
 #include "entrePortaisEngine/render/ShadersManager.hpp"
+#include "imgui.h"
 
 namespace entre_portais {
 
@@ -47,6 +48,10 @@ namespace entre_portais {
         virtual void UnbindVAO() {
             vertexArray_->unbind();
         }
+
+        virtual void RenderImGui(bool *p_open = nullptr) {
+            ImGui::Text("Mesh not implemented");
+        };
 
 
         virtual int GetNumVertices() {
