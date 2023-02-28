@@ -114,8 +114,12 @@ namespace entre_portais {
         glm::vec3 impulse = j * possibleCollision.normal;
 //        applyForce(impulse);
         velocity_ += j * possibleCollision.normal / mass_;
+
+        // Uncollide
+        transformToModify_.move((possibleCollision.pointA - possibleCollision.pointB)/2.f);
         // TODO: Friction
         // TODO: Do rotation
+
 
     }
 
@@ -125,7 +129,7 @@ namespace entre_portais {
         // http://www.chrishecker.com/images/e/e7/Gdmphys3.pdf, pag 4
 
         glm::vec3 diff = velocity_;
-        float e = 1.0f; // Estático não tem restituição, para evitar que o objeto fique "rebobinando"
+        float e = glm::min(other->getRestitution(), getRestitution());
         float j = -(1 + e) * glm::dot(diff, possibleCollision.normal) /
                   (1 / mass_); // Outro objeto é estático, logo a massa dele é infinita
         glm::vec3 impulse = j * possibleCollision.normal;

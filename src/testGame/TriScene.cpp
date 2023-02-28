@@ -41,32 +41,32 @@ namespace entre_portais {
         obj4->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
         obj3->addChild(obj4);
 
-        char *cuboname = "Cubo";
-        auto cube = std::make_shared<CubeObject>(cuboname);
-        cube->getTransform()->setPosition(glm::vec3(0.0f, 0.5f, 0.0f));
-        addChild(cube);
+    //     char *cuboname = "Cubo";
+    //     auto cube = std::make_shared<CubeObject>(cuboname);
+    //     cube->getTransform()->setPosition(glm::vec3(0.0f, 0.5f, 0.0f));
+    //     addChild(cube);
 
-//        char *cylinname = "Cilindro";
-//        auto cylin = std::make_shared<CylinderObject>(cylinname);
-//        addChild(cylin);
-//
+    //    char *cylinname = "Cilindro";
+    //    auto cylin = std::make_shared<CylinderObject>(cylinname);
+    //    addChild(cylin);
+
         auto grnd = std::make_shared<Ground>();
         addChild(grnd);
-//
-//        char *teapotName = "Teapot";
-//        auto teapot = std::make_shared<TeapotObject>(teapotName);
-//        addChild(teapot);
-//
-//        char *cuelhoNome = "Cuelho";
-//        auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
-//        addChild(cuelho);
-//
-//        char *path = "assets/objs/Intercity1.obj";
-//        char *name = "Train";
-//        auto train = std::make_shared<ObjFromFile>(name, path);
-//        addChild(train);
-//
-//        addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
+
+    //    char *teapotName = "Teapot";
+    //    auto teapot = std::make_shared<TeapotObject>(teapotName);
+    //    addChild(teapot);
+
+    //    char *cuelhoNome = "Cuelho";
+    //    auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
+    //    addChild(cuelho);
+
+    //    char *path = "assets/objs/Intercity1.obj";
+    //    char *name = "Train";
+    //    auto train = std::make_shared<ObjFromFile>(name, path);
+    //    addChild(train);
+
+       addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
 
         auto b1 = std::make_shared<Ball>("Ball 1");
         b1->getTransform()->setPosition(glm::vec3(0.0f, 0.5f, 0.0f));
