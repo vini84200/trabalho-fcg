@@ -33,7 +33,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")    #this will allow to use same _DEBUG macro available in both Linux as well as Windows - MSCV environment. Easy to put Debug specific code.
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-
 #
 # Setup alternative names
 #
@@ -270,6 +269,8 @@ target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_
 if (WIN32)
   set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 endif ()
+
+target_link_options(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
 
 if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
   target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad glm)
