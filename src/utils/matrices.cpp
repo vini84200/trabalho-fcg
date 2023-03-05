@@ -1,6 +1,6 @@
 #include "utils/matrices.h"
 #include "glm/detail/type_quat.hpp"
-
+#include "glm/gtx/quaternion.hpp"
 
 
 glm::mat4 matrices::Matrix_Perspective(float field_of_view, float aspect, float n, float f) {
@@ -158,4 +158,8 @@ glm::mat4 matrices::ScalingMatrixFromMatrix(glm::mat4 mat) {
             0, 0, scale.z, 0,
             0, 0, 0, 1
     );
+}
+
+glm::quat matrices::RotationFromMatrix(glm::mat4 M) {
+    return glm::toQuat(M);
 }

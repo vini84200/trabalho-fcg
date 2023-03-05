@@ -31,7 +31,7 @@ namespace entre_portais {
             auto const &collider2 = rigidBody2->getCollider().get();
 
             auto collisionInfo = collider1->isColliding(collider2);
-            if (collisionInfo.isColliding) {
+            if (collisionInfo.collisionType != collisions::PossibleCollision::Collision::NO_COLLISION) {
                 // COllision detected
                 collisions.emplace_back(rigidBody1, rigidBody2, collisionInfo);
             }
@@ -172,6 +172,7 @@ namespace entre_portais {
 
                 // Draw collision normal
                 glm::vec3 const normal = collision.normal;
+                auto const color = collision.isPenetration() ? IM_COL32(255, 0, 0, 255) : IM_COL32(0, 255, 0, 255);
                 camera.debugDrawLine(center1, center1 + normal, IM_COL32(0, 0, 255, 255), 1.f);
                 camera.debugDrawLine(center2, center2 - normal, IM_COL32(0, 0, 255, 255), 1.f);
 
