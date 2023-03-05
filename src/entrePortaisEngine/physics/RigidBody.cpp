@@ -54,16 +54,21 @@ namespace entre_portais {
 
     }
 
-    void RigidBody::renderImGui() {
+    void RigidBody::renderImGui(Camera *camera) {
         ImGui::Text("RigidBody");
         ImGui::Text("ID: %d", id_);
         ImGui::Checkbox("Static", &isStatic_);
         ImGui::Text("Mass: %f", mass_);
         ImGui::Text("Velocity: %f, %f, %f", velocity_.x, velocity_.y, velocity_.z);
+        if (ImGui::Button("Reset Velocity"))
+            velocity_ = glm::vec3(0.0f);
         ImGui::Text("Last Force: %f, %f, %f", lastForce_.x, lastForce_.y, lastForce_.z);
         ImGui::SliderFloat("Mass", &mass_, 0.0f, 100.0f);
         ImGui::SliderFloat("Gravity", &gravity_.y, -20.0f, 20.0f);
-
+        if (ImGui::TreeNode("Collider")) {
+            collider_->renderImGui(camera);
+            ImGui::TreePop();
+        }
     }
 
     void RigidBody::updateVelocity(float deltaTime) {
@@ -116,7 +121,7 @@ namespace entre_portais {
         velocity_ += j * possibleCollision.normal / mass_;
 
         // Uncollide
-        transformToModify_.move((possibleCollision.pointA - possibleCollision.pointB)/2.f);
+        transformToModify_.move((possibleCollision.depth * possibleCollision.normal) / 2.0f);
         // TODO: Friction
         // TODO: Do rotation
 
@@ -135,10 +140,11 @@ namespace entre_portais {
         glm::vec3 impulse = j * possibleCollision.normal;
         spdlog::info("Impulse: {} J: {} Normal: {}", glm::to_string(impulse), j,
                      glm::to_string(possibleCollision.normal));
+        spdlog::info("Normal: {} Depth: {}", glm::to_string(possibleCollision.normal), possibleCollision.depth);
 //        applyForce(impulse);
         velocity_ += j * possibleCollision.normal / mass_;
         // Uncollide
-        transformToModify_.move(possibleCollision.pointA - possibleCollision.pointB);
+        transformToModify_.move(possibleCollision.depth * possibleCollision.normal);
     }
 
     float RigidBody::getMass() const {

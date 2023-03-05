@@ -37,7 +37,9 @@ namespace entre_portais {
         }
         glfwMakeContextCurrent(window_);
 
+
         glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        cursorIsVisible_ = false;
 
 
         glfwSetWindowUserPointer(window_, this);
@@ -178,10 +180,14 @@ namespace entre_portais {
         }
 
 //        getLogger()->trace("Key {} {}", key, action == GLFW_PRESS ? "pressed" : "released");
-
+        bool handled = false;
         for (auto plugin: registeredPlugins_) {
-            plugin->onKey(key, scancode, action, mods);
+            handled = plugin->onKey(key, scancode, action, mods);
+            if (handled) {
+                return;
+            }
         }
+
 
         try {
             scene_->keyPress(key, scancode, action, mods);
@@ -198,10 +204,24 @@ namespace entre_portais {
 
     void Window::onMouseButton(int button, int action, int mods) {
 //        getLogger()->info("Mouse button {} {}", button, action == GLFW_PRESS ? "pressed" : "released");
+        bool handled = false;
+        for (auto plugin: registeredPlugins_) {
+            handled = plugin->onMouseButton(button, action, mods);
+            if (handled) {
+                return;
+            }
+        }
         scene_->mouseButton(button, action, mods);
     }
 
     void Window::onMouseMovement(double xpos, double ypos) {
+        bool handled = false;
+        for (auto plugin: registeredPlugins_) {
+            handled = plugin->onMouseMove(xpos, ypos);
+            if (handled) {
+                return;
+            }
+        }
         scene_->mouseMovementPropagate(xpos, ypos);
         glm::vec2 mousePos(xpos, ypos);
         glm::vec2 delta = mousePos - mousePos_;
@@ -261,9 +281,15 @@ namespace entre_portais {
 
     void Window::showCursor(bool show) {
         if (show) {
+            cursorIsVisible_ = true;
             glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         } else {
+            cursorIsVisible_ = false;
             glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
+    }
+
+    bool Window::isCursorVisible() {
+        return cursorIsVisible_;
     }
 }  // namespace entre_portais

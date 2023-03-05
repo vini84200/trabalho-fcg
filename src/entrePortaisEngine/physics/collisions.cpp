@@ -1,252 +1,344 @@
 #include "entrePortaisEngine/physics/collisions.hpp"
+#include "spdlog/spdlog.h"
+#include "glm/gtx/string_cast.hpp"
 #include <vector>
 
+#define GTK_EPA_MAX_ITER 32
 namespace entre_portais::collisions {
 
-    namespace SAT {
-        // SEPARATING AXIS THEOREM
-        // https://www.geometrictools.com/Documentation/DynamicCollisionDetection.pdf, pag 5-7
-
-        struct CalculatedRs {
-            float r0;
-            float r1;
-            float r2;
-            CalculatedRs(float r0, float r1, float r2) {
-                this->r0 = r0;
-                this->r1 = r1;
-                this->r2 = r2;
-            };
-        };
-
-        struct Cube {
-            glm::vec3 center;
-            glm::vec3 axis0;
-            glm::vec3 axis1;
-            glm::vec3 axis2;
-            float extent0;
-            float extent1;
-            float extent2;
-            Cube(glm::vec3 center, glm::vec3 axis0, glm::vec3 axis1, glm::vec3 axis2, float extent0, float extent1, float extent2) {
-                this->center = center;
-                this->axis0 = axis0;
-                this->axis1 = axis1;
-                this->axis2 = axis2;
-                this->extent0 = extent0;
-                this->extent1 = extent1;
-                this->extent2 = extent2;
-            };
-            Cube(glm::mat4 &transform) {
-                this->center = glm::vec3(transform * glm::vec4(0.0f, 0.0f, 0.0f, 1.0f));
-                auto axis0 = glm::vec3(transform * glm::vec4(1.0f, 0.0f, 0.0f, 0.0f));
-                auto axis1 = glm::vec3(transform * glm::vec4(0.0f, 1.0f, 0.0f, 0.0f));
-                auto axis2 = glm::vec3(transform * glm::vec4(0.0f, 0.0f, 1.0f, 0.0f));
-                this->extent0 = axis0.length();
-                this->extent1 = axis1.length();
-                this->extent2 = axis2.length();
-                this->axis0 = axis0 / extent0;
-                this->axis1 = axis1 / extent1;
-                this->axis2 = axis2 / extent2;
-            };
-            Cube() {
-                this->center = glm::vec3(0.0f);
-                this->axis0 = glm::vec3(1.0f, 0.0f, 0.0f);
-                this->axis1 = glm::vec3(0.0f, 1.0f, 0.0f);
-                this->axis2 = glm::vec3(0.0f, 0.0f, 1.0f);
-                this->extent0 = 0.0f;
-                this->extent1 = 0.0f;
-                this->extent2 = 0.0f;
-            };
-        };
-
-        struct Precalculations
-        {
-            Cube cubeA;
-            Cube cubeB;
-            glm::mat4 C;
-            Precalculations(Cube cubeA, Cube cubeB, glm::mat4 C) {
-                this->cubeA = cubeA;
-                this->cubeB = cubeB;
-                this->C = C;
-            };
-            Precalculations(glm::mat4 &boxA, glm::mat4 &boxB) {
-                this->cubeA = Cube(boxA);
-                this->cubeB = Cube(boxB);
-                this->C = boxB * glm::transpose(boxA);
-            };
-        };
-        
-
-
-        float projectPointIntoNormalDist(glm::vec3 point, glm::vec3 normal) {
-            // normal is a normalized vector
-            return glm::dot(point, normal);
+    namespace GJK_EPA {
+        // FONTE: https://blog.winter.dev/2020/gjk-algorithm/
+        // FONTE: https://blog.winter.dev/2020/epa-algorithm/
+        // ESSA PARTE DO CÓDIGO FOI ADAPTADA DO CÓDIGO DO AUTOR ACIMA CITADO
+        glm::vec3 GJKCollider::findSupportPoint(const GJKCollider &other, const glm::vec3 direction) const {
+            return this->findFurtherPoint(direction) - other.findFurtherPoint(-direction);
         }
 
-        std::vector<glm::vec3> getCubePoints(glm::mat4 &transform) {
-            return {
-                transform * glm::vec4(-1/2,-1/2,-1/2, 1),
-                transform * glm::vec4(1/2,-1/2,-1/2, 1),
-                transform * glm::vec4(1/2, 1/2,-1/2, 1),
-                transform * glm::vec4(1/2, 1/2,1/2, 1),
-                transform * glm::vec4(-1/2, 1/2,1/2, 1),
-                transform * glm::vec4(-1/2,-1/2,1/2, 1),
-                transform * glm::vec4(1/2,-1/2,1/2, 1),
-                transform * glm::vec4(-1/2, 1/2,-1/2, 1)
-            };
+        glm::vec3 CubeGJKCollider::findFurtherPoint(glm::vec3 direction) const {
+            glm::vec3 result = glm::vec3(0.0f, 0.0f, 0.0f);
+            float max = FLT_MIN;
+            for (int i = 0; i < 8; i++) {
+                float dot = glm::dot(this->vertices[i], direction);
+                if (dot > max) {
+                    max = dot;
+                    result = this->vertices[i];
+                }
+            }
+            return result;
         }
 
-        CalculatedRs getRsForTest(int i, const Precalculations &precalcs) {
-            const Cube &cubeA = precalcs.cubeA;
-            const Cube &cubeB = precalcs.cubeB;
-            glm::vec3 D = cubeB.center - cubeA.center;
+        glm::vec3 SphereGJKCollider::findFurtherPoint(glm::vec3 direction) const {
+            return this->center_ + glm::normalize(direction) * this->scaledRadius_;
+        }
 
-            switch (i)
-            {
-            case 0:
-                return CalculatedRs(
-                    cubeA.extent0,
-                    cubeB.extent0 * glm::abs(precalcs.C[0][0]) + cubeB.extent1 * glm::abs(precalcs.C[0][1]) + cubeB.extent2 * glm::abs(precalcs.C[0][2]),
-                    glm::abs(glm::dot(cubeA.axis0, D))
-                );
-                break;
-            case 1:
-                return CalculatedRs(
-                    cubeA.extent1,
-                    cubeB.extent0 * glm::abs(precalcs.C[1][0]) + cubeB.extent1 * glm::abs(precalcs.C[1][1]) + cubeB.extent2 * glm::abs(precalcs.C[1][2]),
-                    glm::abs(glm::dot(cubeA.axis1, D))
-                );
-                break;
-            case 2:
-                return CalculatedRs(
-                    cubeA.extent2,
-                    cubeB.extent0 * glm::abs(precalcs.C[2][0]) + cubeB.extent1 * glm::abs(precalcs.C[2][1]) + cubeB.extent2 * glm::abs(precalcs.C[2][2]),
-                    glm::abs(glm::dot(cubeA.axis2, D))
-                );
-                break;
-            case 3:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[0][0]) + cubeA.extent1 * glm::abs(precalcs.C[1][0]) + cubeA.extent2 * glm::abs(precalcs.C[2][0]),
-                    cubeB.extent0,
-                    glm::abs(glm::dot(cubeB.axis0, D))
-                );
-                break;
-            case 4:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[0][1]) + cubeA.extent1 * glm::abs(precalcs.C[1][1]) + cubeA.extent2 * glm::abs(precalcs.C[2][1]),
-                    cubeB.extent1,
-                    glm::abs(glm::dot(cubeB.axis1, D))
-                );
-                break;
-            case 5:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[0][2]) + cubeA.extent1 * glm::abs(precalcs.C[1][2]) + cubeA.extent2 * glm::abs(precalcs.C[2][2]),
-                    cubeB.extent2,
-                    glm::abs(glm::dot(cubeB.axis2, D))
-                );
-                break;
-            case 6:
-                return CalculatedRs(
-                    cubeA.extent1 * glm::abs(precalcs.C[2][0]) + cubeA.extent2 * glm::abs(precalcs.C[1][0]),
-                    cubeB.extent1 * glm::abs(precalcs.C[0][2]) + cubeB.extent2 * glm::abs(precalcs.C[0][1]),
-                    glm::abs(glm::dot(cubeA.axis1, D) * precalcs.C[2][0] - glm::dot(cubeA.axis2, D) * precalcs.C[1][0])
-                );
-                break;
-            case 7:
-                return CalculatedRs(
-                    cubeA.extent1 * glm::abs(precalcs.C[2][1]) + cubeA.extent2 * glm::abs(precalcs.C[1][1]),
-                    cubeB.extent0 * glm::abs(precalcs.C[0][2]) + cubeB.extent2 * glm::abs(precalcs.C[0][0]),
-                    glm::abs(glm::dot(cubeA.axis1, D) * precalcs.C[2][1] - glm::dot(cubeA.axis2, D) * precalcs.C[1][1])
-                );
-                break;
-            case 8:
-                return CalculatedRs(
-                    cubeA.extent1 * glm::abs(precalcs.C[2][2]) + cubeA.extent2 * glm::abs(precalcs.C[1][2]),
-                    cubeB.extent0 * glm::abs(precalcs.C[0][1]) + cubeB.extent1 * glm::abs(precalcs.C[0][0]),
-                    glm::abs(glm::dot(cubeA.axis1, D) * precalcs.C[2][2] - glm::dot(cubeA.axis2, D) * precalcs.C[1][2])
-                );
-                break;
-            case 9:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[2][0]) + cubeA.extent2 * glm::abs(precalcs.C[0][0]),
-                    cubeB.extent1 * glm::abs(precalcs.C[1][2]) + cubeB.extent2 * glm::abs(precalcs.C[1][1]),
-                    glm::abs(glm::dot(cubeA.axis0, D) * precalcs.C[2][0] - glm::dot(cubeA.axis2, D) * precalcs.C[0][0])
-                );
-                break;
-            case 10:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[2][1]) + cubeA.extent2 * glm::abs(precalcs.C[0][1]),
-                    cubeB.extent0 * glm::abs(precalcs.C[1][2]) + cubeB.extent2 * glm::abs(precalcs.C[1][0]),
-                    glm::abs(glm::dot(cubeA.axis0, D) * precalcs.C[2][1] - glm::dot(cubeA.axis2, D) * precalcs.C[0][1])
-                );
-                break;
-            case 11:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[2][2]) + cubeA.extent2 * glm::abs(precalcs.C[0][2]),
-                    cubeB.extent0 * glm::abs(precalcs.C[1][1]) + cubeB.extent1 * glm::abs(precalcs.C[1][0]),
-                    glm::abs(glm::dot(cubeA.axis0, D) * precalcs.C[2][2] - glm::dot(cubeA.axis2, D) * precalcs.C[0][2])
-                );
-                break;
-            case 12:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[1][0]) + cubeA.extent1 * glm::abs(precalcs.C[0][0]),
-                    cubeB.extent1 * glm::abs(precalcs.C[2][2]) + cubeB.extent2 * glm::abs(precalcs.C[2][1]),
-                    glm::abs(glm::dot(cubeA.axis0, D) * precalcs.C[1][0] - glm::dot(cubeA.axis1, D) * precalcs.C[0][0])
-                );
-                break;
-            case 13:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[1][1]) + cubeA.extent1 * glm::abs(precalcs.C[0][1]),
-                    cubeB.extent0 * glm::abs(precalcs.C[2][2]) + cubeB.extent2 * glm::abs(precalcs.C[2][0]),
-                    glm::abs(glm::dot(cubeA.axis0, D) * precalcs.C[1][1] - glm::dot(cubeA.axis1, D) * precalcs.C[0][1])
-                );
-                break;
-            case 14:
-                return CalculatedRs(
-                    cubeA.extent0 * glm::abs(precalcs.C[1][2]) + cubeA.extent1 * glm::abs(precalcs.C[0][2]),
-                    cubeB.extent0 * glm::abs(precalcs.C[2][1]) + cubeB.extent1 * glm::abs(precalcs.C[2][0]),
-                    glm::abs(glm::dot(cubeA.axis0, D) * precalcs.C[1][2] - glm::dot(cubeA.axis1, D) * precalcs.C[0][2])
-                );
-                break;
-            
-            default:
-                assert(false);
-                return CalculatedRs(0.0f, 0.0f, 0.0f);
-                break;
+        bool nextSimplex(Simplex &simplex, glm::vec3 &direction);
+
+        PossibleCollision gjk(const GJKCollider &a, const GJKCollider &b) {
+            glm::vec3 initial_direction = glm::vec3(1.0f, 0.0f, 0.0f);
+            glm::vec3 support = a.findSupportPoint(b, initial_direction);
+            // Create simplex
+            Simplex simplex;
+            simplex.push_front(support);
+            glm::vec3 direction = -support;
+
+            unsigned int iterations = 0;
+            while (iterations < MAX_GJK_ITERATIONS) {
+                iterations++;
+                support = a.findSupportPoint(b, direction);
+                if (glm::dot(support, direction) <= 0.0F) {
+                    return {};
+                }
+                simplex.push_front(support);
+
+                if (nextSimplex(simplex, direction)) {
+                    return epa(a, b, simplex);
+                }
+            }
+            // Exit after 25 iterations
+            spdlog::warn("GJK: Exceeded 25 iterations");
+            return PossibleCollision(); // No collision
+        }
+
+        void
+        addIfNotPresent(std::vector<std::pair<unsigned int, unsigned int>> &edges,
+                        const std::vector<unsigned int> &faces,
+                        unsigned int a, unsigned int b) {
+            auto reverse = std::find(
+                    edges.begin(),
+                    edges.end(),
+                    std::make_pair(faces[b], faces[a])
+            );
+            if (reverse != edges.end()) {
+                edges.erase(reverse);
+            } else {
+                edges.emplace_back(faces[a], faces[b]);
             }
         }
-        
-    }
 
-    namespace SH {
-        // Algorith of Sutherland-Hodgman
-        
+        std::pair<std::vector<glm::vec4>, unsigned int> calculateNormals(const std::vector<glm::vec3> &polytope,
+                                                                         const std::vector<unsigned int> &faces) {
+            std::vector<glm::vec4> normals;
+            unsigned int minTriangle = 0;
+            float minDistance = FLT_MAX;
+
+            for (unsigned int i = 0; i < faces.size(); i += 3) {
+                glm::vec3 a = polytope[faces[i]];
+                glm::vec3 b = polytope[faces[i + 1]];
+                glm::vec3 c = polytope[faces[i + 2]];
+
+                glm::vec3 normal = glm::normalize(glm::cross(b - a, c - a));
+                float distance = glm::dot(normal, a);
+
+                if (distance < 0.0f) {
+                    normal *= -1;
+                    distance *= -1;
+                }
+
+                normals.emplace_back(normal, distance);
+
+                if (distance < minDistance) {
+                    minTriangle = i / 3;
+                    minDistance = distance;
+                }
+            }
+
+            return {normals, minTriangle};
+        }
+
+
+        constexpr bool sameDirection(const glm::vec3 &dir, const glm::vec3 &ao) {
+            return glm::dot(dir, ao) > 0.0f;
+        }
+
+        constexpr bool sameDirectionLvalue(const glm::vec3 dir, const glm::vec3 &ao) {
+            return glm::dot(dir, ao) > 0.0f;
+        }
+
+        inline bool nextSimplexLine(Simplex &simplex, glm::vec3 &direction) {
+            glm::vec3 const a = simplex[0];
+            glm::vec3 const b = simplex[1];
+            glm::vec3 ab = b - a;
+            glm::vec3 ao = -a;
+            if (sameDirection(ab, ao)) {
+                direction = glm::cross(glm::cross(ab, ao), ab);
+            } else {
+                simplex = {a};
+                direction = ao;
+            }
+            return false;
+        }
+
+        inline bool nextSimplexTriangle(Simplex &simplex, glm::vec3 &direction) {
+            glm::vec3 const a = simplex[0];
+            glm::vec3 const b = simplex[1];
+            glm::vec3 const c = simplex[2];
+
+            glm::vec3 const ab = b - a;
+            glm::vec3 ac = c - a;
+            glm::vec3 ao = -a;
+
+            glm::vec3 abc = glm::cross(ab, ac);
+
+            if (sameDirectionLvalue(glm::cross(abc, ac), ao)) {
+                if (sameDirection(ac, ao)) {
+                    simplex = {a, c};
+                    direction = glm::cross(glm::cross(ac, ao), ac);
+                } else {
+                    return nextSimplexLine(simplex = {a, b}, direction);
+                }
+            } else {
+                if (sameDirectionLvalue(glm::cross(ab, abc), ao)) {
+                    return nextSimplexLine(simplex = {a, b}, direction);
+                } else {
+                    if (sameDirection(abc, ao)) {
+                        direction = abc;
+                    } else {
+                        simplex = {a, c, b};
+                        direction = -abc;
+                    }
+                }
+            }
+
+            return false;
+        }
+
+        inline bool nextSimplexTetrahedron(Simplex &simplex, glm::vec3 &direction) {
+            glm::vec3 const a = simplex[0];
+            glm::vec3 const b = simplex[1];
+            glm::vec3 const c = simplex[2];
+            glm::vec3 const d = simplex[3];
+
+            glm::vec3 const ab = b - a;
+            glm::vec3 const ac = c - a;
+            glm::vec3 const ad = d - a;
+            glm::vec3 ao = -a;
+
+            glm::vec3 abc = glm::cross(ab, ac);
+            glm::vec3 acd = glm::cross(ac, ad);
+            glm::vec3 adb = glm::cross(ad, ab);
+
+            if (sameDirection(abc, ao))
+                return nextSimplexTriangle(simplex = {a, b, c}, direction);
+            if (sameDirection(acd, ao))
+                return nextSimplexTriangle(simplex = {a, c, d}, direction);
+            if (sameDirection(adb, ao))
+                return nextSimplexTriangle(simplex = {a, d, b}, direction);
+            return true;
+        }
+
+        inline bool nextSimplex(Simplex &simplex, glm::vec3 &direction) {
+            switch (simplex.getSize()) {
+                case 2:
+                    return nextSimplexLine(simplex, direction);
+                case 3:
+                    return nextSimplexTriangle(simplex, direction);
+                case 4:
+                    return nextSimplexTetrahedron(simplex, direction);
+            }
+            return false;
+        }
+
+        PossibleCollision epa(const GJKCollider &a, const GJKCollider &b, const Simplex &simplex) {
+            std::vector<glm::vec3> polytope(simplex.begin(), simplex.end());
+            spdlog::debug("START EPA");
+            spdlog::debug("EPA polytope size {}", polytope.size());
+            spdlog::debug("EPA simplex {}", simplex.toString());
+            std::vector<unsigned int> faces = {
+                    0, 1, 2,
+                    0, 3, 1,
+                    0, 2, 3,
+                    1, 3, 2
+            };
+
+            auto [normals, minFace] = calculateNormals(polytope, faces);
+            glm::vec3 minNormal;
+            float minDistance = FLT_MAX;
+
+            unsigned int iterations = 0;
+            while (minDistance == FLT_MAX) {
+                spdlog::debug("EPA iteration {}", iterations);
+//                spdlog::debug("EPA minFace {}", minFace);
+//                spdlog::debug("EPA minDistance {}", minDistance);
+//                spdlog::debug("EPA polytope size {}", polytope.size());
+//                spdlog::debug("EPA faces size {}", faces.size());
+//                spdlog::debug("EPA normals size {}", normals.size());
+                minNormal = glm::vec3(normals[minFace]);
+                minDistance = normals[minFace].w;
+
+                if (iterations++ > GTK_EPA_MAX_ITER) {
+                    break;
+                }
+
+                glm::vec3 support = a.findSupportPoint(b, minNormal);
+                float supportDistance = glm::dot(minNormal, support);
+                spdlog::debug("EPA supportDistance {}", supportDistance);
+                spdlog::debug("EPA minDistance {}", minDistance);
+                spdlog::debug("EPA supportDistance - minDistance {}", supportDistance - minDistance);
+                if (abs(supportDistance - minDistance) > 0.001f) {
+                    minDistance = FLT_MAX;
+                    std::vector<std::pair<unsigned int, unsigned int>> uniqueEdges;
+                    spdlog::debug("EPA faces size {}", faces.size());
+                    spdlog::debug("EPA normals size {}", normals.size());
+                    for (unsigned int i = 0; i < normals.size(); i++) {
+                        if (sameDirection(normals[i], support)) {
+                            unsigned int f = i * 3;
+                            addIfNotPresent(uniqueEdges, faces, f, f + 1);
+                            addIfNotPresent(uniqueEdges, faces, f + 1, f + 2);
+                            addIfNotPresent(uniqueEdges, faces, f + 2, f);
+
+                            faces[f + 2] = faces.back();
+                            faces.pop_back();
+                            faces[f + 1] = faces.back();
+                            faces.pop_back();
+                            faces[f] = faces.back();
+                            faces.pop_back();
+
+                            normals[i] = normals.back();
+                            normals.pop_back();
+
+                            i--;
+                        }
+
+                    }
+
+                    if (uniqueEdges.size() == 0) {
+                        break;
+                    }
+
+                    std::vector<unsigned int> newFaces;
+                    for (auto [a, b]: uniqueEdges) {
+                        newFaces.push_back(a);
+                        newFaces.push_back(b);
+                        newFaces.push_back(polytope.size());
+                    }
+
+                    polytope.push_back(support);
+
+                    auto [newNormals, newMinFace] = calculateNormals(polytope, newFaces);
+
+                    float newMinDistance = FLT_MAX;
+                    for (unsigned int i = 0; i < normals.size(); i++) {
+                        if (normals[i].w < newMinDistance) {
+                            newMinDistance = normals[i].w;
+                            minFace = i;
+                        }
+                    }
+
+                    if (newNormals[newMinFace].w < newMinDistance) {
+                        minFace = newMinFace + normals.size();
+                    }
+
+                    faces.insert(faces.end(), newFaces.begin(), newFaces.end());
+                    normals.insert(normals.end(), newNormals.begin(), newNormals.end());
+
+                }
+            }
+
+            if (minDistance == FLT_MAX) {
+                spdlog::warn("EPA failed to find a collision");
+                return {};
+            }
+
+
+            glm::vec3 contactNormal = glm::normalize(-minNormal);
+            float penetrationDepth = minDistance + 0.001f;
+
+            return PossibleCollision(penetrationDepth, contactNormal);
+
+        }
+
+        std::string Simplex::toString() const {
+            std::string result = "";
+
+            for (int i = 0; i < size_; i++) {
+                result += "-" + std::to_string(i) + ": " + glm::to_string(points_[i]) + " ";
+            };
+
+            return result;
+
+        }
     }
 
     collisions::PossibleCollision checkCollisionSpherePoint(glm::mat4 &sphereModel, glm::vec4 point) {
         return collisions::PossibleCollision();
     }
 
-    collisions::PossibleCollision checkCollisionBoxSphere(glm::mat4 &box_transform, glm::mat4 &sphere_transform) {
+    collisions::PossibleCollision checkCollisionBoxSphere(glm::mat4 box_transform, glm::mat4 &sphere_transform) {
+        GJK_EPA::CubeGJKCollider const a(box_transform);
+        GJK_EPA::SphereGJKCollider const b(sphere_transform);
+
+        return GJK_EPA::gjk(a, b);
+    }
+
+    collisions::PossibleCollision checkCollisionBoxPoint(glm::mat4 box_transform, glm::vec4 point) {
         return collisions::PossibleCollision();
     }
 
-    collisions::PossibleCollision checkCollisionBoxPoint(glm::mat4 &box_transform, glm::vec4 point) {
-        return collisions::PossibleCollision();
-    }
+    collisions::PossibleCollision checkCollisionBoxBox(glm::mat4 box1_t, glm::mat4 box2_t) {
+        GJK_EPA::CubeGJKCollider const a(box1_t);
+        GJK_EPA::CubeGJKCollider const b(box2_t);
 
-    collisions::PossibleCollision checkCollisionBoxBox(glm::mat4 &box1_t, glm::mat4 &box2_t) {
-        const SAT::Precalculations precalcs (box1_t, box2_t);
-        for (int i = 0; i < 15; i++) {
-            SAT::CalculatedRs rs = SAT::getRsForTest(i, precalcs);
-            if (rs.r0 > rs.r1 + rs.r2) {
-                // No collision
-                return collisions::PossibleCollision();
-            }
-        }
-
-        // Collision
-        // TODO: Calculate collision point and normal
-        return collisions::PossibleCollision(true);
+        return GJK_EPA::gjk(b, a);
     }
 
     collisions::PossibleCollision checkCollisionSphereSphere(glm::mat4 &s1_t, float s1_r, glm::mat4 &s2_t, float s2_r) {
@@ -260,11 +352,11 @@ namespace entre_portais::collisions {
         }
 
         glm::vec3 normal = glm::normalize(glm::vec3(s2_center - s1_center));
-        glm::vec3 pointA = glm::vec3(s1_center) + normal * s1_r;
-        glm::vec3 pointB = glm::vec3(s2_center) - normal * s2_r;
+        float penetration = radii - distance;
 
         // TODO: Treat case where they are exacly at the same space as an edge case.
 
-        return collisions::PossibleCollision(pointA, pointB, normal);
+        return collisions::PossibleCollision(penetration, normal, true);
     }
+
 }

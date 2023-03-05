@@ -5,6 +5,7 @@
 #include "entrePortaisEngine/Transform.hpp"
 #include "PhysicsEngine.hpp"
 #include "ICollider.hpp"
+#include "entrePortaisEngine/render/Camera.hpp"
 
 namespace entre_portais {
 
@@ -13,7 +14,7 @@ namespace entre_portais {
         RigidBody(glm::mat4 *transform, std::unique_ptr<ICollider> collisor, PhysicsEngine &pysEngine,
                   Transform &transformToModify);
 
-        void renderImGui();
+        void renderImGui(Camera *camera);
 
         void onChange();
 

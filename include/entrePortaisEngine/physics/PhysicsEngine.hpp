@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "OctreeAdaptor.hpp"
+#include "entrePortaisEngine/render/Camera.hpp"
+#include "collisions.hpp"
 
 #define MAX_OCTREE_DEPTH 10
 #define MAX_OCTREE_OBJECTS 10
@@ -26,10 +28,13 @@ namespace entre_portais {
 
         void updateRigidBody(RigidBody *rigidBody);
 
+        void renderImGui(Camera &camera);
+
 
         PhysicsEngine();
 
     private:
+        std::vector<std::tuple<RigidBody *, RigidBody *, collisions::PossibleCollision>> collisions;
         std::vector<RigidBody *> rigidBodies_;
         OctreeBBC octreeBbc_;
 

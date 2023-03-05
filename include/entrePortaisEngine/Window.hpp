@@ -41,6 +41,8 @@ namespace entre_portais {
 
         void showCursor(bool show);
 
+        bool isCursorVisible();
+
     protected:
         void update(float deltaTime);
 
@@ -78,6 +80,7 @@ namespace entre_portais {
         double lastFrameTime_ = 0.0f;
         Logger logger_ = Logger("Window");
         glm::vec2 mousePos_;
+        bool cursorIsVisible_;
     };
 }
 #endif  // ENTREPORTAIS_WINDOW_HPP

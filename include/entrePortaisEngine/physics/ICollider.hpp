@@ -4,6 +4,7 @@
 #include "Boxes.hpp"
 #include "entrePortaisEngine/Transform.hpp"
 #include "collisions.hpp"
+#include "entrePortaisEngine/render/Camera.hpp"
 
 namespace entre_portais {
     class BoxCollider;
@@ -30,7 +31,7 @@ namespace entre_portais {
     public:
         virtual void Draw() = 0;
 
-        virtual void renderImGui() = 0;
+        virtual void renderImGui(Camera *camera) = 0;
 
         virtual BoundingBox getBoundingBox(glm::mat4 modelMatrix) = 0;
 

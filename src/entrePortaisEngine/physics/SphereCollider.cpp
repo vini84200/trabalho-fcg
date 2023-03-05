@@ -15,7 +15,7 @@ namespace entre_portais {
     }
 
     collisions::PossibleCollision SphereCollider::isColliding(BoxCollider box) {
-        return collisions::checkCollisionBoxSphere(box.getModelMatrix(), modelMatrix_);
+        return collisions::checkCollisionBoxSphere(box.getTransform(), modelMatrix_);
     }
 
     collisions::PossibleCollision SphereCollider::isColliding(SphereCollider sphere) {
@@ -26,7 +26,7 @@ namespace entre_portais {
 
     }
 
-    void SphereCollider::renderImGui() {
+    void SphereCollider::renderImGui(Camera *camera) {
         ImGui::Text("SphereCollider");
         ImGui::InputFloat("Radius", &radius_);
     }

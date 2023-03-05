@@ -12,6 +12,7 @@ void entre_portais::IScene::renderImGui(bool *p_open) {
     } else {
         ImGui::End();
     }
+    physicsEngine_->renderImGui(*camera_.get());
 }
 
 void entre_portais::IScene::render() {

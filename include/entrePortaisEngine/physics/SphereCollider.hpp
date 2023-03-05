@@ -23,7 +23,7 @@ namespace entre_portais {
 
         void Draw() override;
 
-        void renderImGui() override;
+        void renderImGui(Camera *camera) override;
 
         BoundingBox getBoundingBox(glm::mat4 modelMatrix) override;
 

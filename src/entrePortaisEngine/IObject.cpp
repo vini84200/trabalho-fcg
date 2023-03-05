@@ -30,7 +30,7 @@ void entre_portais::IObject::renderImGui(bool *p_open) {
         transform_.renderImGui();
         if (ImGui::TreeNode("Mesh")) {
             if (mesh_ != nullptr) {
-                mesh_->RenderImGui();
+                mesh_->RenderImGui(nullptr);
             } else {
                 ImGui::Text("No mesh");
             }
@@ -38,7 +38,7 @@ void entre_portais::IObject::renderImGui(bool *p_open) {
         }
         if (rigidBody_ != nullptr) {
             if (ImGui::TreeNode("RigidBody")) {
-                rigidBody_->renderImGui();
+                rigidBody_->renderImGui(this->scene_.lock()->getCamera().get());
                 ImGui::TreePop();
             }
         }

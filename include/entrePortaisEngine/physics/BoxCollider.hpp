@@ -13,7 +13,7 @@ namespace entre_portais {
 
         void Draw() override;
 
-        void renderImGui() override;
+        void renderImGui(Camera *camera) override;
 
         BoundingBox getBoundingBox(glm::mat4 transform) override;
 
@@ -26,6 +26,8 @@ namespace entre_portais {
         collisions::PossibleCollision isColliding(BoxCollider box) override;
 
         collisions::PossibleCollision isColliding(SphereCollider sphere) override;
+
+        glm::mat4 getTransform();
 
     private:
         glm::vec3 size_;

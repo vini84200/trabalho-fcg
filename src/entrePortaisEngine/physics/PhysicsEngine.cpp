@@ -15,8 +15,8 @@ namespace entre_portais {
     void PhysicsEngine::update(float deltaTime) {
         // Detecta colisões
         auto possible_collisions = octreeBbc_.CollisionDetection();
+        collisions.clear();
 
-        std::vector<std::tuple<RigidBody *, RigidBody *, collisions::PossibleCollision>> collisions;
         for (auto const &collision: possible_collisions) {
             if (collision.first == collision.second) {
                 continue;
@@ -33,7 +33,7 @@ namespace entre_portais {
             auto collisionInfo = collider1->isColliding(collider2);
             if (collisionInfo.isColliding) {
                 // COllision detected
-                collisions.push_back(std::make_tuple(rigidBody1, rigidBody2, collisionInfo));
+                collisions.emplace_back(rigidBody1, rigidBody2, collisionInfo);
             }
 
 //            spdlog::warn("Possivel colisão entre {} e  {}", rigidBody1->getID(), rigidBody2->getID());
@@ -60,20 +60,20 @@ namespace entre_portais {
 
             if (rigidBody1->isStatic()) {
                 // Resolve colisão com objeto estático
-                spdlog::warn("Colisão com objeto estático");
+                spdlog::info("Colisão com objeto estático");
                 auto const &reverseCollision = collision.reverse();
                 rigidBody2->resolveCollisionWithStatic(rigidBody1, reverseCollision);
                 continue;
             }
             if (rigidBody2->isStatic()) {
                 // Resolve colisão com objeto estático
-                spdlog::warn("Colisão com objeto estático");
+                spdlog::info("Colisão com objeto estático");
                 rigidBody1->resolveCollisionWithStatic(rigidBody2, collision);
                 continue;
             }
 
             // Resolve colisão com objeto dinâmico
-            spdlog::warn("Colisão com objeto dinâmico");
+            spdlog::info("Colisão com objeto dinâmico");
             auto const &reverseCollision = collision.reverse();
             glm::vec3 velDiff = rigidBody1->getVelocity() - rigidBody2->getVelocity();
             rigidBody1->resolveCollision(rigidBody2, collision, velDiff);
@@ -121,6 +121,65 @@ namespace entre_portais {
         if (!ok) {
             spdlog::error("Não foi possível atualizar RigidBody {} no PhysicsEngine", rigidBody->getID());
         }
+
+    }
+
+    void PhysicsEngine::renderImGui(Camera &camera) {
+        ImGui::Begin("Physics Engine");
+        // Show octree
+        // TODO: implementar octree render
+
+        // Show rigid bodies
+        // Draw rigid bodies bounding boxes
+        bool drawBoundingBoxes = ImGui::GetStateStorage()->GetBool(ImGui::GetID("Draw bounding boxes"), false);
+        if (ImGui::Checkbox("Draw bounding boxes", &drawBoundingBoxes)) {
+            ImGui::GetStateStorage()->SetBool(ImGui::GetID("Draw bounding boxes"), drawBoundingBoxes);
+        }
+        if (drawBoundingBoxes) {
+            for (auto const &rigidBody: rigidBodies_) {
+                auto const &bb = rigidBody->getBoundingBox();
+                auto const &min = bb.min;
+                auto const &max = bb.max;
+                glm::vec3 const center = (min + max) / 2.0f;
+                glm::vec3 const size = max - min;
+                auto const color = rigidBody->isStatic() ? IM_COL32(0, 255, 0, 255) : IM_COL32(255, 0, 0, 255);
+                camera.debugDrawCube(center, size, color);
+            }
+        }
+
+        // Show collisions
+
+        bool drawCollisions = ImGui::GetStateStorage()->GetBool(ImGui::GetID("Draw collisions"), false);
+        if (ImGui::Checkbox("Draw collisions", &drawCollisions)) {
+            ImGui::GetStateStorage()->SetBool(ImGui::GetID("Draw collisions"), drawCollisions);
+        }
+        if (drawCollisions) {
+            for (auto const &[rigidBody1, rigidBody2, collision]: collisions) {
+                auto const &bb1 = rigidBody1->getBoundingBox();
+                auto const &bb2 = rigidBody2->getBoundingBox();
+                auto const &min1 = bb1.min;
+                auto const &max1 = bb1.max;
+                auto const &min2 = bb2.min;
+                auto const &max2 = bb2.max;
+                glm::vec3 const center1 = (min1 + max1) / 2.0f;
+                glm::vec3 const center2 = (min2 + max2) / 2.0f;
+                glm::vec3 const size1 = max1 - min1;
+                glm::vec3 const size2 = max2 - min2;
+                auto const color1 = rigidBody1->isStatic() ? IM_COL32(0, 255, 0, 255) : IM_COL32(255, 0, 0, 255);
+                auto const color2 = rigidBody2->isStatic() ? IM_COL32(0, 255, 0, 255) : IM_COL32(255, 0, 0, 255);
+                camera.debugDrawCube(center1, size1, color1);
+                camera.debugDrawCube(center2, size2, color2);
+
+                // Draw collision normal
+                glm::vec3 const normal = collision.normal;
+                camera.debugDrawLine(center1, center1 + normal, IM_COL32(0, 0, 255, 255), 1.f);
+                camera.debugDrawLine(center2, center2 - normal, IM_COL32(0, 0, 255, 255), 1.f);
+
+                // Draw collision manifold
+
+            }
+        }
+        ImGui::End();
 
     }
 } // entre_portais

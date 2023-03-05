@@ -3,8 +3,10 @@
 
 #include "entrePortaisEngine/IGameNode.hpp"
 #include <memory>
+#include <optional>
 #include "ShadersManager.hpp"
 #include "entrePortaisEngine/Logger.hpp"
+#include "imgui.h"
 
 namespace entre_portais {
 
@@ -54,6 +56,22 @@ namespace entre_portais {
 
         glm::vec4 getViewVector();
 
+        std::optional<ImVec2> worldToImScreen(glm::vec4 worldPoint);
+
+        std::optional<ImVec2> worldToImScreen(glm::vec3 worldPoint);
+
+        void lineClipScreen(glm::vec2 &point1, glm::vec2 &point2, ImU32 color, float thickness);
+
+        void lineClipScreen(glm::vec3 &point1, glm::vec3 &point2, ImU32 color, float thickness);
+
+        void lineClipScreen(glm::vec4 &point1, glm::vec4 &point2, ImU32 color, float thickness);
+
+        bool isPointInsideNDC(glm::vec4 point);
+
+
+        void debugDrawCube(const glm::vec3 center, const glm::vec3 size, ImU32 color);
+
+        void debugDrawLine(glm::vec3 point1, glm::vec3 point2, ImU32 color, float thickness);
 
     private:
         std::weak_ptr<IScene> scene_;
@@ -61,6 +79,8 @@ namespace entre_portais {
         float near_;
         float fov_;
         float aspectRatio_;
+        int width_;
+        int height_;
     };
 
 }  // namespace entre_Portais
