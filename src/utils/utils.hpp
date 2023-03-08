@@ -2,7 +2,7 @@
 #define ENTREPORTAIS_UTILS_HPP
 
 namespace utils {
-    float min(float a, float b) {
+    inline float min(float a, float b) {
         if (a > b) {
             return b;
         } else {
@@ -10,5 +10,8 @@ namespace utils {
         }
     }
 }
+
+#define MACHINE_EPSILON std::numeric_limits<float>::epsilon()
+#define float_LARGEST std::numeric_limits<float>::max()
 
 #endif //ENTREPORTAIS_UTILS_HPP

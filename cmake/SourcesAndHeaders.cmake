@@ -35,6 +35,10 @@ set(sources
 		src/entrePortaisEngine/physics/SphereCollider.cpp
 		src/entrePortaisEngine/physics/collisions.cpp
 
+		src/algos/algoShape.cpp
+		src/algos/gjk/VoronoiSimplex.cpp
+		src/algos/gjk/gjk.cpp
+
 		src/testGame/TriScene.cpp
 		src/testGame/TriObject.cpp
 		src/testGame/WaitAndFinishTask.cpp
