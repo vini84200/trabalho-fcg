@@ -38,6 +38,7 @@ set(sources
 		src/algos/algoShape.cpp
 		src/algos/gjk/VoronoiSimplex.cpp
 		src/algos/gjk/gjk.cpp
+		src/algos/sat/SatAlgorithm.cpp
 
 		src/testGame/TriScene.cpp
 		src/testGame/TriObject.cpp
