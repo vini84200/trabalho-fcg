@@ -53,6 +53,10 @@ namespace entre_portais {
 
     private:
         glm::mat4 *transform_;
+    public:
+        glm::mat4 *getTransform() const;
+
+    private:
         std::unique_ptr<ICollider> collider_;
     public:
         const std::unique_ptr<ICollider> &getCollider() const;

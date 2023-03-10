@@ -37,9 +37,6 @@
 namespace reactphysics3d {
 
   // Declarations
-  struct ContactManifoldInfo;
-  struct NarrowPhaseInfoBatch;
-  class ConvexShape;
   class VoronoiSimplex;
   template<typename T> class Array;
 
@@ -96,7 +93,7 @@ namespace reactphysics3d {
 
     /// Compute a contact info if the two bounding volumes collide.
     void testCollision(const algo::shapes::Shape &shapeA, const glm::mat4 &transA, const algo::shapes::Shape &shapeB,
-                       const glm::mat4 &transB, GJKResult &gjkResult, Contact& contact);
+                       const glm::mat4 &transB, GJKResult &gjkResult, std::vector<Contact> &contact);
 
 
   };

@@ -29,8 +29,11 @@ namespace entre_portais {
 
         glm::mat4 getTransform();
 
+        glm::vec3 &getSize();
+
     private:
         glm::vec3 size_;
+
     };
 
 } // entre_portais

@@ -36,7 +36,7 @@ namespace algo::shapes
             CONVEX_MESH,
         };
 
-        [[nodiscard]] virtual ShapeType getType() const = 0;
+        virtual ShapeType getType() const = 0;
 
     private:
         float margin_;
@@ -46,7 +46,8 @@ namespace algo::shapes
     class ConvexPolyhedronShape : public Shape {
     public:
         ConvexPolyhedronShape(float margin) : Shape(margin) {}
-        virtual ~ConvexPolyhedronShape() = default;
+
+        ~ConvexPolyhedronShape() override = default;
 
         /// Return the number of faces of the polyhedron
         virtual uint32 getNbFaces() const=0;
@@ -73,7 +74,7 @@ namespace algo::shapes
         virtual const reactphysics3d::HalfEdgeStructure::Edge& getHalfEdge(uint32 edgeIndex) const=0;
 
         /// Return true if the collision shape is a polyhedron
-        virtual bool isPolyhedron() const override;
+        bool isPolyhedron() const override;
 
         /// Return the centroid of the polyhedron
         virtual glm::vec3 getCentroid() const = 0;
@@ -136,6 +137,51 @@ namespace algo::shapes
         virtual ShapeType getType() const override {
             return CAPSULE;
         }
+    };
+
+    class BoxShape : public ConvexPolyhedronShape {
+    private:
+        glm::vec3 halfExtents_;
+    public:
+        BoxShape(const glm::vec3 &halfExtents) : ConvexPolyhedronShape(0), halfExtents_(halfExtents) {};
+
+
+        const glm::vec3 &getHalfExtents() const {
+            return halfExtents_;
+        }
+
+        void setHalfExtents(const glm::vec3 &halfExtents) {
+            halfExtents_ = halfExtents;
+        }
+
+
+        glm::vec3 getLocalSupportPointWithoutMargin(const glm::vec3 &direction) const override;
+
+        ~BoxShape() override = default;
+
+        ShapeType getType() const override;
+
+        uint32 getNbFaces() const override;
+
+        const reactphysics3d::HalfEdgeStructure::Face &getFace(uint32 faceIndex) const override;
+
+        uint32 getNbVertices() const override;
+
+        const reactphysics3d::HalfEdgeStructure::Vertex &getVertex(uint32 vertexIndex) const override;
+
+        glm::vec3 getVertexPosition(uint32 vertexIndex) const override;
+
+        glm::vec3 getFaceNormal(uint32 faceIndex) const override;
+
+        uint32 getNbHalfEdges() const override {
+            return 24;
+        }
+
+        const reactphysics3d::HalfEdgeStructure::Edge &getHalfEdge(uint32 edgeIndex) const override;
+
+        bool isPolyhedron() const override;
+
+        glm::vec3 getCentroid() const override;
     };
 }
 

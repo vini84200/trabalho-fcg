@@ -7,7 +7,7 @@ namespace entre_portais {
     SphereCollider::SphereCollider(glm::mat4 &modelMatrix) : ICollider(modelMatrix), radius_(1) {}
 
     collisions::PossibleCollision SphereCollider::isColliding(ICollider *other) {
-        return other->isColliding(*this);
+        return other->isColliding(*this).reverse();
     }
 
     collisions::PossibleCollision SphereCollider::isColliding(glm::vec4 point) {
@@ -15,7 +15,7 @@ namespace entre_portais {
     }
 
     collisions::PossibleCollision SphereCollider::isColliding(BoxCollider box) {
-        return collisions::checkCollisionBoxSphere(box.getTransform(), modelMatrix_);
+        return collisions::checkCollisionBoxSphere(box.getTransform(), box.getSize(), modelMatrix_, getRadius());
     }
 
     collisions::PossibleCollision SphereCollider::isColliding(SphereCollider sphere) {
@@ -54,5 +54,9 @@ namespace entre_portais {
     SphereCollider::SphereCollider(float radius, glm::mat4 &modelMatrix)
             : ICollider(modelMatrix) {
         radius_ = radius;
+    }
+
+    float SphereCollider::getRadius() {
+        return radius_;
     }
 } // entre_portais

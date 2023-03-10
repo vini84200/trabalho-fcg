@@ -111,17 +111,17 @@ namespace entre_portais {
                                      glm::vec3 velDiff) {
         // Outro objeto é dinâmico
         // http://www.chrishecker.com/images/e/e7/Gdmphys3.pdf, pag 4
-        glm::vec3 diff = velDiff;
-        float e = glm::min(other->getRestitution(), getRestitution());
-        float j = -(1 + e) * glm::dot(diff, possibleCollision.normal) /
-                  (1 / mass_ + 1 / other->mass_);
-
-        glm::vec3 impulse = j * possibleCollision.normal;
-//        applyForce(impulse);
-        velocity_ += j * possibleCollision.normal / mass_;
-
-        // Uncollide
-        transformToModify_.move((possibleCollision.depth * possibleCollision.normal) / 2.0f);
+//        glm::vec3 diff = velDiff;
+//        float e = glm::min(other->getRestitution(), getRestitution());
+//        float j = -(1 + e) * glm::dot(diff, possibleCollision.normal) /
+//                  (1 / mass_ + 1 / other->mass_);
+//
+//        glm::vec3 impulse = j * possibleCollision.normal;
+////        applyForce(impulse);
+//        velocity_ += j * possibleCollision.normal / mass_;
+//
+//        // Uncollide
+//        transformToModify_.move((possibleCollision.depth * possibleCollision.normal) / 2.0f);
         // TODO: Friction
         // TODO: Do rotation
 
@@ -133,18 +133,18 @@ namespace entre_portais {
         // Outro objeto é estático
         // http://www.chrishecker.com/images/e/e7/Gdmphys3.pdf, pag 4
 
-        glm::vec3 diff = velocity_;
-        float e = glm::min(other->getRestitution(), getRestitution());
-        float j = -(1 + e) * glm::dot(diff, possibleCollision.normal) /
-                  (1 / mass_); // Outro objeto é estático, logo a massa dele é infinita
-        glm::vec3 impulse = j * possibleCollision.normal;
-        spdlog::info("Impulse: {} J: {} Normal: {}", glm::to_string(impulse), j,
-                     glm::to_string(possibleCollision.normal));
-        spdlog::info("Normal: {} Depth: {}", glm::to_string(possibleCollision.normal), possibleCollision.depth);
-//        applyForce(impulse);
-        velocity_ += j * possibleCollision.normal / mass_;
-        // Uncollide
-        transformToModify_.move(possibleCollision.depth * possibleCollision.normal);
+//        glm::vec3 diff = velocity_;
+//        float e = glm::min(other->getRestitution(), getRestitution());
+//        float j = -(1 + e) * glm::dot(diff, possibleCollision.normal) /
+//                  (1 / mass_); // Outro objeto é estático, logo a massa dele é infinita
+//        glm::vec3 impulse = j * possibleCollision.normal;
+//        spdlog::info("Impulse: {} J: {} Normal: {}", glm::to_string(impulse), j,
+//                     glm::to_string(possibleCollision.normal));
+//        spdlog::info("Normal: {} Depth: {}", glm::to_string(possibleCollision.normal), possibleCollision.depth);
+////        applyForce(impulse);
+//        velocity_ += j * possibleCollision.normal / mass_;
+//        // Uncollide
+//        transformToModify_.move(possibleCollision.depth * possibleCollision.normal);
     }
 
     float RigidBody::getMass() const {
@@ -161,5 +161,9 @@ namespace entre_portais {
 
     const glm::vec3 &RigidBody::getVelocity() const {
         return velocity_;
+    }
+
+    glm::mat4 *RigidBody::getTransform() const {
+        return transform_;
     }
 } // entre_portais

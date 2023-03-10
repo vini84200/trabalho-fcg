@@ -161,5 +161,5 @@ glm::mat4 matrices::ScalingMatrixFromMatrix(glm::mat4 mat) {
 }
 
 glm::quat matrices::RotationFromMatrix(glm::mat4 M) {
-    return glm::toQuat(M);
+    return glm::normalize(glm::toQuat(M));
 }

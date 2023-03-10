@@ -35,7 +35,6 @@ namespace entre_portais {
         auto renderer = IObject::getScene()->getRenderer();
         std::unique_ptr<ICollider> cubeCollider = std::make_unique<BoxCollider>(glm::vec3(1.0f, 1.0f, 1.0f),
                                                                                 modelMatrix_);
-        auto c = BoxCollider(glm::vec3(1.0f, 1.0f, 1.0f), modelMatrix_);
         rigidBody_ = std::make_unique<RigidBody>(&modelMatrix_, std::move(cubeCollider),
                                                  *this->getScene()->getPhysicsEngine().get(),
                                                  this->transform_);

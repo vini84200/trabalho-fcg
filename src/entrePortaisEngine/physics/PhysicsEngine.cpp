@@ -31,7 +31,7 @@ namespace entre_portais {
             auto const &collider2 = rigidBody2->getCollider().get();
 
             auto collisionInfo = collider1->isColliding(collider2);
-            if (collisionInfo.collisionType != collisions::PossibleCollision::Collision::NO_COLLISION) {
+            if (collisionInfo.isColliding) {
                 // COllision detected
                 collisions.emplace_back(rigidBody1, rigidBody2, collisionInfo);
             }
@@ -171,10 +171,18 @@ namespace entre_portais {
                 camera.debugDrawCube(center2, size2, color2);
 
                 // Draw collision normal
-                glm::vec3 const normal = collision.normal;
-                auto const color = collision.isPenetration() ? IM_COL32(255, 0, 0, 255) : IM_COL32(0, 255, 0, 255);
-                camera.debugDrawLine(center1, center1 + normal, IM_COL32(0, 0, 255, 255), 1.f);
-                camera.debugDrawLine(center2, center2 - normal, IM_COL32(0, 0, 255, 255), 1.f);
+                for (auto const &contact: collision.contacts) {
+                    glm::vec3 const normal = contact.normal;
+                    auto const color = IM_COL32(0, 0, 255, 255);
+                    camera.debugDrawLine((*rigidBody1->getTransform()) * glm::vec4(contact.pointB, 1.f),
+                                         *rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f) -
+                                         glm::vec4(normal, 0), color, 1.f);
+                    camera.debugDrawLine(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f),
+                                         *rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f) +
+                                         glm::vec4(normal, 0), color, 1.f);
+                    camera.debugDrawPoint(*rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f), color, 5.f);
+                    camera.debugDrawPoint(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f), color, 5.f);
+                }
 
                 // Draw collision manifold
 

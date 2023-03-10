@@ -94,10 +94,13 @@ namespace reactphysics3d {
     public:
 
         /// Constructor
-        HalfEdgeStructure(uint32 facesCapacity, uint32 verticesCapacity, uint32 edgesCapacity) : mFaces(facesCapacity),
-                                                                                                 mVertices(
-                                                                                                         verticesCapacity),
-                                                                                                 mEdges(edgesCapacity) {}
+        HalfEdgeStructure(uint32 facesCapacity, uint32 verticesCapacity, uint32 edgesCapacity) : mFaces(),
+                                                                                                 mVertices(),
+                                                                                                 mEdges() {
+            mFaces.reserve(facesCapacity);
+            mVertices.reserve(verticesCapacity);
+            mEdges.reserve(edgesCapacity);
+        }
 
         /// Destructor
         ~HalfEdgeStructure() = default;
@@ -129,6 +132,25 @@ namespace reactphysics3d {
         /// Return a given vertex
         const Vertex &getVertex(uint32 index) const;
 
+    };
+
+    class HalfEdgeStructureManager {
+    private:
+        HalfEdgeStructureManager();
+
+        void init();
+
+    public:
+
+        void initBoxShapeHalfEdgeStructure();
+
+        static HalfEdgeStructureManager &getInstance();
+
+        HalfEdgeStructure &getBoxShapeHalfEdgeStructure();
+
+
+        static HalfEdgeStructureManager *mInstance;
+        HalfEdgeStructure mBoxShapeHalfEdgeStructure;
     };
 }
 #endif

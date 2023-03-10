@@ -29,6 +29,8 @@ namespace entre_portais {
 
         BoundingBox getBoundingBox() override;
 
+        float getRadius();
+
     private:
         float radius_;
     };

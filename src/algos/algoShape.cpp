@@ -66,4 +66,100 @@ namespace algo::shapes {
 
         return mostAntiParallelFace;
     }
+
+    bool ConvexPolyhedronShape::isPolyhedron() const {
+        return true;
+    }
+
+    glm::vec3 BoxShape::getLocalSupportPointWithoutMargin(const glm::vec3 &direction) const {
+        return glm::vec3(direction.x < 0.0F ? -halfExtents_.x : halfExtents_.x,
+                         direction.y < 0.0F ? -halfExtents_.y : halfExtents_.y,
+                         direction.z < 0.0F ? -halfExtents_.z : halfExtents_.z);
+    }
+
+    Shape::ShapeType BoxShape::getType() const {
+        return CONVEX_POLYHEDRON;
+    }
+
+    uint32 BoxShape::getNbFaces() const {
+        return 6;
+    }
+
+    const reactphysics3d::HalfEdgeStructure::Face &BoxShape::getFace(uint32 faceIndex) const {
+        assert(faceIndex < getNbFaces());
+        return reactphysics3d::HalfEdgeStructureManager::getInstance().getBoxShapeHalfEdgeStructure().getFace(
+                faceIndex);
+    }
+
+    uint32 BoxShape::getNbVertices() const {
+        return 8;
+    }
+
+    const reactphysics3d::HalfEdgeStructure::Vertex &BoxShape::getVertex(uint32 vertexIndex) const {
+        assert(vertexIndex < getNbVertices());
+        return reactphysics3d::HalfEdgeStructureManager::getInstance().getBoxShapeHalfEdgeStructure().getVertex(
+                vertexIndex);
+    }
+
+    glm::vec3 BoxShape::getVertexPosition(uint32 vertexIndex) const {
+        assert(vertexIndex < getNbVertices());
+
+        switch (vertexIndex) {
+            case 0:
+                return glm::vec3(-halfExtents_.x, -halfExtents_.y, halfExtents_.z);
+            case 1:
+                return glm::vec3(halfExtents_.x, -halfExtents_.y, halfExtents_.z);
+            case 2:
+                return glm::vec3(halfExtents_.x, halfExtents_.y, halfExtents_.z);
+            case 3:
+                return glm::vec3(-halfExtents_.x, halfExtents_.y, halfExtents_.z);
+            case 4:
+                return glm::vec3(-halfExtents_.x, -halfExtents_.y, -halfExtents_.z);
+            case 5:
+                return glm::vec3(halfExtents_.x, -halfExtents_.y, -halfExtents_.z);
+            case 6:
+                return glm::vec3(halfExtents_.x, halfExtents_.y, -halfExtents_.z);
+            case 7:
+                return glm::vec3(-halfExtents_.x, halfExtents_.y, -halfExtents_.z);
+        }
+
+        assert(false);
+        return glm::vec3(0);
+    }
+
+    glm::vec3 BoxShape::getFaceNormal(uint32 faceIndex) const {
+        assert(faceIndex < getNbFaces());
+
+        switch (faceIndex) {
+            case 0:
+                return glm::vec3(0, 0, 1);
+            case 1:
+                return glm::vec3(1, 0, 0);
+            case 2:
+                return glm::vec3(0, 0, -1);
+            case 3:
+                return glm::vec3(-1, 0, 0);
+            case 4:
+                return glm::vec3(0, -1, 0);
+            case 5:
+                return glm::vec3(0, 1, 0);
+        }
+
+        assert(false);
+        return glm::vec3(0);
+    }
+
+    const reactphysics3d::HalfEdgeStructure::Edge &BoxShape::getHalfEdge(uint32 edgeIndex) const {
+        assert(edgeIndex < getNbHalfEdges());
+        return reactphysics3d::HalfEdgeStructureManager::getInstance().getBoxShapeHalfEdgeStructure().getHalfEdge(
+                edgeIndex);
+    }
+
+    bool BoxShape::isPolyhedron() const {
+        return true;
+    }
+
+    glm::vec3 BoxShape::getCentroid() const {
+        return glm::vec3(0);
+    }
 }

@@ -48,7 +48,7 @@ uint32 HalfEdgeStructure::addVertex(uint32 vertexPointIndex) {
 void HalfEdgeStructure::addFace(std::vector<uint32> faceVertices) {
 
     // Create a new face
-    Face face(faceVertices);
+    Face const face(faceVertices);
     mFaces.push_back(face);
 }
 
@@ -138,12 +138,12 @@ void HalfEdgeStructure::init() {
             if (v == 0) {
                 firstEdgeKey = pairV1V2;
             } else if (v >= 1) {
-                nextEdges.try_emplace(currentFaceEdges[currentFaceEdges.size() - 1], pairV1V2);
+                nextEdges.emplace(currentFaceEdges[currentFaceEdges.size() - 1], pairV1V2);
             }
             if (v == (face.faceVertices.size() - 1)) {
-                nextEdges.try_emplace(pairV1V2, firstEdgeKey);
+                nextEdges.emplace(pairV1V2, firstEdgeKey);
             }
-            edges.try_emplace(pairV1V2, edge);
+            edges.emplace(pairV1V2, edge);
 
             const VerticesPair pairV2V1(v2Index, v1Index);
 
@@ -188,4 +188,81 @@ void HalfEdgeStructure::init() {
     for (uint32 f = 0; f < nbFaces; f++) {
         mFaces[f].edgeIndex = mapEdgeToIndex[mapFaceIndexToEdgeKey[f]];
     }
+}
+
+void HalfEdgeStructureManager::initBoxShapeHalfEdgeStructure() {
+
+    // Vertices
+    mBoxShapeHalfEdgeStructure.addVertex(0);
+    mBoxShapeHalfEdgeStructure.addVertex(1);
+    mBoxShapeHalfEdgeStructure.addVertex(2);
+    mBoxShapeHalfEdgeStructure.addVertex(3);
+    mBoxShapeHalfEdgeStructure.addVertex(4);
+    mBoxShapeHalfEdgeStructure.addVertex(5);
+    mBoxShapeHalfEdgeStructure.addVertex(6);
+    mBoxShapeHalfEdgeStructure.addVertex(7);
+
+    // Faces
+    std::vector<unsigned int> face0;
+    face0.emplace_back(0);
+    face0.emplace_back(1);
+    face0.emplace_back(2);
+    face0.emplace_back(3);
+    std::vector<unsigned int> face1;
+    face1.emplace_back(1);
+    face1.emplace_back(5);
+    face1.emplace_back(6);
+    face1.emplace_back(2);
+    std::vector<unsigned int> face2;
+    face2.emplace_back(4);
+    face2.emplace_back(7);
+    face2.emplace_back(6);
+    face2.emplace_back(5);
+    std::vector<unsigned int> face3;
+    face3.emplace_back(4);
+    face3.emplace_back(0);
+    face3.emplace_back(3);
+    face3.emplace_back(7);
+    std::vector<unsigned int> face4;
+    face4.emplace_back(4);
+    face4.emplace_back(5);
+    face4.emplace_back(1);
+    face4.emplace_back(0);
+    std::vector<unsigned int> face5;
+    face5.emplace_back(2);
+    face5.emplace_back(6);
+    face5.emplace_back(7);
+    face5.emplace_back(3);
+
+    mBoxShapeHalfEdgeStructure.addFace(face0);
+    mBoxShapeHalfEdgeStructure.addFace(face1);
+    mBoxShapeHalfEdgeStructure.addFace(face2);
+    mBoxShapeHalfEdgeStructure.addFace(face3);
+    mBoxShapeHalfEdgeStructure.addFace(face4);
+    mBoxShapeHalfEdgeStructure.addFace(face5);
+
+    mBoxShapeHalfEdgeStructure.init();
+}
+
+HalfEdgeStructureManager *HalfEdgeStructureManager::mInstance;
+
+HalfEdgeStructureManager &HalfEdgeStructureManager::getInstance() {
+    if (mInstance == nullptr) {
+        mInstance = new HalfEdgeStructureManager();
+        mInstance->init();
+    }
+    return *mInstance;
+}
+
+void HalfEdgeStructureManager::init() {
+    initBoxShapeHalfEdgeStructure();
+}
+
+HalfEdgeStructure &HalfEdgeStructureManager::getBoxShapeHalfEdgeStructure() {
+    return mBoxShapeHalfEdgeStructure;
+}
+
+HalfEdgeStructureManager::HalfEdgeStructureManager() :
+        mBoxShapeHalfEdgeStructure(6, 8, 24) {
+
 }

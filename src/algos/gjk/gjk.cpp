@@ -52,8 +52,8 @@ namespace reactphysics3d {
 /// origin, they we give that simplex polytope to the EPA algorithm which will compute
 /// the correct penetration depth and contact points between the enlarged objects.
     void GJKAlgorithm::testCollision(const algo::shapes::Shape &shapeA, const glm::mat4 &transA,
-                                     const algo::shapes::Shape &shapeB,
-                                     const glm::mat4 &transB, GJKResult &gjkResult, Contact &contact) {
+                                     const algo::shapes::Shape &shapeB, const glm::mat4 &transB, GJKResult &gjkResult,
+                                     std::vector<Contact> &contact) {
 
         glm::vec3 suppA;             // Support point of object A
         glm::vec3 suppB;             // Support point of object B
@@ -206,7 +206,7 @@ namespace reactphysics3d {
 
 
             // Add a new contact point
-            contact = Contact(normal, penetrationDepth, pA, pB);
+            contact.emplace_back(normal, penetrationDepth, pA, pB);
 
             // If the objects intersect only in the margins
             gjkResult = GJKResult::COLLIDE_IN_MARGIN;

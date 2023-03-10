@@ -37,7 +37,6 @@
 /// ReactPhysics3D namespace
 namespace reactphysics3d {
 
-// Declarations
 
 // Class SATAlgorithm
 /**

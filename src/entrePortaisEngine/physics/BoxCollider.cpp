@@ -117,15 +117,20 @@ namespace entre_portais {
     }
 
     collisions::PossibleCollision BoxCollider::isColliding(BoxCollider box) {
-        return collisions::checkCollisionBoxBox(getTransform(), box.getTransform());
+        return collisions::checkCollisionBoxBox(getTransform(), size_, box.getTransform(), box.getSize());
     }
 
     collisions::PossibleCollision BoxCollider::isColliding(SphereCollider sphere) {
-        return collisions::checkCollisionBoxSphere(getTransform(), sphere.getModelMatrix());
+        return collisions::checkCollisionBoxSphere(getTransform(), size_, sphere.getModelMatrix(),
+                                                   sphere.getRadius());
     }
 
     glm::mat4 BoxCollider::getTransform() {
-        return modelMatrix_ * matrices::Matrix_Scale(size_.x, size_.y, size_.z);
+        return modelMatrix_;
+    }
+
+    glm::vec3 &BoxCollider::getSize() {
+        return size_;
     }
 
 } // entre_portais

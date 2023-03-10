@@ -73,6 +73,8 @@ namespace entre_portais {
 
         void debugDrawLine(glm::vec3 point1, glm::vec3 point2, ImU32 color, float thickness);
 
+        void debugDrawPoint(glm::vec4 global_pos, const ImU32 color, float size);
+
     private:
         std::weak_ptr<IScene> scene_;
         float far_;

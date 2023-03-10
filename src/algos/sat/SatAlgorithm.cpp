@@ -30,6 +30,7 @@
 #include "glm/gtx/norm.hpp"
 #include "utils/matrices.h"
 #include "algos/gjk/Contact.h"
+#include "spdlog/spdlog.h"
 //#include <reactphysics3d/constraint/ContactPoint.h>
 //#include <reactphysics3d/collision/PolyhedronMesh.h>
 //#include <reactphysics3d/collision/shapes/CapsuleShape.h>
@@ -180,8 +181,10 @@ clipSegmentWithPlanes(const glm::vec3 &segA, const glm::vec3 &segB, const std::v
                       const std::vector<glm::vec3> &planesNormals) {
     assert(planesPoints.size() == planesNormals.size());
 
-    std::vector<glm::vec3> inputVertices(2);
-    std::vector<glm::vec3> outputVertices(2);
+    std::vector<glm::vec3> inputVertices;
+    inputVertices.reserve(2);
+    std::vector<glm::vec3> outputVertices;
+    outputVertices.reserve(2);
 
     inputVertices[0] = segA;
     inputVertices[1] = segB;
@@ -343,9 +346,9 @@ bool SATAlgorithm::testCollisionSphereVsConvexPolyhedron(algo::shapes::Shape &sh
            shapeB.getType() == algo::shapes::Shape::ShapeType::CONVEX_POLYHEDRON);
 
     // Get the capsule collision shapes
-    const auto *sphere = static_cast<const algo::shapes::SphereShape *>(isSphereShape1 ? &shapeA : &shapeB);
-    const auto *polyhedron = static_cast<const algo::shapes::ConvexPolyhedronShape *>(isSphereShape1 ? &shapeB
-                                                                                                     : &shapeA);
+    const auto *sphere = dynamic_cast<const algo::shapes::SphereShape *>(isSphereShape1 ? &shapeA : &shapeB);
+    const auto *polyhedron = dynamic_cast<const algo::shapes::ConvexPolyhedronShape *>(isSphereShape1 ? &shapeB
+                                                                                                      : &shapeA);
 
     const glm::mat4 &sphereToWorldTransform = isSphereShape1 ? transA : transB;
     const glm::mat4 &polyhedronToWorldTransform = isSphereShape1 ? transB : transA;
@@ -687,8 +690,10 @@ bool SATAlgorithm::computeCapsulePolyhedronFaceContactPoints(uint32_t referenceF
     uint32 firstEdgeIndex = face.edgeIndex;
     uint32 edgeIndex = firstEdgeIndex;
 
-    std::vector<glm::vec3> planesPoints(2);
-    std::vector<glm::vec3> planesNormals(2);
+    std::vector<glm::vec3> planesPoints;
+    std::vector<glm::vec3> planesNormals;
+    planesPoints.reserve(2);
+    planesNormals.reserve(2);
 
     // For each adjacent edge of the separating face of the polyhedron
     do {
@@ -816,7 +821,7 @@ bool SATAlgorithm::testCollisionConvexPolyhedronVsConvexPolyhedron(algo::shapes:
 //            lastFrameCollisionInfo->satMinAxisFaceIndex = faceIndex1;
 
         // We have found a separating axis
-        return isCollisionFound;
+        return false;
     }
 
     // Test all the face normals of the polyhedron 2 for separating axis
@@ -868,9 +873,11 @@ bool SATAlgorithm::testCollisionConvexPolyhedronVsConvexPolyhedron(algo::shapes:
         const HalfEdgeStructure::Edge &edge1 = polyhedron1->getHalfEdge(i);
 
         const glm::vec3 edge1A =
-                polyhedron1ToPolyhedron2 * glm::vec4(polyhedron1->getVertexPosition(edge1.vertexIndex), 1);
+                polyhedron1ToPolyhedron2
+                * glm::vec4(polyhedron1->getVertexPosition(edge1.vertexIndex), 1);
         const glm::vec3 edge1B = polyhedron1ToPolyhedron2 * glm::vec4(
-                polyhedron1->getVertexPosition(polyhedron1->getHalfEdge(edge1.nextEdgeIndex).vertexIndex), 1);
+                polyhedron1->getVertexPosition(
+                        polyhedron1->getHalfEdge(edge1.nextEdgeIndex).vertexIndex), 1);
         const glm::vec3 edge1Direction = edge1B - edge1A;
 
         for (uint32 j = 0; j < polyhedron2->getNbHalfEdges(); j += 2) {
@@ -940,7 +947,7 @@ bool SATAlgorithm::testCollisionConvexPolyhedronVsConvexPolyhedron(algo::shapes:
     }
 
     if (separatingAxisFound) {
-        return separatingAxisFound;
+        return false;
     }
 
     // Here we know the shapes are overlapping on a given minimum separating axis.
@@ -961,6 +968,7 @@ bool SATAlgorithm::testCollisionConvexPolyhedronVsConvexPolyhedron(algo::shapes:
         // There should be clipping points here. If it is not the case, it might be
         // because of a numerical issue
         if (!contactsFound) {
+            spdlog::warn("No contact points found between two polyhedra even though the shapes are overlapping");
 
 //                lastFrameCollisionInfo->satIsAxisFacePolyhedron1 = isMinPenetrationFaceNormalPolyhedron1;
 //                lastFrameCollisionInfo->satIsAxisFacePolyhedron2 = !isMinPenetrationFaceNormalPolyhedron1;
@@ -1061,13 +1069,15 @@ bool SATAlgorithm::computePolyhedronVsPolyhedronFaceContactPoints(bool isMinPene
 
     const uint32 nbIncidentFaceVertices = static_cast<uint32>(incidentFace.faceVertices.size());
     const uint32 nbMaxElements = nbIncidentFaceVertices * 2 * static_cast<uint32>(referenceFace.faceVertices.size());
-    std::vector<glm::vec3> verticesTemp1(nbMaxElements);
-    std::vector<glm::vec3> verticesTemp2(nbMaxElements);
+    std::vector<glm::vec3> verticesTemp1;
+    verticesTemp1.reserve(nbMaxElements);
+    std::vector<glm::vec3> verticesTemp2;
+    verticesTemp2.reserve(nbMaxElements);
 
     // Get all the vertices of the incident face (in the reference local-space)
     for (uint32 i = 0; i < nbIncidentFaceVertices; i++) {
         const glm::vec3 faceVertexIncidentSpace = incidentPolyhedron->getVertexPosition(incidentFace.faceVertices[i]);
-        verticesTemp1[i] = incidentToReferenceTransform * glm::vec4(faceVertexIncidentSpace, 1.0f);
+        verticesTemp1.emplace_back(incidentToReferenceTransform * glm::vec4(faceVertexIncidentSpace, 1.0f));
     }
 
     // For each edge of the reference we use it to clip the incident face polygon using Sutherland-Hodgman algorithm

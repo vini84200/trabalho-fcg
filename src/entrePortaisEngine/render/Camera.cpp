@@ -247,4 +247,12 @@ namespace entre_portais {
         lineClipScreen(point1, point2, color, thickness);
     }
 
+    void Camera::debugDrawPoint(glm::vec4 global_pos, const ImU32 color, float size) {
+        auto screen_pos = worldToImScreen(global_pos);
+        if (!screen_pos.has_value()) {
+            return;
+        }
+        ImGui::GetBackgroundDrawList(ImGui::GetMainViewport())->AddCircleFilled(screen_pos.value(), size, color);
+    }
+
 }
