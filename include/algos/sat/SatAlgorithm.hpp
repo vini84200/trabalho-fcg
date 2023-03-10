@@ -27,17 +27,17 @@
 #define REACTPHYSICS3D_SAT_ALGORITHM_H
 
 // Libraries
+#include <vector>
 #include "algos/HalfEdgeStructure.hpp"
 #include "glm/vec3.hpp"
 #include "algos/algoShape.hpp"
 #include "glm/mat4x4.hpp"
+#include "algos/gjk/Contact.h"
 
 /// ReactPhysics3D namespace
 namespace reactphysics3d {
 
 // Declarations
-    struct ContactManifoldInfo;
-    class MemoryAllocator;
 
 // Class SATAlgorithm
 /**
@@ -72,16 +72,14 @@ namespace reactphysics3d {
         /// when we call the testCollision() methods.
         bool mClipWithPreviousAxisIfStillColliding;
 
-        /// Memory allocator
-        MemoryAllocator& mMemoryAllocator;
-
-
         // -------------------- Methods -------------------- //
 
         /// Return true if two edges of two polyhedrons build a minkowski face (and can therefore be a separating axis)
-        bool testEdgesBuildMinkowskiFace(const ConvexPolyhedronShape* polyhedron1, const HalfEdgeStructure::Edge& edge1,
-                                         const ConvexPolyhedronShape* polyhedron2, const HalfEdgeStructure::Edge& edge2,
-                                         const Transform& polyhedron1ToPolyhedron2) const;
+        bool testEdgesBuildMinkowskiFace(const algo::shapes::ConvexPolyhedronShape *polyhedron1,
+                                         const HalfEdgeStructure::Edge &edge1,
+                                         const algo::shapes::ConvexPolyhedronShape *polyhedron2,
+                                         const HalfEdgeStructure::Edge &edge2,
+                                         const glm::mat4 &polyhedron1ToPolyhedron2) const;
 
         /// Return true if the arcs AB and CD on the Gauss Map intersect
         bool testGaussMapArcsIntersect(const glm::vec3& a, const glm::vec3& b,
@@ -95,36 +93,48 @@ namespace reactphysics3d {
                                             bool isShape1Triangle, glm::vec3& outSeparatingAxis) const;
 
         /// Return the penetration depth between two polyhedra along a face normal axis of the first polyhedron
-        float testSingleFaceDirectionPolyhedronVsPolyhedron(const ConvexPolyhedronShape* polyhedron1,
-                                                              const ConvexPolyhedronShape* polyhedron2,
-                                                              const Transform& polyhedron1ToPolyhedron2,
-                                                              uint32 faceIndex) const;
+        float testSingleFaceDirectionPolyhedronVsPolyhedron(const algo::shapes::ConvexPolyhedronShape *polyhedron1,
+                                                            const algo::shapes::ConvexPolyhedronShape *polyhedron2,
+                                                            const glm::mat4 &polyhedron1ToPolyhedron2,
+                                                            uint32 faceIndex) const;
 
 
         /// Test all the normals of a polyhedron for separating axis in the polyhedron vs polyhedron case
-        float testFacesDirectionPolyhedronVsPolyhedron(const ConvexPolyhedronShape* polyhedron1, const ConvexPolyhedronShape* polyhedron2,
-                                                         const Transform& polyhedron1ToPolyhedron2, uint& minFaceIndex) const;
+        float testFacesDirectionPolyhedronVsPolyhedron(const algo::shapes::ConvexPolyhedronShape *polyhedron1,
+                                                       const algo::shapes::ConvexPolyhedronShape *polyhedron2,
+                                                       const glm::mat4 &polyhedron1ToPolyhedron2,
+                                                       uint &minFaceIndex) const;
 
         /// Compute the penetration depth between a face of the polyhedron and a sphere along the polyhedron face normal direction
-        float computePolyhedronFaceVsSpherePenetrationDepth(uint32 faceIndex, const ConvexPolyhedronShape* polyhedron,
-                                                              const SphereShape* sphere, const glm::vec3& sphereCenter) const;
+        float computePolyhedronFaceVsSpherePenetrationDepth(uint32 faceIndex,
+                                                            const algo::shapes::ConvexPolyhedronShape *polyhedron,
+                                                            const algo::shapes::SphereShape *sphere,
+                                                            const glm::vec3 &sphereCenter) const;
 
         /// Compute the penetration depth between the face of a polyhedron and a capsule along the polyhedron face normal direction
-        float computePolyhedronFaceVsCapsulePenetrationDepth(uint32 polyhedronFaceIndex, const ConvexPolyhedronShape* polyhedron,
-                                                               const CapsuleShape* capsule, const Transform& polyhedronToCapsuleTransform,
-                                                               glm::vec3& outFaceNormalCapsuleSpace) const;
+        float computePolyhedronFaceVsCapsulePenetrationDepth(uint32 polyhedronFaceIndex,
+                                                             const algo::shapes::ConvexPolyhedronShape *polyhedron,
+                                                             const algo::shapes::CapsuleShape *capsule,
+                                                             const glm::mat4 &polyhedronToCapsuleTransform,
+                                                             glm::vec3 &outFaceNormalCapsuleSpace) const;
 
         /// Compute the penetration depth when the separating axis is the cross product of polyhedron edge and capsule inner segment
-        float computeEdgeVsCapsuleInnerSegmentPenetrationDepth(const ConvexPolyhedronShape* polyhedron, const CapsuleShape* capsule,
-                                                                 const glm::vec3& capsuleSegmentAxis, const glm::vec3& edgeVertex1,
-                                                                 const glm::vec3& edgeDirectionCapsuleSpace,
-                                                                 const Transform& polyhedronToCapsuleTransform, glm::vec3& outAxis) const;
+        float computeEdgeVsCapsuleInnerSegmentPenetrationDepth(const algo::shapes::ConvexPolyhedronShape *polyhedron,
+                                                               const algo::shapes::CapsuleShape *capsule,
+                                                               const glm::vec3 &capsuleSegmentAxis,
+                                                               const glm::vec3 &edgeVertex1,
+                                                               const glm::vec3 &edgeDirectionCapsuleSpace,
+                                                               const glm::mat4 &polyhedronToCapsuleTransform,
+                                                               glm::vec3 &outAxis) const;
 
         /// Compute the contact points between two faces of two convex polyhedra.
-        bool computePolyhedronVsPolyhedronFaceContactPoints(bool isMinPenetrationFaceNormalPolyhedron1, const ConvexPolyhedronShape* polyhedron1,
-                                                            const ConvexPolyhedronShape* polyhedron2, const Transform& polyhedron1ToPolyhedron2,
-                                                            const Transform& polyhedron2ToPolyhedron1, uint32 minFaceIndex,
-                                                            NarrowPhaseInfoBatch& narrowPhaseInfoBatch, uint32 batchIndex) const;
+        bool computePolyhedronVsPolyhedronFaceContactPoints(bool isMinPenetrationFaceNormalPolyhedron1,
+                                                            const algo::shapes::ConvexPolyhedronShape *polyhedron1,
+                                                            const algo::shapes::ConvexPolyhedronShape *polyhedron2,
+                                                            const glm::mat4 &polyhedron1ToPolyhedron2,
+                                                            const glm::mat4 &polyhedron2ToPolyhedron1,
+                                                            const glm::mat4 &transA, const glm::mat4 &transB,
+                                                            uint32 minFaceIndex, std::vector<Contact> &contacts) const;
 
 
     public :
@@ -132,7 +142,7 @@ namespace reactphysics3d {
         // -------------------- Methods -------------------- //
 
         /// Constructor
-        SATAlgorithm(bool clipWithPreviousAxisIfStillColliding, MemoryAllocator& memoryAllocator);
+        SATAlgorithm(bool clipWithPreviousAxisIfStillColliding);
 
         /// Destructor
         ~SATAlgorithm() = default;
@@ -144,18 +154,26 @@ namespace reactphysics3d {
         SATAlgorithm& operator=(const SATAlgorithm& algorithm) = delete;
 
         /// Test collision between a sphere and a convex mesh
-        bool testCollisionSphereVsConvexPolyhedron(NarrowPhaseInfoBatch& narrowPhaseInfoBatch,
-                                                   uint32 batchStartIndex, uint32 batchNbItems) const;
+        bool testCollisionSphereVsConvexPolyhedron(algo::shapes::Shape &shapeA, const glm::mat4 &transA,
+                                                   algo::shapes::Shape &shapeB,
+                                                   const glm::mat4 &transB, std::vector<Contact> &contacts) const;
 
         /// Test collision between a capsule and a convex mesh
-        bool testCollisionCapsuleVsConvexPolyhedron(NarrowPhaseInfoBatch& narrowPhaseInfoBatch, uint32 batchIndex) const;
+        bool testCollisionCapsuleVsConvexPolyhedron(algo::shapes::Shape &shapeA, const glm::mat4 &transA,
+                                                    algo::shapes::Shape &shapeB, const glm::mat4 &transB,
+                                                    std::vector<Contact> &contacts) const;
 
         /// Compute the two contact points between a polyhedron and a capsule when the separating axis is a face normal of the polyhedron
-        bool computeCapsulePolyhedronFaceContactPoints(uint32 referenceFaceIndex, float capsuleRadius, const ConvexPolyhedronShape* polyhedron,
-                                                       float penetrationDepth, const Transform& polyhedronToCapsuleTransform,
-                                                       glm::vec3& normalWorld, const glm::vec3& separatingAxisCapsuleSpace,
-                                                       const glm::vec3& capsuleSegAPolyhedronSpace, const glm::vec3& capsuleSegBPolyhedronSpace,
-                                                       NarrowPhaseInfoBatch& narrowPhaseInfoBatch, uint32 batchIndex, bool isCapsuleShape1) const;
+        bool computeCapsulePolyhedronFaceContactPoints(uint32_t referenceFaceIndex, float capsuleRadius,
+                                                       const algo::shapes::ConvexPolyhedronShape *polyhedron,
+                                                       float penetrationDepth,
+                                                       const glm::mat4 &polyhedronToCapsuleTransform,
+                                                       glm::vec3 &normalWorld,
+                                                       const glm::vec3 &separatingAxisCapsuleSpace,
+                                                       const glm::vec3 &capsuleSegAPolyhedronSpace,
+                                                       const glm::vec3 &capsuleSegBPolyhedronSpace,
+                                                       bool isCapsuleShape1,
+                                                       std::vector<Contact> &contacts) const;
 
         // This method returns true if an edge of a polyhedron and a capsule forms a face of the Minkowski Difference
         bool isMinkowskiFaceCapsuleVsEdge(const glm::vec3& capsuleSegment, const glm::vec3& edgeAdjacentFace1Normal,
@@ -163,8 +181,8 @@ namespace reactphysics3d {
 
         /// Test collision between two convex meshes
         bool testCollisionConvexPolyhedronVsConvexPolyhedron(algo::shapes::Shape &shapeA, const glm::mat4 &transA,
-                                                             algo::shapes::Shape &shapeB,
-                                                             const glm::mat4 &transB) const;
+                                                             algo::shapes::Shape &shapeB, const glm::mat4 &transB,
+                                                             std::vector<Contact> &contacts) const;
 
 
     };

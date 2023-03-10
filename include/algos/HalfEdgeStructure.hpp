@@ -28,6 +28,10 @@
 
 // Libraries
 
+#include <utility>
+#include <vector>
+#include <cassert>
+
 namespace reactphysics3d {
     typedef unsigned int uint32;
 
@@ -54,13 +58,15 @@ namespace reactphysics3d {
         /// Face
         struct Face {
             uint32 edgeIndex;             // Index of an half-edge of the face
-            Array<uint32> faceVertices;	// Index of the vertices of the face
+            std::vector<uint32> faceVertices;    // Index of the vertices of the face
 
             /// Constructor
-            Face(MemoryAllocator& allocator) : edgeIndex(0), faceVertices(allocator) {}
+            Face() : edgeIndex(0), faceVertices() {}
 
             /// Constructor
-            Face(Array<uint32> vertices) : edgeIndex(0), faceVertices(vertices) {}
+            Face(std::vector<uint32> vertices) : edgeIndex(0), faceVertices(vertices) {}
+
+//            explicit Face(const std::vector<uint32> &faceVertices) : faceVertices(faceVertices) {}
         };
 
         /// Vertex
@@ -69,29 +75,29 @@ namespace reactphysics3d {
             uint32 edgeIndex;         // Index of one edge emanting from this vertex
 
             /// Constructor
-            Vertex(uint32 vertexCoordsIndex) : vertexPointIndex(vertexCoordsIndex), edgeIndex(0) { }
+            Vertex(uint32 vertexCoordsIndex) : vertexPointIndex(vertexCoordsIndex), edgeIndex(0) {}
+
+            Vertex() = default;
         };
 
     private:
 
-        /// Reference to a memory allocator
-        MemoryAllocator& mAllocator;
-
         /// All the faces
-        Array<Face> mFaces;
+        std::vector<Face> mFaces;
 
         /// All the vertices
-        Array<Vertex> mVertices;
+        std::vector<Vertex> mVertices;
 
         /// All the half-edges
-        Array<Edge> mEdges;
+        std::vector<Edge> mEdges;
 
     public:
 
         /// Constructor
-        HalfEdgeStructure(MemoryAllocator& allocator, uint32 facesCapacity, uint32 verticesCapacity,
-                          uint32 edgesCapacity) :mAllocator(allocator), mFaces(allocator, facesCapacity),
-                                                 mVertices(allocator, verticesCapacity), mEdges(allocator, edgesCapacity) {}
+        HalfEdgeStructure(uint32 facesCapacity, uint32 verticesCapacity, uint32 edgesCapacity) : mFaces(facesCapacity),
+                                                                                                 mVertices(
+                                                                                                         verticesCapacity),
+                                                                                                 mEdges(edgesCapacity) {}
 
         /// Destructor
         ~HalfEdgeStructure() = default;
@@ -103,7 +109,7 @@ namespace reactphysics3d {
         uint32 addVertex(uint32 vertexPointIndex);
 
         /// Add a face
-        void addFace(Array<uint32> faceVertices);
+        void addFace(std::vector<uint32> faceVertices);
 
         /// Return the number of faces
         uint32 getNbFaces() const;
@@ -115,89 +121,14 @@ namespace reactphysics3d {
         uint32 getNbVertices() const;
 
         /// Return a given face
-        const Face& getFace(uint32 index) const;
+        const Face &getFace(uint32 index) const;
 
         /// Return a given edge
-        const Edge& getHalfEdge(uint32 index) const;
+        const Edge &getHalfEdge(uint32 index) const;
 
         /// Return a given vertex
-        const Vertex& getVertex(uint32 index) const;
+        const Vertex &getVertex(uint32 index) const;
 
     };
-
-// Add a vertex
-/**
- * @param vertexPointIndex Index of the vertex in the vertex data array
- */
-    RP3D_FORCE_INLINE uint32 HalfEdgeStructure::addVertex(uint32 vertexPointIndex) {
-    Vertex vertex(vertexPointIndex);
-    mVertices.add(vertex);
-    return static_cast<uint32>(mVertices.size()) - 1;
 }
-
-// Add a face
-/**
- * @param faceVertices Array of the vertices in a face (ordered in CCW order as seen from outside
- *                     the polyhedron
- */
-RP3D_FORCE_INLINE void HalfEdgeStructure::addFace(Array<uint32> faceVertices) {
-
-    // Create a new face
-    Face face(faceVertices);
-    mFaces.add(face);
-}
-
-// Return the number of faces
-/**
- * @return The number of faces in the polyhedron
- */
-RP3D_FORCE_INLINE uint32 HalfEdgeStructure::getNbFaces() const {
-    return static_cast<uint32>(mFaces.size());
-}
-
-// Return the number of edges
-/**
- * @return The number of edges in the polyhedron
- */
-RP3D_FORCE_INLINE uint32 HalfEdgeStructure::getNbHalfEdges() const {
-    return static_cast<uint32>(mEdges.size());
-}
-
-// Return the number of vertices
-/**
- * @return The number of vertices in the polyhedron
- */
-RP3D_FORCE_INLINE uint32 HalfEdgeStructure::getNbVertices() const {
-    return static_cast<uint32>(mVertices.size());
-}
-
-// Return a given face
-/**
- * @return A given face of the polyhedron
- */
-RP3D_FORCE_INLINE const HalfEdgeStructure::Face& HalfEdgeStructure::getFace(uint32 index) const {
-assert(index < mFaces.size());
-return mFaces[index];
-}
-
-// Return a given edge
-/**
- * @return A given edge of the polyhedron
- */
-RP3D_FORCE_INLINE const HalfEdgeStructure::Edge& HalfEdgeStructure::getHalfEdge(uint32 index) const {
-assert(index < mEdges.size());
-return mEdges[index];
-}
-
-// Return a given vertex
-/**
- * @return A given vertex of the polyhedron
- */
-RP3D_FORCE_INLINE const HalfEdgeStructure::Vertex& HalfEdgeStructure::getVertex(uint32 index) const {
-assert(index < mVertices.size());
-return mVertices[index];
-}
-
-}
-
 #endif

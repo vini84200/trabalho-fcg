@@ -1,13 +1,10 @@
 #include "algos/algoShape.hpp"
-#include "glm/gtx/norm.hpp"
 #include "utils/utils.hpp"
 
-namespace algo::shapes
-{
-    // FONTE: (adaptado) https://github.com/DanielChappuis/reactphysics3d/blob/master/include/reactphysics3d/collision/shapes
+namespace algo::shapes {
+    // FONTE: (adaptado) https://github.com/DanielChappuis/reactphysics3d/tree/master/src/collision/shapes
 
-    glm::vec3 Shape::getLocalSupportPointWithMargin(const glm::vec3& direction) const
-    {
+    glm::vec3 Shape::getLocalSupportPointWithMargin(const glm::vec3 &direction) const {
         // Get the support point without margin
         glm::vec3 supportPoint = getLocalSupportPointWithoutMargin(direction);
 
@@ -28,4 +25,45 @@ namespace algo::shapes
     }
 
 
+    bool SphereShape::isPolyhedron() const {
+        return false;
+    }
+
+    glm::vec3 SphereShape::getLocalSupportPointWithoutMargin(const glm::vec3 &direction) const {
+        return glm::vec3(0.0, 0.0, 0.0);
+    }
+
+    glm::vec3 CapsuleShape::getLocalSupportPointWithoutMargin(const glm::vec3 &direction) const {
+        float dotPrdouctTop = halfHeight_ * direction.y;
+        float dotPrdouctBottom = -halfHeight_ * direction.y;
+
+        if (dotPrdouctTop > dotPrdouctBottom) {
+            return glm::vec3(0.0, halfHeight_, 0.0);
+        } else {
+            return glm::vec3(0.0, -halfHeight_, 0.0);
+        }
+    }
+
+    bool CapsuleShape::isPolyhedron() const {
+        return false;
+    }
+
+    uint32 ConvexPolyhedronShape::findMostAntiParallelFace(const glm::vec3 &direction) const {
+        float minDotProduct = std::numeric_limits<float>::max();
+        uint32 mostAntiParallelFace = 0;
+
+        // For each face of the polyhedron
+        const uint32 nbFaces = getNbFaces();
+        for (uint32 i = 0; i < nbFaces; i++) {
+
+            // Get the face normal
+            const float dotProduct = glm::dot(getFaceNormal(i), direction);
+            if (dotProduct < minDotProduct) {
+                minDotProduct = dotProduct;
+                mostAntiParallelFace = i;
+            }
+        }
+
+        return mostAntiParallelFace;
+    }
 }

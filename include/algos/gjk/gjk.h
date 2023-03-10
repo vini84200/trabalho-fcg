@@ -30,8 +30,8 @@
 #define REACTPHYSICS3D_GJK_ALGORITHM_H
 
 #include "algos/algoShape.hpp"
-#include "glm/fwd.hpp"
 #include "algos/gjk/Contact.h"
+#include "glm/ext/matrix_float4x4.hpp"
 
 /// ReactPhysics3D namespace
 namespace reactphysics3d {

@@ -2,11 +2,12 @@
 #define ENTREPORTAIS_ALGOSHAPE_HPP
 
 #include "glm/vec3.hpp"
+#include "glm/gtx/norm.hpp"
 #include "HalfEdgeStructure.hpp"
 
 namespace algo::shapes
 {
-    typedef unsigned int uint32;
+    using uint32 = unsigned int;
 // A 3D Shape
 // FONTE: (adaptado) https://github.com/DanielChappuis/reactphysics3d/blob/master/include/reactphysics3d/collision/shapes/ConvexShape.h
     class Shape {
@@ -15,7 +16,8 @@ namespace algo::shapes
         virtual glm::vec3 getLocalSupportPointWithoutMargin(const glm::vec3& direction) const = 0;
         virtual bool isPolyhedron() const = 0;
 
-        Shape(float margin);
+        explicit Shape(float margin);
+
         virtual ~Shape() = default;
 
         float getMargin() const {
@@ -25,6 +27,16 @@ namespace algo::shapes
         void setMargin(float margin) {
             margin_ = margin;
         }
+
+        enum ShapeType {
+            SPHERE,
+            BOX,
+            CONVEX_POLYHEDRON,
+            CAPSULE,
+            CONVEX_MESH,
+        };
+
+        [[nodiscard]] virtual ShapeType getType() const = 0;
 
     private:
         float margin_;
@@ -64,11 +76,66 @@ namespace algo::shapes
         virtual bool isPolyhedron() const override;
 
         /// Return the centroid of the polyhedron
-        virtual glm::vec3 getCentroid() const=0;
+        virtual glm::vec3 getCentroid() const = 0;
 
         /// Find and return the index of the polyhedron face with the most anti-parallel face
         /// normal given a direction vector
-        uint32 findMostAntiParallelFace(const glm::vec3& direction) const;
+        uint32 findMostAntiParallelFace(const glm::vec3 &direction) const;
+    };
+
+
+    class SphereShape : public Shape {
+    public:
+        SphereShape(float radius) : Shape(radius) {};
+
+        virtual ~SphereShape() = default;
+
+        float getRadius() const {
+            return getMargin();
+        }
+
+        void setRadius(float radius) {
+            setMargin(radius);
+        }
+
+        glm::vec3 getLocalSupportPointWithoutMargin(const glm::vec3 &direction) const override;
+
+        virtual bool isPolyhedron() const override;
+
+        virtual ShapeType getType() const override {
+            return SPHERE;
+        }
+    };
+
+    class CapsuleShape : public Shape {
+    private:
+        float halfHeight_;
+    public:
+        CapsuleShape(float radius, float height) : Shape(radius), halfHeight_(height / 2.0F) {};
+
+        glm::vec3 getLocalSupportPointWithoutMargin(const glm::vec3 &direction) const override;
+
+        float getRadius() const {
+            return getMargin();
+        }
+
+        void setRadius(float radius) {
+            setMargin(radius);
+        }
+
+        float getHeight() const {
+            return halfHeight_ * 2.0F;
+        }
+
+        void setHeight(float height) {
+            halfHeight_ = height / 2.0F;
+        }
+
+        bool isPolyhedron() const override;
+
+        virtual ShapeType getType() const override {
+            return CAPSULE;
+        }
     };
 }
 
