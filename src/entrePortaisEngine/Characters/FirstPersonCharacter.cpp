@@ -48,6 +48,10 @@ namespace entre_portais {
                     altMode_ = false;
                 }
                 break;
+            case GLFW_KEY_ESCAPE:
+                if (action == GLFW_PRESS) {
+                    switchCameraMode();
+                }
         }
     }
 
@@ -66,10 +70,19 @@ namespace entre_portais {
 
     void FirstPersonCharacter::initialize() {
         loadBodyMesh();
+        pauseMode_ = false;
+        char *emptyObjectName = "empty";
+        auto emptyObject = std::make_shared<EmptyObject>(emptyObjectName);
+        emptyObject1_ = emptyObject;
+        addChild(emptyObject);
+        char *emptyObjectName2 = "empty2";
+        auto emptyObject2 = std::make_shared<EmptyObject>(emptyObjectName2);
+        emptyObject2_ = emptyObject2;
+        emptyObject1_->addChild(emptyObject2);
         char *cameraName = "camera";
         auto camera = std::make_shared<Camera>(cameraName, M_PI_2, 0.1, 10000.0, 1.8);
         camera_ = camera;
-        addChild(camera);
+        emptyObject2_->addChild(camera);
         auto renderer = IObject::getScene()->getRenderer();
         loadShader("primitive");
         submit(renderer);
@@ -87,15 +100,47 @@ namespace entre_portais {
         if (altMode_) {
             return;
         }
-        glm::vec2 d = 0.001f * delta;
-        glm::vec3 rightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());
-        glm::quat rotationHead = glm::quat(glm::vec3(0, 0, -d.y));
-        glm::quat rotationBody = glm::quat(glm::vec3(0, -d.x, 0));
-        camera_->getTransform()->rotateBy(rotationHead);
-        glm::vec3 newRightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());
-        if (glm::dot(rightCamera, newRightCamera) < 0) {
-            camera_->getTransform()->rotateBy(conjugate(rotationHead));
+        if (!pauseMode_) {
+            glm::vec2 d = 0.001f * delta;
+            glm::vec3 rightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());
+            glm::quat rotationHead = glm::quat(glm::vec3(0, 0, -d.y));
+            glm::quat rotationBody = glm::quat(glm::vec3(0, -d.x, 0));
+            camera_->getTransform()->rotateBy(rotationHead);
+            glm::vec3 newRightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());
+            if (glm::dot(rightCamera, newRightCamera) < 0) {
+                camera_->getTransform()->rotateBy(conjugate(rotationHead));
+            }
+            getTransform()->rotateBy(rotationBody);
+        } else {
+            glm::vec2 d = 0.001f * delta;
+            glm::vec3 rightEmptyObject = glm::cross(glm::vec3(0.0, 1.0, 0.0),
+                                                    emptyObject2_->getTransform()->getForward());
+            glm::quat rotationHead = glm::quat(glm::vec3(0, 0, d.y));
+            glm::quat rotationBody = glm::quat(glm::vec3(0, -d.x, 0));
+            emptyObject2_->getTransform()->rotateBy(rotationHead);
+            glm::vec3 newRightEmptyObject = glm::cross(glm::vec3(0.0, 1.0, 0.0),
+                                                       emptyObject2_->getTransform()->getForward());
+            if (glm::dot(rightEmptyObject, newRightEmptyObject) < 0) {
+                emptyObject2_->getTransform()->rotateBy(conjugate(rotationHead));
+            }
+            emptyObject1_->getTransform()->rotateBy(rotationBody);
         }
-        getTransform()->rotateBy(rotationBody);
+    }
+
+    void FirstPersonCharacter::switchCameraMode() {
+        if (pauseMode_) { // Pause ON -> OFF
+            auto newCameraPosition = glm::vec3(0.0, 0.0, 0.0);
+            getCamera()->getTransform()->setPosition(newCameraPosition);
+            emptyObject1_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
+            emptyObject2_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
+        } else { // Pause OFF -> ON
+            auto cameraEuler = getCamera()->getTransform()->getRotationEuler();
+            auto cameraPosition = getCamera()->getTransform()->getPosition();
+            auto newCameraPosition = glm::vec3(cameraPosition.x,
+                                               cameraPosition.y - cameraEuler.z,
+                                               cameraPosition.z + (M_PI_2 - abs(cameraEuler.z)));
+            getCamera()->getTransform()->setPosition(newCameraPosition);
+        }
+        pauseMode_ = !pauseMode_;
     }
 } // entre_portais

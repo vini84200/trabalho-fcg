@@ -2,6 +2,7 @@
 #define ENTREPORTAIS_FIRSTPERSONCHARACTER_HPP
 
 #include "entrePortaisEngine/IObject.hpp"
+#include "testGame/EmptyObject.hpp"
 
 namespace entre_portais {
 
@@ -27,11 +28,16 @@ namespace entre_portais {
 
         void onMouseDeltaMovement(glm::vec2 delta) override;
 
+        void switchCameraMode();
+
 
     private:
         glm::vec3 direction_ = {0, 0, 0};
         std::shared_ptr<Camera> camera_;
+        std::shared_ptr<EmptyObject> emptyObject1_;
+        std::shared_ptr<EmptyObject> emptyObject2_;
         bool altMode_;
+        bool pauseMode_;
     };
 
 } // entre_portais
