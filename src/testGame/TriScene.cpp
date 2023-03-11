@@ -69,7 +69,7 @@ namespace entre_portais {
 //       addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
 //
         auto b1 = std::make_shared<Ball>("Ball 1");
-        b1->getTransform()->setPosition(glm::vec3(0.0f, 0.5f, 0.0f));
+        b1->getTransform()->setPosition(glm::vec3(0.0f, 1.5f, 0.0f));
         addChild(b1);
 //        auto b2 = std::make_shared<Ball>("Ball 2");
 //        b2->getTransform()->setPosition(glm::vec3(0.0f, 2.5f, 0.0f));

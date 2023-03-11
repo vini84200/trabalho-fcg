@@ -22,6 +22,7 @@ namespace entre_portais {
         rigidBody_ = std::make_unique<RigidBody>(&modelMatrix_, std::move(sphereCollider),
                                                  *this->getScene()->getPhysicsEngine().get(),
                                                  this->transform_);
+        rigidBody_->setIsStatic(false);
     }
 
     void Ball::onKey(int key, int scancode, int action, int mods) {

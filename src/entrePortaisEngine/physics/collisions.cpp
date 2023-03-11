@@ -20,6 +20,7 @@ namespace entre_portais::collisions {
         algo::shapes::BoxShape box(box_size / 2.0f);
         reactphysics3d::GJKAlgorithm::GJKResult result;
         std::vector<Contact> contacts;
+        contacts.reserve(4);
         gjk.testCollision(sphere, sphere_transform, box, box_transform, result, contacts);
         bool isColliding = false;
 

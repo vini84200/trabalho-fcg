@@ -95,19 +95,27 @@ namespace entre_portais {
         lastFrameTime_ = glfwGetTime() - 1.0 / targetFPS_;
         getLogger()->info("Iniciando o loop principal");
         getLogger()->info("Target FPS: {} / Target Frame Time: {}", targetFPS_, (1.0f / targetFPS_));
+        float accumulator = 0.0f;
         while (running_) {
             // Calculate delta time
             double currentFrame = glfwGetTime();
             double timeDifference = currentFrame - lastFrameTime_;
+            if (timeDifference > 1.0 / WARNING_FPS) {
+                getLogger()->warn("Running behind by {} seconds, expected {} seconds", timeDifference,
+                                  1.0 / targetFPS_);
+                timeDifference = 1.0 / targetFPS_;
+            }
             lastFrameTime_ = currentFrame;
 
+            accumulator += timeDifference;
+            float deltaTime = 1.0 / TARGET_UPS;
+
             // Update
-            // Usa Semi-fixed timestep (veja https://gafferongames.com/post/fix_your_timestep/)
+            // Usa fixed timestep (veja https://gafferongames.com/post/fix_your_timestep/)
             try {
-                while (timeDifference > 0.0f) {
-                    float deltaTime = utils::min(timeDifference, 1.0 / TARGET_UPS);
+                while (accumulator >= deltaTime) {
                     update(deltaTime);
-                    timeDifference -= deltaTime;
+                    accumulator -= deltaTime;
                 }
             }
             catch (const std::exception &e) {

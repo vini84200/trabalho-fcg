@@ -27,15 +27,28 @@ namespace entre_portais {
     private:
         // DYNAMICS
         bool isStatic_ = true;
-        glm::vec3 velocity_ = glm::vec3(0.0f, 0.0f, 0.0f);
     public:
-        const glm::vec3 &getVelocity() const;
+        void setIsStatic(bool isStatic);
+
+    public:
+        const glm::vec3 &getForce() const;
 
     private:
+        glm::vec3 velocity_ = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 force_ = glm::vec3(0.0f, 0.0f, 0.0f);
+        // Rotation
+        glm::vec3 angularVelocity_ = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 torque_ = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::mat3 inertiaTensor_ = glm::identity<glm::mat3>();
+
         glm::vec3 lastForce_ = glm::vec3(0.0f, 0.0f, 0.0f);
+
         glm::vec3 gravity_ = glm::vec3(0, -9.8, 0); // in m/s^2
 
+    public:
+
+
+        const glm::vec3 &getVelocity() const;
 
         void updateDynamics(float deltaTime);
 
@@ -46,7 +59,7 @@ namespace entre_portais {
         void updateGravity(float time);
 
     public:
-        void applyForce(glm::vec3 force);
+        void applyForceOnCM(glm::vec3 force);
 
         bool isStatic() const;
 
@@ -79,10 +92,12 @@ namespace entre_portais {
 
         bool onCollision(RigidBody *const other);
 
-        void resolveCollision(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
-                              glm::vec3 velDiff);
+        void
+        resolveCollision(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
+                         glm::vec3 velA, glm::vec3 velB, glm::vec3 velAngA, glm::vec3 velAngB, float dt);
 
-        void resolveCollisionWithStatic(RigidBody *const other, const collisions::PossibleCollision &possibleCollision);
+        void resolveCollisionWithStatic(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
+                                        float dt);
 
     public:
 
@@ -96,9 +111,14 @@ namespace entre_portais {
 
         float getFriction() const;
 
+        glm::vec3 getAngularVelocity() const;
+
     private:
         float friction_ = 0.5f;
 
+        float getDampingFactor();
+
+        glm::vec3 getVelocityAt(const glm::vec3 r) const;
     };
 
 } // entre_portais

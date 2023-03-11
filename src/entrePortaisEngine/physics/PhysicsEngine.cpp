@@ -60,24 +60,23 @@ namespace entre_portais {
 
             if (rigidBody1->isStatic()) {
                 // Resolve colisão com objeto estático
-                spdlog::info("Colisão com objeto estático");
-                auto const &reverseCollision = collision.reverse();
-                rigidBody2->resolveCollisionWithStatic(rigidBody1, reverseCollision);
+                spdlog::info("Colisão com objeto estático A");
+                rigidBody2->resolveCollisionWithStatic(rigidBody1, -collision, deltaTime);
                 continue;
             }
             if (rigidBody2->isStatic()) {
                 // Resolve colisão com objeto estático
-                spdlog::info("Colisão com objeto estático");
-                rigidBody1->resolveCollisionWithStatic(rigidBody2, collision);
+                spdlog::info("Colisão com objeto estático B");
+                rigidBody1->resolveCollisionWithStatic(rigidBody2, collision, deltaTime);
                 continue;
             }
 
             // Resolve colisão com objeto dinâmico
             spdlog::info("Colisão com objeto dinâmico");
             auto const &reverseCollision = collision.reverse();
-            glm::vec3 velDiff = rigidBody1->getVelocity() - rigidBody2->getVelocity();
-            rigidBody1->resolveCollision(rigidBody2, collision, velDiff);
-            rigidBody2->resolveCollision(rigidBody1, reverseCollision, -velDiff);
+            rigidBody1->resolveCollision(rigidBody2, collision, rigidBody1->getVelocity(), rigidBody2->getVelocity(),
+                                         rigidBody1->getAngularVelocity(), rigidBody2->getAngularVelocity(), deltaTime);
+//            rigidBody2->resolveCollision(rigidBody1, reverseCollision, rigidBody2->getVelocity(), rigidBody1->getVelocity(), rigidBody2->getAngularVelocity(), rigidBody1->getAngularVelocity());
 
 
         }
@@ -173,15 +172,21 @@ namespace entre_portais {
                 // Draw collision normal
                 for (auto const &contact: collision.contacts) {
                     glm::vec3 const normal = contact.normal;
-                    auto const color = IM_COL32(0, 0, 255, 255);
+                    auto const colorA = IM_COL32(0, 0, 255, 255);
+                    auto const colorB = IM_COL32(255, 255, 0, 255);
                     camera.debugDrawLine((*rigidBody1->getTransform()) * glm::vec4(contact.pointB, 1.f),
                                          *rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f) -
-                                         glm::vec4(normal, 0), color, 1.f);
+                                         glm::vec4(normal, 0), colorA, 1.f);
                     camera.debugDrawLine(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f),
                                          *rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f) +
-                                         glm::vec4(normal, 0), color, 1.f);
-                    camera.debugDrawPoint(*rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f), color, 5.f);
-                    camera.debugDrawPoint(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f), color, 5.f);
+                                         glm::vec4(normal, 0), colorB, 1.f);
+                    camera.debugDrawPoint(*rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f), colorA, 5.f);
+                    camera.debugDrawPoint(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f), colorB, 5.f);
+                    // Draw a line from the center of the rigid body to the contact point
+//                    camera.debugDrawLine(*rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f),
+//                                         *rigidBody1->getTransform() * glm::vec4(0,0,0,1), colorA, 1.f);
+//                    camera.debugDrawLine(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f),
+//                                            *rigidBody2->getTransform() * glm::vec4(0,0,0,1), colorB, 1.f);
                 }
 
                 // Draw collision manifold

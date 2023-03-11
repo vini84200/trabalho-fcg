@@ -29,6 +29,22 @@ namespace entre_portais::collisions {
             }
             return PossibleCollision(isColliding, newContacts);
         }
+
+        PossibleCollision operator-() const {
+            std::vector<Contact> newContacts;
+            for (auto &contact: contacts) {
+                newContacts.push_back(contact.reverseNormal());
+            }
+            return PossibleCollision(isColliding, newContacts);
+        }
+
+        PossibleCollision reversePoints() const {
+            std::vector<Contact> newContacts;
+            for (auto &contact: contacts) {
+                newContacts.push_back(contact.reversePoints());
+            }
+            return PossibleCollision(isColliding, newContacts);
+        }
     };
 
 

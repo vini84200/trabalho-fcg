@@ -7,7 +7,7 @@ namespace entre_portais {
     SphereCollider::SphereCollider(glm::mat4 &modelMatrix) : ICollider(modelMatrix), radius_(1) {}
 
     collisions::PossibleCollision SphereCollider::isColliding(ICollider *other) {
-        return other->isColliding(*this).reverse();
+        return other->isColliding(*this);
     }
 
     collisions::PossibleCollision SphereCollider::isColliding(glm::vec4 point) {
