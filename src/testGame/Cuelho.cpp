@@ -30,6 +30,6 @@ namespace entre_portais {
     Cuelho::Cuelho(char *name) : IObject(name) {
         mesh_ = std::make_shared<MeshFromObj>("assets/objs/Intercity1.obj");
         transform_.setPosition({1.24, 0.86, -1.06});
-        transform_.setRotation({0, -.36, 0});
+        transform_.setRotationZYX({0, -.36, 0});
     }
 } // entre_portais

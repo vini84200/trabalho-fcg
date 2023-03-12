@@ -5,6 +5,7 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "glm/gtx/string_cast.hpp"
 #include "glm/gtx/quaternion.hpp"
+#include "glm/gtc/quaternion.hpp"
 
 glm::mat4 entre_portais::Transform::getLocalModelMatrix() const {
     glm::mat4 model = matrices::Matrix_Identity();
@@ -21,7 +22,7 @@ void entre_portais::Transform::setPosition(glm::vec3 position) {
 
 entre_portais::Transform::Transform() {
     position_ = glm::vec3(0, 0, 0);
-    rotation_ = glm::quat(glm::vec3(0, 0, 0));
+    rotation_ = glm::quat(1, 0, 0, 0);
     scale_ = glm::vec3(1, 1, 1);
     handleTransformChange();
 }
@@ -31,7 +32,7 @@ void entre_portais::Transform::setScale(glm::vec3 scale) {
     handleTransformChange();
 }
 
-void entre_portais::Transform::setRotation(glm::vec3 rotation) {
+void entre_portais::Transform::setRotationZYX(glm::vec3 rotation) {
     rotation_ = glm::quat(rotation);
     handleTransformChange();
 }
@@ -50,7 +51,7 @@ void entre_portais::Transform::setRotation(glm::quat rotation) {
     handleTransformChange();
 }
 
-void entre_portais::Transform::setRotation(float x, float y, float z) {
+void entre_portais::Transform::setRotationZYX(float x, float y, float z) {
     rotation_ = glm::quat(glm::vec3(x, y, z));
     handleTransformChange();
 }
@@ -60,10 +61,10 @@ glm::quat entre_portais::Transform::getRotation() const {
 }
 
 glm::vec3 entre_portais::Transform::getForward() const {
-    return matrices::RotationFromQuat(rotation_) * glm::vec4(0, 0, 1, 0);
+    return rotation_ * glm::vec3(0, 0, -1);
 }
 
-glm::vec3 entre_portais::Transform::getRotationEuler() const {
+glm::vec3 entre_portais::Transform::getRotationEulerZYX() const {
     return glm::eulerAngles(rotation_);
 }
 
@@ -71,24 +72,59 @@ glm::vec3 entre_portais::Transform::getRotationEuler() const {
 void entre_portais::Transform::renderImGui() {
     if (ImGui::TreeNode("Transform")) {
         glm::vec3 position = getPosition();
-        glm::vec3 rotation = getRotationEuler();
+        glm::quat rotation = getRotation();
         glm::vec3 scale = getScale();
 
         bool pos_change = ImGui::DragFloat3("Position", glm::value_ptr(position), 0.02f);
-        bool rotation_changed = (ImGui::DragFloat3("Rotation", glm::value_ptr(rotation), 0.02f));
-        ImGui::Checkbox("Lock Rotation", &lock_rotation_);
+        // Allow user to chose between euler and quaternion
+        int rotation_type = ImGui::GetStateStorage()->GetInt(ImGui::GetID("##RotationType"), 0);
+        if (ImGui::RadioButton("Euler Radians", &rotation_type, 0)) {
+            ImGui::GetStateStorage()->SetInt(ImGui::GetID("##RotationType"), 0);
+        }
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Quaternion", &rotation_type, 1)) {
+            ImGui::GetStateStorage()->SetInt(ImGui::GetID("##RotationType"), 1);
+        }
+        ImGui::SameLine();
+        if (ImGui::RadioButton("Euler Degrees", &rotation_type, 2)) {
+            ImGui::GetStateStorage()->SetInt(ImGui::GetID("##RotationType"), 2);
+        }
+
+        switch (rotation_type) {
+            case 0: {
+                glm::vec3 in_euler = glm::eulerAngles(rotation);
+                bool euler_changed = ImGui::DragFloat3("Rotation", glm::value_ptr(in_euler), 0.02f);
+                if (euler_changed) {
+                    setRotationZYX(in_euler);
+                }
+                break;
+            }
+            case 1: {
+                bool quat_changed = ImGui::DragFloat4("Rotation", glm::value_ptr(rotation), 0.02f);
+                if (quat_changed) {
+                    setRotation(rotation);
+                }
+                break;
+            }
+            case 2: { // DEGREES
+                glm::vec3 in_euler = glm::eulerAngles(rotation);
+                in_euler = glm::degrees(in_euler);
+                bool euler_changed = ImGui::DragFloat3("Rotation", glm::value_ptr(in_euler), .2f);
+                if (euler_changed) {
+                    in_euler = glm::radians(in_euler);
+                    setRotationZYX(in_euler);
+                }
+                break;
+            }
+        }
+
+
         bool scale_changed = ImGui::DragFloat3("Scale", glm::value_ptr(scale), 0.02f);
 
         // HANDLE CHANGES
 
         if (pos_change) {
             setPosition(position);
-        }
-        if (rotation_changed) {
-            if (lock_rotation_)
-                rotateBy(rotation - getRotationEuler());
-            else
-                setRotation(rotation);
         }
         if (scale_changed) {
             setScale(scale);

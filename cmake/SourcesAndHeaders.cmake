@@ -64,4 +64,6 @@ set(headers
 )
 
 set(test_sources
-)
+		src/rotations.cpp
+		src/TransformsTest.cpp
+		)

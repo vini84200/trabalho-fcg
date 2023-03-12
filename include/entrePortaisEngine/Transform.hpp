@@ -17,9 +17,9 @@ namespace entre_portais {
 
         void setScale(glm::vec3 scale);
 
-        void setRotation(glm::vec3 rotation);
+        void setRotationZYX(glm::vec3 rotation);
 
-        void setRotation(float x, float y, float z);
+        void setRotationZYX(float x, float y, float z);
 
         void setRotation(glm::quat rotation);
 
@@ -39,7 +39,7 @@ namespace entre_portais {
 
         glm::vec3 getForward() const;
 
-        glm::vec3 getRotationEuler() const;
+        glm::vec3 getRotationEulerZYX() const;
 
         void renderImGui();
 
@@ -54,7 +54,6 @@ namespace entre_portais {
         glm::quat rotation_;
         glm::vec3 scale_;
         std::vector<std::function<void()>> on_transform_change_callbacks_;
-        bool lock_rotation_;
     };
 }
 #endif //ENTREPORTAIS_TRANSFORM_HPP

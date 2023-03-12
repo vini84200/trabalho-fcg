@@ -161,5 +161,46 @@ glm::mat4 matrices::ScalingMatrixFromMatrix(glm::mat4 mat) {
 }
 
 glm::quat matrices::RotationFromMatrix(glm::mat4 M) {
-    return glm::normalize(glm::toQuat(M));
+    auto scale = ScaleFromMatrix(M);
+    auto scaleMatrix = matrices::Matrix(
+            1 / scale.x, 0, 0, 0,
+            0, 1 / scale.y, 0, 0,
+            0, 0, 1 / scale.z, 0,
+            0, 0, 0, 1
+    );
+    auto rotationMatrix = M * scaleMatrix;
+    return glm::quat_cast(rotationMatrix);
+}
+
+glm::mat4 matrices::RotationFromQuat(glm::quat rotation) {
+    const glm::quat q = glm::normalize(rotation);
+    const auto q0 = q.w;
+    auto q1 = q.z;
+    auto q2 = q.y;
+    auto q3 = q.x;
+
+    return matrices::Matrix(
+            1 - 2 * q2 * q2 - 2 * q3 * q3, 2 * q1 * q2 - 2 * q3 * q0, 2 * q1 * q3 + 2 * q2 * q0, 0,
+            2 * q1 * q2 + 2 * q0 * q3, 1 - 2 * q1 * q1 - 2 * q3 * q3, 2 * q2 * q3 - 2 * q1 * q0, 0,
+            2 * q1 * q3 - 2 * q0 * q2, 2 * q2 * q3 + 2 * q1 * q0, 1 - 2 * q1 * q1 - 2 * q2 * q2, 0,
+            0, 0, 0, 1
+    );
+
+}
+
+const glm::mat3 matrices::inertiaTensorSphere(float m, float r) {
+    float I = 2.0f / 5.0f * m * r * r;
+    return glm::mat3(I, 0, 0, 0, I, 0, 0, 0, I);
+}
+
+glm::mat3 matrices::inertiaTensorBox(float mass, glm::vec3 size) {
+    float x2 = size.x * size.x;
+    float y2 = size.y * size.y;
+    float z2 = size.z * size.z;
+
+    float Ix = 1.0f / 12.0f * mass * (y2 + z2);
+    float Iy = 1.0f / 12.0f * mass * (x2 + z2);
+    float Iz = 1.0f / 12.0f * mass * (x2 + y2);
+
+    return glm::mat3(Ix, 0, 0, 0, Iy, 0, 0, 0, Iz);
 }

@@ -53,7 +53,7 @@ namespace entre_portais {
         mesh_ = std::make_shared<CylinderMesh>(0.3f, 1.0f, 10000, glm::vec3(0.0f, 1.0f, 0.0f));
         transform_.setPosition(glm::vec3(-1, 0, 0));
         transform_.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-        transform_.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+        transform_.setRotationZYX(glm::vec3(0.0f, 0.0f, 0.0f));
         moving_ = false;
         t_ = 0;
     }

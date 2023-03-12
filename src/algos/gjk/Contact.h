@@ -33,6 +33,9 @@ public:
     glm::vec3 pointA;
     glm::vec3 pointB;
     float depth;
+    float AccumulatedImpulse = 0;
+    float AccumulatedFrictionImpulseU = 0;
+    float AccumulatedFrictionImpulseV = 0;
 };
 
 

@@ -38,6 +38,7 @@ namespace entre_portais {
         rigidBody_ = std::make_unique<RigidBody>(&modelMatrix_, std::move(cubeCollider),
                                                  *this->getScene()->getPhysicsEngine().get(),
                                                  this->transform_);
+        rigidBody_->setInertiaTensor(matrices::inertiaTensorBox(1, glm::vec3(1.0f, 1.0f, 1.0f)));
         loadShader("primitive");
         submit(renderer);
 

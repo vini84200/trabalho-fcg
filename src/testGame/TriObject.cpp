@@ -22,7 +22,7 @@ entre_portais::TriObject::TriObject(char *name) : IObject(name), logger_(name) {
     delete vert;
     transform_.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     transform_.setScale(glm::vec3(1.0f, 1.0f, 1.0f));
-    transform_.setRotation(glm::vec3(0.0f, 0.0f, 0.0f));
+    transform_.setRotationZYX(glm::vec3(0.0f, 0.0f, 0.0f));
 }
 
 void entre_portais::TriObject::update(float deltaTime) {

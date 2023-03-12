@@ -43,10 +43,10 @@ namespace entre_portais {
     }
 
     void RigidBody::updateDynamics(float deltaTime) {
+        if (isStatic_)
+            return;
         updateGravity(deltaTime);
         updateVelocity(deltaTime);
-        updatePosition(deltaTime);
-
     }
 
     void RigidBody::updateGravity(float time) {
@@ -62,6 +62,9 @@ namespace entre_portais {
         ImGui::Text("Velocity: %f, %f, %f", velocity_.x, velocity_.y, velocity_.z);
         if (ImGui::Button("Reset Velocity"))
             velocity_ = glm::vec3(0.0f);
+        ImGui::Text("Angular Velocity: %f, %f, %f", angularVelocity_.x, angularVelocity_.y, angularVelocity_.z);
+        if (ImGui::Button("Reset Angular Velocity"))
+            angularVelocity_ = glm::vec3(0.0f);
         ImGui::Text("Last Force: %f, %f, %f", lastForce_.x, lastForce_.y, lastForce_.z);
         ImGui::SliderFloat("Mass", &mass_, 0.0f, 100.0f);
         ImGui::SliderFloat("Gravity", &gravity_.y, -20.0f, 20.0f);
@@ -84,11 +87,17 @@ namespace entre_portais {
     }
 
     void RigidBody::updatePosition(float deltaTime) {
+        if (isStatic_)
+            return;
         transformToModify_.move(velocity_ * deltaTime);
-        auto rotation = matrices::RotationFromMatrix(*transform_);
-        rotation = rotation + glm::quat(0.0f, angularVelocity_ * deltaTime * 0.5f) * rotation;
-        rotation = glm::normalize(rotation);
+
+        auto rotation = transformToModify_.getRotation();
+        glm::quat w = glm::quat(0.0f, angularVelocity_.x, angularVelocity_.y, angularVelocity_.z);
+        rotation = rotation + deltaTime / 2 * w * rotation;
+//        rotation = glm::normalize(rotation);
         transformToModify_.setRotation(rotation);
+
+        // Reseta Accumaldores de Colisão
     }
 
     void RigidBody::applyForceOnCM(glm::vec3 force) {
@@ -117,101 +126,25 @@ namespace entre_portais {
         return true;
     }
 
-    void RigidBody::resolveCollision(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
-                                     glm::vec3 velA, glm::vec3 velB, glm::vec3 velAngA, glm::vec3 velAngB, float dt) {
+    float RigidBody::resolveCollision(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
+                                      glm::vec3 velA, glm::vec3 velB, glm::vec3 velAngA, glm::vec3 velAngB, float dt) {
         // https://box2d.org/files/ErinCatto_SequentialImpulses_GDC2006.pdf
-
-        glm::vec3 Pn = glm::vec3(0.0f);
-        glm::vec3 AccPn = glm::vec3(0.0f);
-
-        glm::vec3 Pt = glm::vec3(0.0f);
-        glm::vec3 AccPt = glm::vec3(0.0f);
-
-        assert(possibleCollision.contacts.size() > 0);
-        assert(this->isStatic_ == false);
-        assert(other->isStatic_ == false);
-
-        for (const auto &contact: possibleCollision.contacts) {
-            glm::vec3 r1 = contact.pointA - glm::vec3((*transform_)[3]);
-            glm::vec3 r2 = contact.pointB - glm::vec3((*other->getTransform())[3]);
-
-            glm::vec3 veldiff = (velB + glm::cross(velAngB, r2)) - (velA + glm::cross(velAngA, r1));
-
-            auto kn = (1 / getMass()) + (1 / other->getMass()) +
-                      glm::dot(glm::inverse(inertiaTensor_) * glm::cross(glm::cross(r1, contact.normal), r1)
-                               + glm::inverse(other->inertiaTensor_) * glm::cross(glm::cross(r2, contact.normal), r2),
-                               contact.normal);
-
-            float beta = 0.2f;
-            float bias = beta / dt;
-            float slop = glm::min(0.01f, 0.01f + 0.01f * contact.depth);
-            glm::vec3 v_bias = glm::max((bias * slop) / kn, 0.0f) * contact.normal;
-
-            auto temp = AccPn;
-            AccPn = glm::max(AccPn + ((glm::dot(-veldiff, contact.normal) + v_bias) / kn), glm::vec3(0.0f));
-            Pn = AccPn - temp;
-
-            glm::vec3 tu = glm::cross(contact.normal, glm::vec3(0.0f, 1.0f, 0.0f));
-            if (glm::length(tu) < 0.01f)
-                tu = glm::cross(contact.normal, glm::vec3(1.0f, 0.0f, 0.0f));
-            glm::vec3 tv = glm::cross(tu, contact.normal);
-
-            auto vtu = glm::dot(veldiff, tu);
-            auto vtv = glm::dot(veldiff, tv);
-
-            auto ktu = (1 / getMass()) + (1 / other->getMass()) +
-                       glm::dot(glm::inverse(inertiaTensor_) * glm::cross(glm::cross(r1, tu), r1)
-                                + glm::inverse(other->inertiaTensor_) * glm::cross(glm::cross(r2, tu), r2), tu);
-
-            auto ktv = (1 / getMass()) + (1 / other->getMass()) +
-                       glm::dot(glm::inverse(inertiaTensor_) * glm::cross(glm::cross(r1, tv), r1)
-                                + glm::inverse(other->inertiaTensor_) * glm::cross(glm::cross(r2, tv), r2), tv);
-            auto mi = 0.03f;
-            auto Ptu = vtu / ktu;
-            auto Ptv = vtv / ktv;
-
-            temp = AccPt;
-            AccPt = glm::clamp(AccPt + Ptu + Ptv, -mi * Pn, mi * Pn);
-            Pt = AccPt - temp;
-
-
-        }
-
-        auto P = Pn + Pt;
-        velocity_ -= P / getMass();
-        other->velocity_ += P / other->getMass();
-        for (auto &contact: possibleCollision.contacts) {
-            glm::vec3 r1 = contact.pointA - glm::vec3((*transform_)[3]);
-            glm::vec3 r2 = contact.pointB - glm::vec3((*other->getTransform())[3]);
-            angularVelocity_ -= glm::inverse(inertiaTensor_) * glm::cross(r1, P);
-            other->angularVelocity_ += glm::inverse(other->inertiaTensor_) * glm::cross(r2, P);
-        }
-
-    }
-
-    void RigidBody::resolveCollisionWithStatic(RigidBody *const other,
-                                               const collisions::PossibleCollision &possibleCollision,
-                                               float dt) {
-        // https://box2d.org/files/ErinCatto_SequentialImpulses_GDC2006.pdf
-
-        glm::vec3 velA = velocity_;
-        glm::vec3 velB = glm::vec3(0.0f);
-        glm::vec3 velAngA = angularVelocity_;
-        glm::vec3 velAngB = glm::vec3(0.0f);
+        return 0.0; // TODO: Fix this
 
         float Pn = 0;
         float AccPn = 0;
 
-        glm::vec3 Pt = glm::vec3(0.0f);
-        glm::vec3 AccPt = glm::vec3(0.0f);
-
+        float Ptu = 0;
+        float AccPtu = 0;
+        float Ptv = 0;
+        float AccPtv = 0;
         spdlog::info("velA: {}, velB: {}, velAngA: {}, velAngB: {}", glm::to_string(velA), glm::to_string(velB),
                      glm::to_string(velAngA), glm::to_string(velAngB));
         spdlog::info("Contacts: {}", possibleCollision.contacts.size());
 
         assert(possibleCollision.contacts.size() > 0);
         assert(this->isStatic_ == false);
-        assert(other->isStatic_ == true);
+        assert(other->isStatic_ == false);
 
         for (const auto &contact: possibleCollision.contacts) {
             spdlog::info("Contact normal: {} {} {}", contact.normal.x, contact.normal.y, contact.normal.z);
@@ -233,7 +166,7 @@ namespace entre_portais {
 
             glm::vec3 veldiff = velB - velA + glm::cross(velAngB, r2) - glm::cross(velAngA, r1);
 
-            float kn = (1 / getMass()) +
+            float kn = (1 / getMass()) + (1 / other->getMass()) +
                        glm::dot(
                                glm::inverse(inertiaTensor_) * glm::cross(glm::cross(r1, contact.normal), r1)
                                + glm::inverse(other->inertiaTensor_) * glm::cross(glm::cross(r2, contact.normal), r2),
@@ -265,64 +198,172 @@ namespace entre_portais {
             Pn = AccPn - temp;
             spdlog::info("Pn: {}", Pn);
             spdlog::info("AccPn: {}", AccPn);
-            glm::vec3 P = 2 * Pn * contact.normal;
+
+            glm::vec3 tu = glm::cross(contact.normal, glm::vec3(0.0f, 1.0f, 0.0f));
+            if (glm::length(tu) < 0.01f)
+                tu = glm::cross(contact.normal, glm::vec3(1.0f, 0.0f, 0.0f));
+            glm::vec3 tv = glm::cross(tu, contact.normal);
+
+            float vtu = glm::dot(-veldiff, tu);
+            float vtv = glm::dot(-veldiff, tv);
+
+            float ktu = (1 / getMass()) + (1 / other->getMass()) +
+                        glm::dot(glm::inverse(inertiaTensor_) * glm::cross(glm::cross(r1, tu), r1)
+                                 + glm::inverse(other->inertiaTensor_) * glm::cross(glm::cross(r2, tu), r2), tu);
+
+
+            float ktv = (1 / getMass()) + (1 / other->getMass()) +
+                        glm::dot(glm::inverse(inertiaTensor_) * glm::cross(glm::cross(r1, tv), r1)
+                                 + glm::inverse(other->inertiaTensor_) * glm::cross(glm::cross(r2, tv), r2), tv);
+
+
+            auto mi = 0.3f;
+            auto Ptu = vtu / ktu;
+            auto Ptv = vtv / ktv;
+
+            temp = AccPtu;
+            AccPtu = glm::clamp(AccPtu + Ptu, -mi * AccPn, mi * AccPn);
+            Ptu = AccPtu - temp;
+
+            temp = AccPtv;
+            AccPtv = glm::clamp(AccPtv + Ptv, -mi * AccPn, mi * AccPn);
+            Ptv = AccPtv - temp;
+
+            spdlog::info("Ptu: {} Ptv: {}", Ptu, Ptv);
+
+            glm::vec3 P = Pn * contact.normal + Ptu * tu + Ptv * tv;
+            spdlog::info("P: {} {} {}", P.x, P.y, P.z);
+            spdlog::info("Ptu: {} Ptv: {}", Ptu, Ptv);
+            spdlog::info("tu: {} {} {}", tu.x, tu.y, tu.z);
+            spdlog::info("tv: {} {} {}", tv.x, tv.y, tv.z);
+
+            if (isnan(P.x) || isnan(P.y) || isnan(P.z)) {
+                spdlog::warn("P is nan");
+                continue;
+            }
             velocity_ -= P / getMass();
-//            angularVelocity_ -= glm::inverse(inertiaTensor_) * glm::cross(r1, P);
+            angularVelocity_ -= glm::inverse(inertiaTensor_) * glm::cross(r1, P);
+            other->velocity_ += P / other->getMass();
+            other->angularVelocity_ += glm::inverse(other->inertiaTensor_) * glm::cross(r2, P);
+        }
+
+        spdlog::info("----------------------");
+
+    }
+
+    float RigidBody::resolveCollisionWithStatic(RigidBody *const other,
+                                                collisions::PossibleCollision &possibleCollision,
+                                                float dt) {
+        // https://box2d.org/files/ErinCatto_SequentialImpulses_GDC2006.pdf
+
+        glm::vec3 velA = velocity_;
+        glm::vec3 velB = glm::vec3(0.0f);
+        glm::vec3 velAngA = angularVelocity_;
+        glm::vec3 velAngB = glm::vec3(0.0f);
+
+        float Pn = 0;
+
+        float Ptu = 0;
+        float Ptv = 0;
+
+        float maxP = 0;
+
+        assert(possibleCollision.contacts.size() > 0);
+        assert(this->isStatic_ == false);
+        assert(other->isStatic_ == true);
+
+        for (auto &contact: possibleCollision.contacts) {
+            if (contact.normal == glm::vec3(0.0f))
+                continue;
+
+            glm::vec3 r1Local = contact.pointA - glm::vec3(0.0f);
+            glm::vec3 r2InOther = contact.pointB - glm::vec3(0);
+
+            glm::mat4 &modelToWorld = *transform_;
+            glm::mat4 &otherModelToWorld = *other->transform_;
+            glm::mat4 otherModelToThisModel = glm::inverse(modelToWorld) * otherModelToWorld;
+
+            glm::vec4 r1World = modelToWorld * glm::vec4(r1Local, 0.0f);
+            glm::vec4 r2World = otherModelToWorld * glm::vec4(r2InOther, 0.0f);
+
+
+            glm::vec3 r1 = r1Local;
+            glm::vec3 r2InThisModel = otherModelToThisModel * glm::vec4(r2InOther, 0.0f);
+            glm::vec3 r2 = r2InThisModel;
+
+
+            glm::vec3 veldiff = velB - velA + glm::cross(velAngB, r2) - glm::cross(velAngA, r1);
+
+            float kn = (1 / getMass()) +
+                       glm::dot(
+                               inverseInertiaTensor_ * glm::cross(glm::cross(r1, contact.normal), r1)
+                               + other->inverseInertiaTensor_ * glm::cross(glm::cross(r2, contact.normal), r2),
+                               contact.normal);
+            if (kn == 0.0f) {
+                spdlog::warn("kn is 0.0f");
+                continue;
+            }
+
+
+            float beta = 0.f;
+            float bias = beta / dt;
+            float slop = 0.01f;
+            float v_bias;
+
+            v_bias = bias * glm::max(0.0f, contact.depth - slop);
+
+
+            float v = glm::dot(-veldiff, contact.normal);
+            float pv = (v + v_bias) / kn;
+
+            auto oldImpulse = contact.AccumulatedImpulse;
+            contact.AccumulatedImpulse = glm::max(contact.AccumulatedImpulse + pv, 0.0f);
+            Pn = contact.AccumulatedImpulse - oldImpulse;
 
 //            glm::vec3 tu = glm::cross(contact.normal, glm::vec3(0.0f, 1.0f, 0.0f));
 //            if (glm::length(tu) < 0.01f)
 //                tu = glm::cross(contact.normal, glm::vec3(1.0f, 0.0f, 0.0f));
 //            glm::vec3 tv = glm::cross(tu, contact.normal);
 //
-//            auto vtu = glm::dot(veldiff, tu);
-//            auto vtv = glm::dot(veldiff, tv);
+//            float vtu = glm::dot(- veldiff, tu);
+//            float vtv = glm::dot(- veldiff, tv);
 //
-//            auto ktu = (1/getMass()) +
+//            float ktu = (1/getMass()) +
 //                       glm::dot(glm::inverse(inertiaTensor_) * glm::cross(glm::cross(r1, tu), r1)
 //                                + glm::inverse(other->inertiaTensor_) * glm::cross(glm::cross(r2, tu), r2), tu);
 //
 //
-//            auto ktv = (1/getMass()) +
+//            float ktv = (1/getMass()) +
 //                       glm::dot(glm::inverse(inertiaTensor_) * glm::cross(glm::cross(r1, tv), r1)
 //                                + glm::inverse(other->inertiaTensor_) * glm::cross(glm::cross(r2, tv), r2), tv);
 //
 //
-//            auto mi = 0.03f;
-//            auto Ptu = vtu / ktu;
-//            auto Ptv = vtv / ktv;
+//            auto mi = 0.9f;
+//            Ptu = vtu / ktu;
+//            Ptv = vtv / ktv;
 //
-//            temp = AccPt;
-//            AccPt = glm::clamp(AccPt + Ptu + Ptv, -mi * Pn, mi * Pn);
-//            Pt = AccPt - temp;
+//            oldImpulse = contact.AccumulatedFrictionImpulseU;
+//            contact.AccumulatedFrictionImpulseU = glm::clamp(contact.AccumulatedFrictionImpulseU + Ptu, -mi * Pn, mi * Pn);
+//            Ptu = contact.AccumulatedFrictionImpulseU - oldImpulse;
+//
+//            oldImpulse = contact.AccumulatedFrictionImpulseV;
+//            contact.AccumulatedFrictionImpulseV = glm::clamp(contact.AccumulatedFrictionImpulseV + Ptv, -mi * Pn, mi * Pn);
+//            Ptv = contact.AccumulatedFrictionImpulseV - oldImpulse;
+//
+//
+            glm::vec3 P = Pn * contact.normal;//+ Ptu * tu + Ptv * tv;
 
+            if (isnan(P.x) || isnan(P.y) || isnan(P.z)) {
+                spdlog::warn("P is nan");
+                continue;
+            }
 
-        }
-
-        if (isnan(Pn)) {
-            Pn = 0.0f;
-            spdlog::warn("Pn is nan");
-        }
-        if (isnan(Pt.x) || isnan(Pt.y) || isnan(Pt.z)) {
-            Pt = glm::vec3(0.0f);
-            spdlog::warn("Pt is nan");
-        }
-
-        for (const auto &contact: possibleCollision.contacts) {
-            auto P = Pn * contact.normal + Pt;
-            spdlog::info("P: {} {} {}", P.x, P.y, P.z);
-            spdlog::info("mass: {}", getMass());
-            spdlog::info("velocity: {} {} {}", velocity_.x, velocity_.y, velocity_.z);
-            spdlog::info("angularVelocity: {} {} {}", angularVelocity_.x, angularVelocity_.y, angularVelocity_.z);
-
-            spdlog::info("dltaV: {} {} {}", (P / getMass()).x, (P / getMass()).y, (P / getMass()).z);
-//            transformToModify_.move(contact.normal * contact.depth);
-        }
-
-//        for (auto &contact : possibleCollision.contacts) {
-//            glm::vec3 r1 = contact.pointA - glm::vec3((*transform_)[3]);
+            velocity_ -= P / getMass();
 //            angularVelocity_ -= glm::inverse(inertiaTensor_) * glm::cross(r1, P);
-//        }
-        spdlog::info("----------------------");
+            maxP = glm::max(maxP, glm::length(P));
+        }
+
+        return maxP;
     }
 
     float RigidBody::getMass() const {
@@ -363,5 +404,14 @@ namespace entre_portais {
 
     void RigidBody::setIsStatic(bool isStatic) {
         isStatic_ = isStatic;
+    }
+
+    const glm::mat3 &RigidBody::getInertiaTensor() const {
+        return inertiaTensor_;
+    }
+
+    void RigidBody::setInertiaTensor(const glm::mat3 &inertiaTensor) {
+        inertiaTensor_ = inertiaTensor;
+        inverseInertiaTensor_ = glm::inverse(inertiaTensor_);
     }
 } // entre_portais

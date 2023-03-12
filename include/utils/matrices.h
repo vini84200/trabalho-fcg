@@ -360,21 +360,13 @@ namespace matrices {
 
     glm::mat4 ScalingMatrixFromMatrix(glm::mat4 mat);
 
-    constexpr glm::mat4 RotationFromQuat(glm::quat rotation) {
-        const auto q0 = rotation.w;
-        auto q1 = rotation.z;
-        auto q2 = rotation.y;
-        auto q3 = rotation.x;
-
-        return matrices::Matrix(
-                1 - 2 * q2 * q2 - 2 * q3 * q3, 2 * q1 * q2 - 2 * q3 * q0, 2 * q1 * q3 + 2 * q2 * q0, 0,
-                2 * q1 * q2 + 2 * q0 * q3, 1 - 2 * q1 * q1 - 2 * q3 * q3, 2 * q2 * q3 - 2 * q1 * q0, 0,
-                2 * q1 * q3 - 2 * q0 * q2, 2 * q2 * q3 + 2 * q1 * q0, 1 - 2 * q1 * q1 - 2 * q2 * q2, 0,
-                0, 0, 0, 1
-        );
-    }
+    glm::mat4 RotationFromQuat(glm::quat rotation);
 
     glm::vec4 Vector_From_Euler(float size, float alfa, float beta, float gama);
+
+    const glm::mat3 inertiaTensorSphere(float m, float r);
+
+    glm::mat3 inertiaTensorBox(float mass, glm::vec3 size);
 
 }
 

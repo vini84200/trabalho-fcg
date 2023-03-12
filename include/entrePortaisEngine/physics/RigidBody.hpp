@@ -40,6 +40,13 @@ namespace entre_portais {
         glm::vec3 angularVelocity_ = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 torque_ = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::mat3 inertiaTensor_ = glm::identity<glm::mat3>();
+        glm::mat3 inverseInertiaTensor_ = glm::identity<glm::mat3>();
+    public:
+        const glm::mat3 &getInertiaTensor() const;
+
+        void setInertiaTensor(const glm::mat3 &inertiaTensor);
+
+    private:
 
         glm::vec3 lastForce_ = glm::vec3(0.0f, 0.0f, 0.0f);
 
@@ -92,12 +99,12 @@ namespace entre_portais {
 
         bool onCollision(RigidBody *const other);
 
-        void
+        float
         resolveCollision(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
                          glm::vec3 velA, glm::vec3 velB, glm::vec3 velAngA, glm::vec3 velAngB, float dt);
 
-        void resolveCollisionWithStatic(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
-                                        float dt);
+        float resolveCollisionWithStatic(RigidBody *const other, collisions::PossibleCollision &possibleCollision,
+                                         float dt);
 
     public:
 
