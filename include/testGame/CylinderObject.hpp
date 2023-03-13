@@ -6,6 +6,7 @@
 #define ENTREPORTAIS_CYLINDEROBJECT_HPP
 
 #include "entrePortaisEngine/IObject.hpp"
+#include "entrePortaisEngine/Bezier.hpp"
 
 namespace entre_portais {
 
@@ -26,6 +27,17 @@ namespace entre_portais {
         void onExit() override;
 
         CylinderObject(char *name);
+
+        void bezierMove(float t);
+
+        void bezierStart();
+
+        void bezierUpdate();
+
+    private:
+        Bezier bezier_;
+        bool moving_;
+        float t_;
     };
 
 } // entre_portais

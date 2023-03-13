@@ -47,7 +47,6 @@ namespace entre_portais {
 
         void renderImGui();
 
-
         void move(glm::vec3 vector);
 
     private:
