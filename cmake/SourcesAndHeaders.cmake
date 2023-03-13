@@ -38,6 +38,7 @@ set(sources
 		src/testGame/Player.cpp
 		src/testGame/TeapotObject.cpp
 		src/testGame/Cuelho.cpp
+        src/testGame/EmptyObject.cpp
 		)
 
 set(exe_sources
