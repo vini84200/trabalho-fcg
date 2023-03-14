@@ -24,9 +24,7 @@ namespace entre_portais {
         return id_;
     }
 
-    RigidBody::RigidBody(
-            glm::mat4 *transform,
-            std::unique_ptr<ICollider> collisor,
+    RigidBody::RigidBody( glm::mat4 *transform, std::unique_ptr<ICollider> collisor,
             PhysicsEngine &pysEngine,
             Transform &transformToModify
     )
@@ -260,6 +258,14 @@ namespace entre_portais {
         glm::vec3 velB = glm::vec3(0.0f);
         glm::vec3 velAngA = angularVelocity_;
         glm::vec3 velAngB = glm::vec3(0.0f);
+//        glm::mat4 &modelToWorld = *transform_;
+//        glm::mat4 &otherModelToWorld = *other->transform_;
+//        glm::mat4 worldToModel = glm::inverse(modelToWorld);
+//        glm::mat4 otherModelToWorldInv = glm::inverse(otherModelToWorld);
+//        glm::vec4 velA = modelToWorld * glm::vec4(velAModel, 0.0f);
+//        glm::vec4 velB = otherModelToWorld * glm::vec4(velBModel, 0.0f);
+//        glm::vec4 velAngA4 = modelToWorld * glm::vec4(velAngA, 0.0f);
+//        glm::vec4 velAngB4 = otherModelToWorld * glm::vec4(velAngB, 0.0f);
 
         float Pn = 0;
 
@@ -273,6 +279,8 @@ namespace entre_portais {
         assert(other->isStatic_ == true);
 
         for (auto &contact: possibleCollision.contacts) {
+            assert(contact.normal != glm::vec3(0.0f));
+            assert(glm::epsilonEqual(glm::length(contact.normal), 1.0f, 0.001f));
             if (contact.normal == glm::vec3(0.0f))
                 continue;
 
@@ -283,41 +291,52 @@ namespace entre_portais {
             glm::mat4 &otherModelToWorld = *other->transform_;
             glm::mat4 otherModelToThisModel = glm::inverse(modelToWorld) * otherModelToWorld;
 
+
             glm::vec4 r1World = modelToWorld * glm::vec4(r1Local, 0.0f);
             glm::vec4 r2World = otherModelToWorld * glm::vec4(r2InOther, 0.0f);
 
 
-            glm::vec3 r1 = r1Local;
-            glm::vec3 r2InThisModel = otherModelToThisModel * glm::vec4(r2InOther, 0.0f);
-            glm::vec3 r2 = r2InThisModel;
+
+            glm::vec3 r1 = r1World;
+            glm::vec3 r2 = r2World;
 
 
-            glm::vec3 veldiff = velB - velA + glm::cross(velAngB, r2) - glm::cross(velAngA, r1);
+
+            glm::vec3 veldiff = velB + glm::cross(velAngB, r2) - velA - glm::cross(velAngA, r1);
+
 
             float kn = (1 / getMass()) +
                        glm::dot(
-                               inverseInertiaTensor_ * glm::cross(glm::cross(r1, contact.normal), r1)
-                               + other->inverseInertiaTensor_ * glm::cross(glm::cross(r2, contact.normal), r2),
+                               inverseInertiaTensor_ * glm::cross(glm::cross(r1, contact.normal), r1),
+//                               + other->inverseInertiaTensor_ * glm::cross(glm::cross(r2, contact.normal), r2),
                                contact.normal);
             if (kn == 0.0f) {
                 spdlog::warn("kn is 0.0f");
                 continue;
             }
+            if (kn < 0.0f) {
+                spdlog::warn("kn is negative");
+                continue;
+            }
+            if (!glm::epsilonEqual(kn, 1.0f, 0.001f)) {
+                spdlog::warn("kn is not 1.0f, kn={}", kn);
+                continue;
+            }
 
 
-            float beta = 0.f;
+            float beta = 0.4f;
             float bias = beta / dt;
             float slop = 0.01f;
-            float v_bias;
 
-            v_bias = bias * glm::max(0.0f, contact.depth - slop);
+            float v_bias = bias * glm::max(0.0f, contact.depth - slop);
 
 
             float v = glm::dot(-veldiff, contact.normal);
             float pv = (v + v_bias) / kn;
 
             auto oldImpulse = contact.AccumulatedImpulse;
-            contact.AccumulatedImpulse = glm::max(contact.AccumulatedImpulse + pv, 0.0f);
+            contact.AccumulatedImpulse += pv;
+            contact.AccumulatedImpulse = glm::max(contact.AccumulatedImpulse, 0.f);
             Pn = contact.AccumulatedImpulse - oldImpulse;
 
 //            glm::vec3 tu = glm::cross(contact.normal, glm::vec3(0.0f, 1.0f, 0.0f));
@@ -359,7 +378,13 @@ namespace entre_portais {
             }
 
             velocity_ -= P / getMass();
-//            angularVelocity_ -= glm::inverse(inertiaTensor_) * glm::cross(r1, P);
+            angularVelocity_ -= inverseInertiaTensor_ * glm::cross(r1, P);
+            spdlog::info("P: {}", Pn);
+            spdlog::info("r1: {}", glm::to_string(r1));
+            spdlog::info("velocity_: {}", glm::to_string(velocity_));
+            spdlog::info("angularVelocity_: {}", glm::to_string(angularVelocity_));
+            spdlog::info("deltaAngVel: {}", glm::to_string(glm::cross(r1, P)));
+            spdlog::info("normal: {}", glm::to_string(contact.normal));
             maxP = glm::max(maxP, glm::length(P));
         }
 
@@ -412,6 +437,6 @@ namespace entre_portais {
 
     void RigidBody::setInertiaTensor(const glm::mat3 &inertiaTensor) {
         inertiaTensor_ = inertiaTensor;
-        inverseInertiaTensor_ = glm::inverse(inertiaTensor_);
+        inverseInertiaTensor_ = glm::inverse(inertiaTensor);
     }
 } // entre_portais
