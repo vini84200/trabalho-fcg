@@ -43,7 +43,7 @@ namespace entre_portais {
 
         char *cuboname = "Cubo";
         auto cube = std::make_shared<CubeObject>(cuboname);
-        cube->getTransform()->setPosition(glm::vec3(2.0f, 0.5f, 0.0f));
+        cube->getTransform()->setPosition(glm::vec3(2.0f, 1.5f, 0.0f));
         addChild(cube);
 
         //    char *cylinname = "Cilindro";

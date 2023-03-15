@@ -58,7 +58,7 @@ namespace entre_portais {
         }
 
         // Resolve colisões
-        for (int step = 0; step < 5; ++step) {
+        for (int step = 0; step < 10; ++step) {
             float maxConstraintViolation = 0;
             for (auto &[rigidBody1, rigidBody2, collision]: collisions) {
                 // Resolve colisões
@@ -92,7 +92,7 @@ namespace entre_portais {
                 //            rigidBody2->resolveCollision(rigidBody1, reverseCollision, rigidBody2->getVelocity(), rigidBody1->getVelocity(), rigidBody2->getAngularVelocity(), rigidBody1->getAngularVelocity());
             }
             if (maxConstraintViolation < 0.001) {
-                spdlog::info("Finnished collision resolution in {} steps", step + 1);
+//                spdlog::info("Finnished collision resolution in {} steps", step + 1);
                 break;
             }
         }
