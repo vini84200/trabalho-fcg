@@ -38,11 +38,13 @@ namespace entre_portais {
         glm::vec3 force_ = glm::vec3(0.0f, 0.0f, 0.0f);
         // Rotation
         glm::vec3 angularVelocity_ = glm::vec3(0.0f, 0.0f, 0.0f);
+        glm::vec3 angularMomentum_ = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::vec3 torque_ = glm::vec3(0.0f, 0.0f, 0.0f);
         glm::mat3 inertiaTensor_ = glm::identity<glm::mat3>();
         glm::mat3 inverseInertiaTensor_ = glm::identity<glm::mat3>();
     public:
         const glm::mat3 &getInertiaTensor() const;
+        // const glm::mat3 &getInv
 
         void setInertiaTensor(const glm::mat3 &inertiaTensor);
 

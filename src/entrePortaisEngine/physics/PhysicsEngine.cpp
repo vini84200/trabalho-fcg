@@ -41,7 +41,7 @@ namespace entre_portais {
                     // Static objects don't have to be checked for possible_collisions
                     // Unless they have a trigger collider //TODO: implement triggers
                     //                spdlog::warn("Colisão entre objetos estáticos");
-                    continue;
+                    //continue;
                 }
 
                 if (cont) {
@@ -58,9 +58,15 @@ namespace entre_portais {
         }
 
         // Resolve colisões
-        for (int step = 0; step < 10; ++step) {
+        for (int step = 0; step < 1; ++step) {
             float maxConstraintViolation = 0;
             for (auto &[rigidBody1, rigidBody2, collision]: collisions) {
+                if (rigidBody1->isStatic() && rigidBody2->isStatic()) {
+                    // Static objects don't have to be checked for possible_collisions
+                    // Unless they have a trigger collider //TODO: implement triggers
+                    //                spdlog::warn("Colisão entre objetos estáticos");
+                    continue;
+                }
                 // Resolve colisões
                 if (rigidBody1->isStatic()) {
                     // Resolve colisão com objeto estático
@@ -199,6 +205,9 @@ namespace entre_portais {
                                          glm::vec4(normal, 0), colorB, 1.f);
                     camera.debugDrawPoint(*rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f), colorA, 5.f);
                     camera.debugDrawPoint(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f), colorB, 5.f);
+                    // Draw a point in the middle of the object
+                    camera.debugDrawPoint((*rigidBody1->getTransform()) * glm::vec4(0,0,0,1), colorA, 2.f);
+                    camera.debugDrawPoint((*rigidBody2->getTransform()) * glm::vec4(0,0,0,1), colorB, 2.f);
                     // Draw a line from the center of the rigid body to the contact point
 //                    camera.debugDrawLine(*rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f),
 //                                         *rigidBody1->getTransform() * glm::vec4(0,0,0,1), colorA, 1.f);

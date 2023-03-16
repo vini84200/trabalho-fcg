@@ -46,7 +46,7 @@ namespace entre_portais::collisions {
         algo::shapes::BoxShape box1(box1_size / 2.f);
         algo::shapes::BoxShape box2(box2_size / 2.f);
         std::vector<Contact> c;
-        auto sat = reactphysics3d::SATAlgorithm(false);
+        auto sat = reactphysics3d::SATAlgorithm(true);
         bool isColliding = sat.testCollisionConvexPolyhedronVsConvexPolyhedron(box1, box1_t, box2, box2_t, c);
         return collisions::PossibleCollision(isColliding, c);
     }
