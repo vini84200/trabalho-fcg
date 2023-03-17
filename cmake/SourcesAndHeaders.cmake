@@ -10,6 +10,7 @@ set(sources
         src/entrePortaisEngine/plugins/IPlugin.cpp
         src/entrePortaisEngine/plugins/ImGuiPlugin.cpp
         src/entrePortaisEngine/Event.cpp
+        src/entrePortaisEngine/Bezier.cpp
         src/entrePortaisEngine/IScene.cpp
         src/entrePortaisEngine/render/Camera.cpp
         src/entrePortaisEngine/tasks/TaskManager.cpp
