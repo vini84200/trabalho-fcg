@@ -10,6 +10,10 @@ namespace entre_portais {
 
     class Bezier {
     public:
+        Bezier() {};
+
+        Bezier(std::vector<glm::vec3> positions, std::vector<glm::quat> rotations);
+
         void addPosition(glm::vec3 position);
 
         void addRotation(glm::quat rotation);

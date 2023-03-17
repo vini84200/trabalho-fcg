@@ -53,4 +53,9 @@ namespace entre_portais {
     glm::quat Bezier::getLastRot() {
         return rotations_.at(getVectorSize() - 1);
     }
+
+    Bezier::Bezier(std::vector<glm::vec3> positions, std::vector<glm::quat> rotations) {
+        positions_ = positions;
+        rotations_ = rotations;
+    }
 } // entre_portais
