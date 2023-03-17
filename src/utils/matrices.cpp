@@ -160,7 +160,7 @@ glm::mat4 matrices::ScalingMatrixFromMatrix(glm::mat4 mat) {
     );
 }
 
-glm::quat matrices::RotationFromMatrix(glm::mat4 M) {
+glm::quat matrices::RotationFromMatrix(const glm::mat4 &M) {
     auto scale = ScaleFromMatrix(M);
     auto scaleMatrix = matrices::Matrix(
             1 / scale.x, 0, 0, 0,

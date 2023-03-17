@@ -58,7 +58,7 @@ namespace entre_portais {
         }
 
         // Resolve colisões
-        for (int step = 0; step < 1; ++step) {
+        for (int step = 0; step < 5; ++step) {
             float maxConstraintViolation = 0;
             for (auto &[rigidBody1, rigidBody2, collision]: collisions) {
                 if (rigidBody1->isStatic() && rigidBody2->isStatic()) {
@@ -101,6 +101,7 @@ namespace entre_portais {
 //                spdlog::info("Finnished collision resolution in {} steps", step + 1);
                 break;
             }
+//            spdlog::info("Step {} maxConstraintViolation {}", step, maxConstraintViolation);
         }
 
         // Atualiza rigid bodies positions
@@ -206,13 +207,21 @@ namespace entre_portais {
                     camera.debugDrawPoint(*rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f), colorA, 5.f);
                     camera.debugDrawPoint(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f), colorB, 5.f);
                     // Draw a point in the middle of the object
-                    camera.debugDrawPoint((*rigidBody1->getTransform()) * glm::vec4(0,0,0,1), colorA, 2.f);
-                    camera.debugDrawPoint((*rigidBody2->getTransform()) * glm::vec4(0,0,0,1), colorB, 2.f);
-                    // Draw a line from the center of the rigid body to the contact point
-//                    camera.debugDrawLine(*rigidBody1->getTransform() * glm::vec4(contact.pointB, 1.f),
-//                                         *rigidBody1->getTransform() * glm::vec4(0,0,0,1), colorA, 1.f);
-//                    camera.debugDrawLine(*rigidBody2->getTransform() * glm::vec4(contact.pointA, 1.f),
-//                                            *rigidBody2->getTransform() * glm::vec4(0,0,0,1), colorB, 1.f);
+                    camera.debugDrawPoint((*rigidBody1->getTransform()) * glm::vec4(0, 0, 0, 1), colorA, 2.f);
+                    camera.debugDrawPoint((*rigidBody2->getTransform()) * glm::vec4(0, 0, 0, 1), colorB, 2.f);
+                    // Draw the velocity at the contact point
+                    glm::vec3 const velA =
+                            rigidBody1->getVelocity() + glm::cross(rigidBody1->getAngularVelocity(), contact.pointB);
+                    glm::vec3 const velB =
+                            rigidBody2->getVelocity() + glm::cross(rigidBody2->getAngularVelocity(), contact.pointA);
+                    camera.debugDrawLine((*rigidBody1->getTransform()) * glm::vec4(contact.pointB, 1.f),
+                                         (*rigidBody1->getTransform()) * glm::vec4(contact.pointB, 1.f) -
+                                         glm::vec4(velA, 0), colorA, 1.f);
+                    camera.debugDrawLine((*rigidBody2->getTransform()) * glm::vec4(contact.pointA, 1.f),
+                                         (*rigidBody2->getTransform()) * glm::vec4(contact.pointA, 1.f) -
+                                         glm::vec4(velB, 0), colorB, 1.f);
+
+
                 }
 
                 // Draw collision manifold

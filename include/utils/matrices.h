@@ -354,7 +354,7 @@ namespace matrices {
 
     glm::vec4 PositionFromMatrix(glm::mat4 M);
 
-    glm::quat RotationFromMatrix(glm::mat4 M);
+    glm::quat RotationFromMatrix(const glm::mat4 &M);
 
     glm::vec4 ScaleFromMatrix(glm::mat4 M);
 

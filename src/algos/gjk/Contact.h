@@ -13,15 +13,24 @@ struct Contact {
     Contact(glm::vec3 normal, glm::vec3 pointA, glm::vec3 pointB) : normal(-normal), pointA(pointA), pointB(pointB) {};
 
     Contact reverse() const {
-        return {normal, depth, pointB, pointA};
+        Contact a = {normal, depth, pointB, pointA};
+        a.AccumulatedImpulse = AccumulatedImpulse;
+        a.AccumulatedFrictionImpulse = AccumulatedFrictionImpulse;
+        return a;
     }
 
     Contact reverseNormal() const {
-        return {normal, depth, pointA, pointB};
+        Contact a = {normal, depth, pointA, pointB};
+        a.AccumulatedImpulse = AccumulatedImpulse;
+        a.AccumulatedFrictionImpulse = AccumulatedFrictionImpulse;
+        return a;
     }
 
     Contact reversePoints() const {
-        return {-normal, depth, pointB, pointA};
+        Contact a = {-normal, depth, pointB, pointA};
+        a.AccumulatedImpulse = AccumulatedImpulse;
+        a.AccumulatedFrictionImpulse = AccumulatedFrictionImpulse;
+        return a;
     }
 
 public:
@@ -30,8 +39,7 @@ public:
     glm::vec3 pointB;
     float depth;
     float AccumulatedImpulse = 0;
-    float AccumulatedFrictionImpulseU = 0;
-    float AccumulatedFrictionImpulseV = 0;
+    float AccumulatedFrictionImpulse = 0;
 };
 
 
