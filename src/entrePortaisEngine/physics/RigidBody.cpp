@@ -274,7 +274,7 @@ namespace entre_portais {
             glm::vec3 dvelA = P / getMass();
             glm::vec3 deltaAngVelA = worldInverseInertiaA * glm::cross(r1, P);
             velocity_ -= dvelA;
-//            angularVelocity_ -= deltaAngVelA;
+            angularVelocity_ -= deltaAngVelA;
 //            glm::vec3 newveldiff = - velocity_ - glm::cross(angularVelocity_, r1);
 //            if (!glm::epsilonEqual(glm::dot(newveldiff, contact.normal), 0.0f, 0.001f)) {
 //                spdlog::warn("veldiff is not 0.0f, {} -> {}, delta: {}", glm::dot(veldiff, contact.normal), glm::dot(newveldiff, contact.normal), glm::dot(veldiff, contact.normal) - glm::dot(newveldiff, contact.normal));
