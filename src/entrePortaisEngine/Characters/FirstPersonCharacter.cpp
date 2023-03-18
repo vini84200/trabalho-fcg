@@ -150,7 +150,7 @@ namespace entre_portais {
             emptyObject1_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
             emptyObject2_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
         } else { // Pause OFF -> ON
-            auto cameraEuler = getCamera()->getTransform()->getRotationEuler();
+            auto cameraEuler = getCamera()->getTransform()->getRotationEulerZYX();
             auto cameraPosition = getCamera()->getTransform()->getPosition();
             auto newCameraPosition = glm::vec3(cameraPosition.x,
                                                cameraPosition.y - cameraEuler.z,
