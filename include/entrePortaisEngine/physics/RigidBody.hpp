@@ -102,8 +102,8 @@ namespace entre_portais {
         bool onCollision(RigidBody *const other);
 
         float
-        resolveCollision(RigidBody *const other, const collisions::PossibleCollision &possibleCollision,
-                         glm::vec3 velA, glm::vec3 velB, glm::vec3 velAngA, glm::vec3 velAngB, float dt);
+        resolveCollision(RigidBody *const other, collisions::PossibleCollision &possibleCollision,
+                         float dt);
 
         float resolveCollisionWithStatic(RigidBody *const other, collisions::PossibleCollision &possibleCollision,
                                          float dt);
@@ -112,7 +112,7 @@ namespace entre_portais {
 
     private:
         float mass_ = 1.0f;
-        float restitution_ = 0.8f;
+        float restitution_ = 0.2f;
     public:
         float getMass() const;
 
@@ -136,6 +136,8 @@ namespace entre_portais {
         glm::vec3 getWorldPosition();
 
         glm::quat getWorldRotation();
+
+        glm::vec3 getVelocityAtPoint(const glm::vec3 &r1) const;
     };
 
 } // entre_portais

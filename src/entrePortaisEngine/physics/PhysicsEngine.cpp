@@ -58,7 +58,7 @@ namespace entre_portais {
         }
 
         // Resolve colisões
-        for (int step = 0; step < 5; ++step) {
+        for (int step = 0; step < 32; ++step) {
             float maxConstraintViolation = 0;
             for (auto &[rigidBody1, rigidBody2, collision]: collisions) {
                 if (rigidBody1->isStatic() && rigidBody2->isStatic()) {
@@ -89,11 +89,7 @@ namespace entre_portais {
                 // Resolve colisão com objeto dinâmico
 //                spdlog::info("Colisão com objeto dinâmico");
                 auto const &reverseCollision = collision.reverse();
-                float cv = rigidBody1->resolveCollision(rigidBody2, collision, rigidBody1->getVelocity(),
-                                                        rigidBody2->getVelocity(),
-                                                        rigidBody1->getAngularVelocity(),
-                                                        rigidBody2->getAngularVelocity(),
-                                                        deltaTime);
+                float cv = rigidBody1->resolveCollision(rigidBody2, collision, deltaTime);
                 maxConstraintViolation = std::max(maxConstraintViolation, cv);
                 //            rigidBody2->resolveCollision(rigidBody1, reverseCollision, rigidBody2->getVelocity(), rigidBody1->getVelocity(), rigidBody2->getAngularVelocity(), rigidBody1->getAngularVelocity());
             }
