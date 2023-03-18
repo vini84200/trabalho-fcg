@@ -20,7 +20,7 @@ namespace entre_portais {
 
     void Cuelho::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
-        loadShader("gouraud");
+        loadShader("blinn-phong");
         submit(renderer);
     }
 
