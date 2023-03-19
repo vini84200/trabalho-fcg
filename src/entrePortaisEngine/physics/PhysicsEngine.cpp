@@ -58,7 +58,7 @@ namespace entre_portais {
         }
 
         // Resolve colisões
-        for (int step = 0; step < 32; ++step) {
+        for (int step = 0; step < 8; ++step) {
             float maxConstraintViolation = 0;
             for (auto &[rigidBody1, rigidBody2, collision]: collisions) {
                 if (rigidBody1->isStatic() && rigidBody2->isStatic()) {

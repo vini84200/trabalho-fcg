@@ -327,9 +327,6 @@ namespace entre_portais {
             const glm::mat3 worldInverseInertiaA = getWorldInverseInertia();
 
             glm::vec3 veldiff = -getVelocityAtPoint(r1);
-            if (glm::dot(veldiff, contact.normal) > 0) {
-              spdlog::warn("They are alredy separating");
-            }
 
 
             float kn = (1 / getMass()) /*+
