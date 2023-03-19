@@ -28,6 +28,7 @@ set(sources
 		src/entrePortaisEngine/meshes/ComputeNormals.cpp
 		src/entrePortaisEngine/Characters/FirstPersonCharacter.cpp
 		src/entrePortaisEngine/Objects/ObjFromFile.cpp
+		src/entrePortaisEngine/Objects/AmbientFromTexture.cpp
 		src/entrePortaisEngine/physics/PhysicsEngine.cpp
 		src/entrePortaisEngine/physics/RigidBody.cpp
 		src/entrePortaisEngine/physics/ICollider.cpp

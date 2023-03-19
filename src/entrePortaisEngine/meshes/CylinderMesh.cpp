@@ -1,9 +1,10 @@
 #include "entrePortaisEngine/meshes/CylinderMesh.hpp"
+#include "entrePortaisEngine/render/Renderer.hpp"
 
 # define M_PIf        3.14159265358979323846f    /* pi */
 
 namespace entre_portais {
-    void CylinderMesh::Draw(Shader shaderInUse) {
+    void CylinderMesh::Draw(Shader shaderInUse, RenderPass current_pass) {
         UseVAO();
         glDrawElements(GL_TRIANGLES, GetNumVertices(), GL_UNSIGNED_INT, 0);
         UnbindVAO();

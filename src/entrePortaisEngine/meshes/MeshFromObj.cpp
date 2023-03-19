@@ -7,36 +7,68 @@
 
 namespace entre_portais {
 
-    void MeshFromObj::Draw(Shader shaderInUse) {
+    void MeshFromObj::Draw(Shader shaderInUse, RenderPass current_pass) {
         if (loaded_) {
             UseVAO();
 
 //            glDrawElements(GL_TRIANGLES, GetNumVertices(), GL_UNSIGNED_INT, 0);
-
-            for (auto [materialId, range]: materialRanges_) {
-                auto [start, count] = range;
-                std::optional<Texture> texture;
-                if (materialId < materials_.size()) {
-                    auto material = materials_.at(materialId);
-
-
-                    shaderInUse.setUniformVec3("Ka", material.ambient[0], material.ambient[1], material.ambient[2]);
-                    shaderInUse.setUniformVec3("KdIn", material.diffuse[0], material.diffuse[1], material.diffuse[2]);
-                    shaderInUse.setUniformVec3("Ks", material.specular[0], material.specular[1], material.specular[2]);
-                    shaderInUse.setUniformFloat("q", material.shininess);
-                    if (material.diffuse_texname != "") {
-                        texture = TextureManager::instance().getTexture(material.diffuse_texname);
-                        texture->Bind();
-                        shaderInUse.setUniformInt("texture_", 1);
+            if (current_pass == RenderPass::FOREGROUND) {
+                for (const auto &[materialId, range]: foregroundMaterialRanges_) {
+                    auto [start, count] = range;
+                    std::optional<Texture> texture;
+                    if (materialId < materials_.size()) {
+                        auto material = materials_.at(materialId);
+                        shaderInUse.setUniformVec3("Ka", material.ambient[0], material.ambient[1], material.ambient[2]);
+                        shaderInUse.setUniformVec3("KdIn", material.diffuse[0], material.diffuse[1],
+                                                   material.diffuse[2]);
+                        shaderInUse.setUniformVec3("Ks", material.specular[0], material.specular[1],
+                                                   material.specular[2]);
+                        shaderInUse.setUniformFloat("q", material.shininess);
+                        shaderInUse.setUniformFloat("alpha", 1.0f); // Should be equal to 1.0f
+                        if (material.diffuse_texname != "") {
+                            texture = TextureManager::instance().getTexture(material.diffuse_texname);
+                            texture->Bind();
+                            shaderInUse.setUniformInt("texture_", 1);
+                        } else {
+                            shaderInUse.setUniformInt("texture_", 0);
+                        }
                     } else {
-                        shaderInUse.setUniformInt("texture_", 0);
-                    }
-                } else {
 //                    spdlog::warn("Material id {} out of range", materialId);
-                };
-                glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *) (start * sizeof(unsigned int)));
-                if (texture) {
-                    texture->Unbind();
+                    };
+                    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *) (start * sizeof(unsigned int)));
+                    if (texture) {
+                        texture->Unbind();
+                    }
+                }
+            }
+            if (current_pass == RenderPass::TRANSPARENCY) {
+                for (const auto &[materialId, range]: transparentMaterialRanges_) {
+                    auto [start, count] = range;
+                    std::optional<Texture> texture;
+                    if (materialId < materials_.size()) {
+                        auto material = materials_.at(materialId);
+                        shaderInUse.setUniformVec3("Ka", material.ambient[0], material.ambient[1], material.ambient[2]);
+                        shaderInUse.setUniformVec3("KdIn", material.diffuse[0], material.diffuse[1],
+                                                   material.diffuse[2]);
+                        shaderInUse.setUniformVec3("Ks", material.specular[0], material.specular[1],
+                                                   material.specular[2]);
+                        shaderInUse.setUniformFloat("q", material.shininess);
+                        shaderInUse.setUniformFloat("alpha", material.dissolve);
+
+                        if (material.diffuse_texname != "") {
+                            texture = TextureManager::instance().getTexture(material.diffuse_texname);
+                            texture->Bind();
+                            shaderInUse.setUniformInt("texture_", 1);
+                        } else {
+                            shaderInUse.setUniformInt("texture_", 0);
+                        }
+                    } else {
+//                    spdlog::warn("Material id {} out of range", materialId);
+                    };
+                    glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *) (start * sizeof(unsigned int)));
+                    if (texture) {
+                        texture->Unbind();
+                    }
                 }
             }
             UnbindVAO();
@@ -107,7 +139,7 @@ namespace entre_portais {
 
         vao->Commit();
         SetVAO(std::move(vao), indices.size());
-        materialRanges_ = result_->materialRanges_;
+        foregroundMaterialRanges_ = result_->foregroundMaterialRanges;
         spdlog::info("in {}", indices.size());
         loaded_ = true;
         result_.reset();
@@ -131,7 +163,7 @@ namespace entre_portais {
             ImGui::Text("Loaded");
             ImGui::Text("Material Count: %d", materials_.size());
             ImGui::Text("Texture Count: %d", textures_.size());
-            ImGui::Text("Material Ranges: %d", materialRanges_.size());
+            ImGui::Text("Material Ranges: %d", foregroundMaterialRanges_.size());
             ImGui::Text("Index Count: %d", GetNumVertices());
 
             if (ImGui::TreeNode("Materials:")) {
@@ -302,8 +334,8 @@ namespace entre_portais {
             } else {
 //                result_.materials[materialId] = materials[materialId];
             }
-            result_.materialRanges_.emplace(materialId,
-                                            std::make_pair(startIndex, result_.indices.size() - startIndex));
+            result_.foregroundMaterialRanges.emplace(materialId,
+                                                     std::make_pair(startIndex, result_.indices.size() - startIndex));
         }
         result_.materials = materials;
     }

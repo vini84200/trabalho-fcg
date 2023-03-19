@@ -27,4 +27,14 @@ namespace entre_portais {
         getTexture(name);
 
     }
+
+    Texture TextureManager::getCubeMapTexture(char *name) {
+        if (cubeMapTextures_.find(name) == cubeMapTextures_.end()) {
+            return createCubeMapTexture(name);
+        }
+    }
+
+    Texture TextureManager::createCubeMapTexture(std::string name) {
+        return Texture();
+    }
 } // entre_portais

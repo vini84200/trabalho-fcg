@@ -1,16 +1,12 @@
-//
-// Created by barbu on 13/02/2023.
-//
-
 #include "entrePortaisEngine/render/IRenderable.hpp"
 
 namespace entre_portais {
-    void IRenderable::submit(std::shared_ptr<Renderer> renderer) {
+    void IRenderable::submit(std::shared_ptr<Renderer> renderer, RenderPasses passes) {
         if (!hasShader_) {
             throw std::runtime_error("Voce esqueceu de definir o shader do renderable");
         }
         renderer_ = renderer;
-        id_ = renderer->submit(this, shaderID_);
+        id_ = renderer->submit(this, shaderID_, passes);
         isSubmitted_ = true;
     }
 
@@ -36,7 +32,7 @@ namespace entre_portais {
     }
 
     void IRenderable::unSubmit() {
-        renderer_->unSubmit(id_, shaderID_);
+        renderer_->unSubmit(id_);
         isSubmitted_ = false;
     }
 

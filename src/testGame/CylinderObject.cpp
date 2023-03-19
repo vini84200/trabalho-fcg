@@ -24,7 +24,7 @@ namespace entre_portais {
     void CylinderObject::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
         loadShader("primitive");
-        submit(renderer);
+        submit(renderer, RenderPass::FOREGROUND);
     }
 
     void CylinderObject::onResize(int width, int height) {

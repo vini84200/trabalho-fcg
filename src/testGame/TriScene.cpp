@@ -13,6 +13,7 @@
 #include "testGame/Cuelho.hpp"
 #include "entrePortaisEngine/Objects/ObjFromFile.hpp"
 #include "testGame/Ball.hpp"
+#include "entrePortaisEngine/Objects/AmbientFromTexture.hpp"
 
 namespace entre_portais {
     TriScene::TriScene() : IScene("TriScene") {
@@ -40,6 +41,15 @@ namespace entre_portais {
 //        obj4->getTransform()->setPosition(glm::vec3(0.3f, 0.3f, 0.0f));
 //        obj4->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
 //        obj3->addChild(obj4);
+
+        auto skybox = std::make_shared<AmbientFromTexture>({
+                                                                   "assets/textures/skybox/right.jpg",
+                                                                   "assets/textures/skybox/left.jpg",
+                                                                   "assets/textures/skybox/top.jpg",
+                                                                   "assets/textures/skybox/bottom.jpg",
+                                                                   "assets/textures/skybox/front.jpg",
+                                                                   "assets/textures/skybox/back.jpg"
+                                                           });
 
         char *cuboname = "Cubo";
         auto cube = std::make_shared<CubeObject>(cuboname);

@@ -16,7 +16,7 @@ namespace entre_portais {
         spdlog::info("Initializing Ball");
         auto renderer = IObject::getScene()->getRenderer();
         loadShader("phong");
-        submit(renderer);
+        submit(renderer, RenderPass::FOREGROUND);
 
         auto sphereCollider = std::make_unique<SphereCollider>(1, modelMatrix_);
         rigidBody_ = std::make_unique<RigidBody>(&modelMatrix_, std::move(sphereCollider),

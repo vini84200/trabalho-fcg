@@ -1,7 +1,3 @@
-//
-// Created by vini84200 on 12/26/22.
-//
-
 #ifndef ENTREPORTAIS_IMESH_HPP
 #define ENTREPORTAIS_IMESH_HPP
 
@@ -12,6 +8,7 @@
 #include "entrePortaisEngine/render/Shader.hpp"
 #include "entrePortaisEngine/render/ShadersManager.hpp"
 #include "imgui.h"
+#include "entrePortaisEngine/render/Renderer.hpp"
 
 namespace entre_portais {
 
@@ -34,7 +31,7 @@ namespace entre_portais {
 
         IMesh &operator=(IMesh &&other) = delete;
 
-        virtual void Draw(Shader shaderInUse) = 0;
+        virtual void Draw(Shader shaderInUse, RenderPass current_pass) = 0;
 
         virtual void SetVAO(std::shared_ptr<VertexArrayBuffer> vao, unsigned int numVertices = 0) {
             vertexArray_ = std::move(vao);

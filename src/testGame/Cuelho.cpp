@@ -21,7 +21,7 @@ namespace entre_portais {
     void Cuelho::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
         loadShader("gouraud");
-        submit(renderer);
+        submit(renderer, RenderPass::FOREGROUND);
     }
 
     void Cuelho::onResize(int width, int height) {

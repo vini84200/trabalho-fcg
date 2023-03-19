@@ -1,4 +1,5 @@
 #include "entrePortaisEngine/meshes/CubeMesh.hpp"
+#include "entrePortaisEngine/render/Renderer.hpp"
 
 namespace entre_portais {
     CubeMesh::CubeMesh(float size, glm::vec3 color) : IMesh() {
@@ -67,7 +68,7 @@ namespace entre_portais {
         SetVAO(std::move(vao), 12 * 3);
     }
 
-    void CubeMesh::Draw(Shader shaderInUse) {
+    void CubeMesh::Draw(Shader shaderInUse, RenderPass current_pass) {
         UseVAO();
         glDrawElements(GL_TRIANGLES, 12 * 3, GL_UNSIGNED_INT, 0);
         UnbindVAO();

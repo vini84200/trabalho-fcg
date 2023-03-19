@@ -21,7 +21,7 @@ namespace entre_portais {
     void ObjFromFile::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
         loadShader("phong");
-        submit(renderer);
+        submit(renderer, RenderPass::FOREGROUND | RenderPass::TRANSPARENCY | RenderPass::LIGHTING);
     }
 
     void ObjFromFile::onResize(int width, int height) {

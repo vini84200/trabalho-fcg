@@ -1,9 +1,10 @@
 #include "entrePortaisEngine/meshes/PlaneMesh.hpp"
 #include "utils/matrices.h"
 #include "glm/gtc/type_ptr.hpp"
+#include "entrePortaisEngine/render/Renderer.hpp"
 
 namespace entre_portais {
-    void PlaneMesh::Draw(Shader shaderInUse) {
+    void PlaneMesh::Draw(Shader shaderInUse, RenderPass current_pass) {
         UseVAO();
         glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         // Draw Segments with GL_LINES

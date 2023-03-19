@@ -5,7 +5,7 @@
 #include "testGame/EmptyObject.hpp"
 
 namespace entre_portais {
-    void EmptyObject::render() {
+    void EmptyObject::render(RenderPass current_pass) {
 
     }
 

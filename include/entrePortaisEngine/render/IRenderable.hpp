@@ -15,11 +15,11 @@ namespace entre_portais {
     public:
         ~IRenderable();
 
-        void submit(std::shared_ptr<Renderer> renderer);
+        void submit(std::shared_ptr<Renderer> renderer, RenderPasses passes);
 
         void unSubmit();
 
-        virtual void render() = 0;
+        virtual void render(RenderPass current_pass) = 0;
 
         void loadShader(std::string name);
 
