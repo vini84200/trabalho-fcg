@@ -9,7 +9,7 @@
 #define VSYNC 1
 #define DEFAULT_FPS 60
 #define WARNING_FPS 28
-#define TARGET_UPS 60.0
+#define TARGET_UPS 180.0f
 
 namespace entre_portais {
 
@@ -40,6 +40,8 @@ namespace entre_portais {
         std::shared_ptr<IScene> GetScene() const;
 
         void showCursor(bool show);
+
+        bool isCursorVisible();
 
     protected:
         void update(float deltaTime);
@@ -78,6 +80,7 @@ namespace entre_portais {
         double lastFrameTime_ = 0.0f;
         Logger logger_ = Logger("Window");
         glm::vec2 mousePos_;
+        bool cursorIsVisible_;
     };
 }
 #endif  // ENTREPORTAIS_WINDOW_HPP

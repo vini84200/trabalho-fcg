@@ -49,6 +49,13 @@ void entre_portais::ImGuiPlugin::render() {
 
     ImGui::Render();
     ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+    ImGuiIO &io = ImGui::GetIO();
+    if (io.ConfigFlags & ImGuiConfigFlags_ViewportsEnable) {
+        GLFWwindow *backup_current_context = glfwGetCurrentContext();
+        ImGui::UpdatePlatformWindows();
+        ImGui::RenderPlatformWindowsDefault();
+        glfwMakeContextCurrent(backup_current_context);
+    }
 }
 
 void entre_portais::ImGuiPlugin::onEvent(Event &event) {
@@ -60,6 +67,8 @@ void entre_portais::ImGuiPlugin::InitializeImGui() {
     ImGui::CreateContext();
     ImGuiIO &io = ImGui::GetIO();
     (void) io;
+    io.ConfigFlags |= ImGuiConfigFlags_ViewportsEnable;
+    io.ConfigFlags |= ImGuiConfigFlags_DockingEnable;
 
     ImGui::StyleColorsDark();
 
@@ -107,10 +116,15 @@ void entre_portais::ImGuiPlugin::renderTaskManagerImGui(entre_portais::TaskManag
     ImGui::End();
 }
 
-void entre_portais::ImGuiPlugin::onKey(int key, int scancode, int action, int mods) {
+bool entre_portais::ImGuiPlugin::onKey(int key, int scancode, int action, int mods) {
     if (key == GLFW_KEY_F3 && action == GLFW_PRESS) {
         debugConfigWindow_ = !debugConfigWindow_;
     }
+    ImGuiIO *io = &ImGui::GetIO();
+    if (io->WantCaptureKeyboard) {
+        return true;
+    }
+    return false;
 }
 
 void entre_portais::ImGuiPlugin::renderDebugConfigWindow() {
@@ -133,5 +147,21 @@ void entre_portais::ImGuiPlugin::renderDebugConfigWindow() {
 }
 
 void entre_portais::ImGuiPlugin::update(float deltaTime) {
+}
+
+bool entre_portais::ImGuiPlugin::onMouseButton(int button, int action, int mods) {
+    ImGuiIO &io = ImGui::GetIO();
+    if (io.WantCaptureMouse) {
+        return true;
+    }
+    return false;
+}
+
+bool entre_portais::ImGuiPlugin::onMouseMove(double xpos, double ypos) {
+    ImGuiIO &io = ImGui::GetIO();
+    if (io.WantCaptureMouse) {
+        return true;
+    }
+    return false;
 }
 

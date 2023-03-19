@@ -33,7 +33,6 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")    #this will allow to use same _DEBUG macro available in both Linux as well as Windows - MSCV environment. Easy to put Debug specific code.
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
-
 #
 # Setup alternative names
 #
@@ -252,7 +251,7 @@ set(TINY_OBJ_LOADER ${EXT_DIR}/tinyobjloader)
 add_subdirectory("${TINY_OBJ_LOADER}")
 message(STATUS "TINYOBJLOADER included at ${TINY_OBJ_LOADER}")
 if (NOT EXISTS "${TINY_OBJ_LOADER}/CMakeLists.txt")
-    message(FATAL_ERROR "The submodule were not downloaded! ")
+  message(FATAL_ERROR "The submodule were not downloaded! ")
 endif ()
 include_directories(${TINY_OBJ_LOADER})
 
@@ -260,15 +259,21 @@ include_directories(${TINY_OBJ_LOADER})
 set(STB_DIR ${EXT_DIR}/stb)
 include_directories(${STB_DIR})
 
+# Octree
+set(OCTREE_DIR ${EXT_DIR}/Octree)
+include_directories(${OCTREE_DIR})
+
 # Linking with the project's dependencies
 # Executable linking
 target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_header_only tinyobjloader)
 if (WIN32)
-    set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
+  set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 endif ()
 
+#target_link_options(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)
+
 if (${PROJECT_NAME}_BUILD_EXECUTABLE AND ${PROJECT_NAME}_ENABLE_UNIT_TESTING)
-    target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad glm)
+  target_link_libraries(${PROJECT_NAME}_LIB PUBLIC glfw glad glm imgui spdlog::spdlog_header_only tinyobjloader)
 endif ()
 
 verbose_message("Successfully added all dependencies and linked against them.")

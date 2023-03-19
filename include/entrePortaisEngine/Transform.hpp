@@ -1,6 +1,8 @@
 #ifndef ENTREPORTAIS_TRANSFORM_HPP
 #define ENTREPORTAIS_TRANSFORM_HPP
 
+#include <vector>
+#include <functional>
 #include "glm/glm.hpp"
 #include "glm/gtx/quaternion.hpp"
 
@@ -9,15 +11,15 @@ namespace entre_portais {
 
         Transform();
 
-        glm::mat4 getModelMatrix();
+        glm::mat4 getLocalModelMatrix() const;
 
         void setPosition(glm::vec3 position);
 
         void setScale(glm::vec3 scale);
 
-        void setRotation(glm::vec3 rotation);
+        void setRotationZYX(glm::vec3 rotation);
 
-        void setRotation(float x, float y, float z);
+        void setRotationZYX(float x, float y, float z);
 
         void setRotation(glm::quat rotation);
 
@@ -27,25 +29,23 @@ namespace entre_portais {
 
         void rotateBy(glm::quat rotation);
 
-        glm::vec3 rotateVector(glm::vec3 vector);
+        glm::vec3 rotateVector(glm::vec3 vector) const;
 
-        float *getPositionPtr();
+        glm::vec4 getPosition() const;
 
-        float *getRotationPtr();
+        glm::quat getRotation() const;
 
-        float *getScalePtr();
+        glm::vec3 getScale() const;
 
-        glm::vec4 getPosition();
+        glm::vec3 getForward() const;
 
-        glm::quat getRotation();
-
-        glm::vec3 getScale();
-
-        glm::vec3 getForward();
-
-        glm::vec3 getRotationEuler();
+        glm::vec3 getRotationEulerZYX() const;
 
         void renderImGui();
+
+        void handleTransformChange() const;
+
+        void onTransformChange(std::function<void()> callback);
 
         void move(glm::vec3 vector);
 
@@ -53,7 +53,7 @@ namespace entre_portais {
         glm::vec3 position_;
         glm::quat rotation_;
         glm::vec3 scale_;
-        bool lock_rotation_;
+        std::vector<std::function<void()>> on_transform_change_callbacks_;
     };
 }
 #endif //ENTREPORTAIS_TRANSFORM_HPP

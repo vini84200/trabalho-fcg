@@ -12,6 +12,7 @@ void entre_portais::IScene::renderImGui(bool *p_open) {
     } else {
         ImGui::End();
     }
+    physicsEngine_->renderImGui(*camera_.get());
 }
 
 void entre_portais::IScene::render() {
@@ -24,12 +25,25 @@ const std::shared_ptr<entre_portais::Renderer> &entre_portais::IScene::getRender
 
 entre_portais::IScene::IScene(char *name) : IGameNode(name) {
     renderer_ = std::make_shared<Renderer>();
+    physicsEngine_ = std::make_shared<PhysicsEngine>();
 }
 
-entre_portais::Window * entre_portais::IScene::getWindow() {
+entre_portais::Window *entre_portais::IScene::getWindow() {
     return window_;
 }
 
 void entre_portais::IScene::setWindow(entre_portais::Window *window) {
     window_ = window;
+}
+
+const std::shared_ptr<entre_portais::PhysicsEngine> &entre_portais::IScene::getPhysicsEngine() const {
+    return physicsEngine_;
+}
+
+void entre_portais::IScene::setPhysicsEngine(const std::shared_ptr<PhysicsEngine> &physicsEngine) {
+    physicsEngine_ = physicsEngine;
+}
+
+void entre_portais::IScene::update(float deltaTime) {
+    physicsEngine_->update(deltaTime);
 }

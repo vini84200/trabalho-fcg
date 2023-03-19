@@ -32,7 +32,7 @@ namespace entre_portais {
                         shaderInUse.setUniformInt("texture_", 0);
                     }
                 } else {
-                    spdlog::warn("Material id {} out of range", materialId);
+//                    spdlog::warn("Material id {} out of range", materialId);
                 };
                 glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *) (start * sizeof(unsigned int)));
                 if (texture) {

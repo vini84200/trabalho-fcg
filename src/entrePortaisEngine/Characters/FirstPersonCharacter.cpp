@@ -3,6 +3,7 @@
 #include "entrePortaisEngine/IScene.hpp"
 #include "entrePortaisEngine/Window.hpp"
 #include "glm/gtx/string_cast.hpp"
+#include "entrePortaisEngine/physics/BoxCollider.hpp"
 
 namespace entre_portais {
     FirstPersonCharacter::FirstPersonCharacter(char *name) : IObject(name) {
@@ -40,10 +41,20 @@ namespace entre_portais {
                 }
                 break;
             case GLFW_KEY_LEFT_ALT:
-                if (action == GLFW_PRESS) {
+                if ((mods & GLFW_MOD_CONTROL) == GLFW_MOD_CONTROL) {
+                    // Togle cursor
+                    if (action == GLFW_PRESS) {
+                        spdlog::info("Togle cursor");
+                        IObject::getScene()->getWindow()->showCursor(
+                                !IObject::getScene()->getWindow()->isCursorVisible());
+                        altMode_ = !altMode_;
+                    }
+                } else if (action == GLFW_PRESS) {
+                    spdlog::info("Show cursor");
                     IObject::getScene()->getWindow()->showCursor(true);
                     altMode_ = true;
                 } else if (action == GLFW_RELEASE) {
+                    spdlog::info("Hide cursor");
                     IObject::getScene()->getWindow()->showCursor(false);
                     altMode_ = false;
                 }
@@ -86,6 +97,11 @@ namespace entre_portais {
         auto renderer = IObject::getScene()->getRenderer();
         loadShader("primitive");
         submit(renderer);
+//        std::unique_ptr<ICollider> cubeCollider = std::make_unique<BoxCollider>(glm::vec3(1.0f, 1.0f, 1.0f),
+//                                                                                modelMatrix_);
+//        rigidBody_ = std::make_unique<RigidBody>(&modelMatrix_, std::move(cubeCollider),
+//                                                 *this->getScene()->getPhysicsEngine().get(),
+//                                                 this->transform_);
     }
 
     std::shared_ptr<Camera> FirstPersonCharacter::getCamera() {
@@ -134,7 +150,7 @@ namespace entre_portais {
             emptyObject1_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
             emptyObject2_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
         } else { // Pause OFF -> ON
-            auto cameraEuler = getCamera()->getTransform()->getRotationEuler();
+            auto cameraEuler = getCamera()->getTransform()->getRotationEulerZYX();
             auto cameraPosition = getCamera()->getTransform()->getPosition();
             auto newCameraPosition = glm::vec3(cameraPosition.x,
                                                cameraPosition.y - cameraEuler.z,

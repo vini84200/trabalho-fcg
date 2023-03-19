@@ -6,15 +6,17 @@
 #include "entrePortaisEngine/meshes/IMesh.hpp"
 #include "Transform.hpp"
 #include "Logger.hpp"
+#include "entrePortaisEngine/physics/RigidBody.hpp"
 
 namespace entre_portais {
 
     class IObject : public IGameNode, public IRenderable {
         /* Objeto tem um mesh*/
     public:
-        IObject(const char *name) : IGameNode(name) {}
+        IObject(const char *name) : IGameNode(name) {
+        }
 
-        virtual ~IObject() = default;
+        ~IObject();;
 
         IObject(const IObject &other) = delete;
 
@@ -31,6 +33,8 @@ namespace entre_portais {
         }
 
         void render() override;
+
+        void onTransformChange() override;
 
         glm::mat4 &getModelMatrix() override;
 
@@ -61,6 +65,7 @@ namespace entre_portais {
     protected:
         std::shared_ptr<IMesh> mesh_;
         std::weak_ptr<IScene> scene_;
+        std::unique_ptr<RigidBody> rigidBody_;
         bool visible_ = true;
     };
 

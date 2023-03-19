@@ -1,4 +1,5 @@
 #include "entrePortaisEngine/IGameNode.hpp"
+#include "spdlog/spdlog.h"
 
 #include <algorithm>
 #include <stdexcept>
@@ -12,7 +13,7 @@ namespace entre_portais {
     }
 
     void IGameNode::preRender() {
-        calculateModelMatrix();
+//        calculateModelMatrix();
     }
 
     void IGameNode::preRenderPropagate() {
@@ -87,6 +88,8 @@ namespace entre_portais {
         }
         if (is_initialized_) {
             child->initializePropagate();
+        } else {
+            child->calculateModelMatrix();
         }
     }
 
@@ -109,6 +112,7 @@ namespace entre_portais {
 
     void IGameNode::initializePropagate() {
         if (!is_initialized_) {
+            calculateModelMatrix();
             initialize();
             is_initialized_ = true;
         }
@@ -140,9 +144,36 @@ namespace entre_portais {
     void IGameNode::calculateModelMatrix() {
         auto pm = getParentModelMatrix();
         if (pm == nullptr) {
-            modelMatrix_ = transform_.getModelMatrix();
+            modelMatrix_ = transform_.getLocalModelMatrix();
         } else {
-            modelMatrix_ = (*pm) * transform_.getModelMatrix();
+            modelMatrix_ = (*pm) * transform_.getLocalModelMatrix();
         }
+    }
+
+    IGameNode::IGameNode(const char *name) : name_(name) {
+        transform_.onTransformChange([this]() {
+            onTransformChangePropagate();
+        });
+    }
+
+    void IGameNode::onTransformChangePropagate() {
+        calculateModelMatrix();
+        onTransformChange();
+
+        for (auto &child: children_) {
+            child->onTransformChangePropagate();
+        }
+    }
+
+    glm::vec3 IGameNode::getWorldPosition() {
+        return glm::vec3();
+    }
+
+    glm::vec3 IGameNode::getWorldScale() {
+        return glm::vec3();
+    }
+
+    glm::quat IGameNode::getWorldRotation() {
+        return glm::quat();
     }
 }  // namespace entre_portais

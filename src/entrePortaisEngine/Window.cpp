@@ -37,7 +37,9 @@ namespace entre_portais {
         }
         glfwMakeContextCurrent(window_);
 
+
         glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
+        cursorIsVisible_ = false;
 
 
         glfwSetWindowUserPointer(window_, this);
@@ -93,19 +95,27 @@ namespace entre_portais {
         lastFrameTime_ = glfwGetTime() - 1.0 / targetFPS_;
         getLogger()->info("Iniciando o loop principal");
         getLogger()->info("Target FPS: {} / Target Frame Time: {}", targetFPS_, (1.0f / targetFPS_));
+        float accumulator = 0.0f;
         while (running_) {
             // Calculate delta time
             double currentFrame = glfwGetTime();
             double timeDifference = currentFrame - lastFrameTime_;
+            if (timeDifference > 1.0 / WARNING_FPS) {
+                getLogger()->warn("Running behind by {} seconds, expected {} seconds", timeDifference,
+                                  1.0 / targetFPS_);
+                timeDifference = 1.0 / targetFPS_;
+            }
             lastFrameTime_ = currentFrame;
 
+            accumulator += timeDifference;
+            float deltaTime = 1.0 / TARGET_UPS;
+
             // Update
-            // Usa Semi-fixed timestep (veja https://gafferongames.com/post/fix_your_timestep/)
+            // Usa fixed timestep (veja https://gafferongames.com/post/fix_your_timestep/)
             try {
-                while (timeDifference > 0.0f) {
-                    float deltaTime = utils::min(timeDifference, 1.0 / TARGET_UPS);
+                while (accumulator >= deltaTime) {
                     update(deltaTime);
-                    timeDifference -= deltaTime;
+                    accumulator -= deltaTime;
                 }
             }
             catch (const std::exception &e) {
@@ -177,11 +187,15 @@ namespace entre_portais {
             running_ = false;
         }
 
-        getLogger()->trace("Key {} {}", key, action == GLFW_PRESS ? "pressed" : "released");
-
+//        getLogger()->trace("Key {} {}", key, action == GLFW_PRESS ? "pressed" : "released");
+        bool handled = false;
         for (auto plugin: registeredPlugins_) {
-            plugin->onKey(key, scancode, action, mods);
+            handled = plugin->onKey(key, scancode, action, mods);
+            if (handled) {
+                return;
+            }
         }
+
 
         try {
             scene_->keyPress(key, scancode, action, mods);
@@ -197,11 +211,25 @@ namespace entre_portais {
     }
 
     void Window::onMouseButton(int button, int action, int mods) {
-        getLogger()->info("Mouse button {} {}", button, action == GLFW_PRESS ? "pressed" : "released");
+//        getLogger()->info("Mouse button {} {}", button, action == GLFW_PRESS ? "pressed" : "released");
+        bool handled = false;
+        for (auto plugin: registeredPlugins_) {
+            handled = plugin->onMouseButton(button, action, mods);
+            if (handled) {
+                return;
+            }
+        }
         scene_->mouseButton(button, action, mods);
     }
 
     void Window::onMouseMovement(double xpos, double ypos) {
+        bool handled = false;
+        for (auto plugin: registeredPlugins_) {
+            handled = plugin->onMouseMove(xpos, ypos);
+            if (handled) {
+                return;
+            }
+        }
         scene_->mouseMovementPropagate(xpos, ypos);
         glm::vec2 mousePos(xpos, ypos);
         glm::vec2 delta = mousePos - mousePos_;
@@ -224,6 +252,7 @@ namespace entre_portais {
 
     void Window::onExit() {
         getLogger()->info("Exiting");
+        TaskManager::getInstance()->stop();
         scene_->exit();
         UnregisterAllPlugins();
     }
@@ -260,9 +289,15 @@ namespace entre_portais {
 
     void Window::showCursor(bool show) {
         if (show) {
+            cursorIsVisible_ = true;
             glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_NORMAL);
         } else {
+            cursorIsVisible_ = false;
             glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
         }
+    }
+
+    bool Window::isCursorVisible() {
+        return cursorIsVisible_;
     }
 }  // namespace entre_portais

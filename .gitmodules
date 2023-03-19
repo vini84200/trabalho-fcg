@@ -18,3 +18,6 @@
 [submodule "external/stb"]
 	path = external/stb
 	url = https://github.com/nothings/stb.git
+[submodule "external/Octree"]
+	path = external/Octree
+	url = https://github.com/attcs/Octree

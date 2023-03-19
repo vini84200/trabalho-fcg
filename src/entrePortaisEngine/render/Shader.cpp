@@ -34,7 +34,7 @@ namespace entre_portais {
     void Shader::LoadShader(const char *filename, GLuint shader_id) {
         std::ifstream file;
         try {
-            file.exceptions(std::ifstream::failbit);
+            file.exceptions(std::ifstream::badbit);
             file.open(filename);
         }
         catch (const std::exception &e) {

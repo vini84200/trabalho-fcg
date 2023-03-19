@@ -1,6 +1,7 @@
 #include "entrePortaisEngine/IObject.hpp"
 #include "utils/matrices.h"
 #include "entrePortaisEngine/Logger.hpp"
+#include "entrePortaisEngine/IScene.hpp"
 #include "imgui.h"
 
 void entre_portais::IObject::render() {
@@ -29,11 +30,17 @@ void entre_portais::IObject::renderImGui(bool *p_open) {
         transform_.renderImGui();
         if (ImGui::TreeNode("Mesh")) {
             if (mesh_ != nullptr) {
-                mesh_->RenderImGui();
+                mesh_->RenderImGui(nullptr);
             } else {
                 ImGui::Text("No mesh");
             }
             ImGui::TreePop();
+        }
+        if (rigidBody_ != nullptr) {
+            if (ImGui::TreeNode("RigidBody")) {
+                rigidBody_->renderImGui(this->scene_.lock()->getCamera().get());
+                ImGui::TreePop();
+            }
         }
         CustomImGui();
         if (ImGui::TreeNode("Children")) {
@@ -74,4 +81,22 @@ bool entre_portais::IObject::IsVisible() {
 
 glm::mat4 &entre_portais::IObject::getModelMatrix() {
     return modelMatrix_;
+}
+
+entre_portais::IObject::~IObject() {
+    if (mesh_ != nullptr) {
+        mesh_.reset();
+    }
+    if (rigidBody_ != nullptr) {
+        if (!scene_.expired())
+            scene_.lock()->getPhysicsEngine()->removeRigidBody(rigidBody_.get());
+        rigidBody_.reset();
+    }
+}
+
+void entre_portais::IObject::onTransformChange() {
+    if (rigidBody_ != nullptr) {
+        rigidBody_->onChange();
+    }
+
 }

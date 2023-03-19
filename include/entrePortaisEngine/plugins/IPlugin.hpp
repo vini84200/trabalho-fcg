@@ -24,7 +24,11 @@ namespace entre_portais {
 
         virtual void onEvent(Event &event) = 0;
 
-        virtual void onKey(int key, int scancode, int action, int mods) {};
+        virtual bool onKey(int key, int scancode, int action, int mods) {};
+
+        virtual bool onMouseButton(int button, int action, int mods) {};
+
+        virtual bool onMouseMove(double xpos, double ypos) {};
 
         std::shared_ptr<spdlog::logger> getLogger() {
             return logger_.getLogger();

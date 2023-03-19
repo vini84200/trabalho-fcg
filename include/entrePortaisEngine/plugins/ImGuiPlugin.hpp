@@ -23,7 +23,11 @@ namespace entre_portais {
 
         void onEvent(Event &event) override;
 
-        void onKey(int key, int scancode, int action, int mods) override;
+        bool onKey(int key, int scancode, int action, int mods) override;
+
+        bool onMouseButton(int button, int action, int mods) override;
+
+        bool onMouseMove(double xpos, double ypos) override;
 
         void InitializeImGui();
 
@@ -38,7 +42,6 @@ namespace entre_portais {
         bool taskManagerWindow_ = false;
         bool mestricsWindow_ = false;
         bool sceneDebugWindow_ = false;
-
     };
 }
 
