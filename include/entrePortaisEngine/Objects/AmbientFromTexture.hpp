@@ -29,10 +29,11 @@ namespace entre_portais {
 
         void onExit() override;
 
-
         void update(float deltaTime) override;
 
         void initialize() override;
+
+        void render(RenderPass current_pass) override;
 
         void onResize(int width, int height) override;
 

@@ -26,7 +26,7 @@ namespace entre_portais {
 
         IObject &operator=(IObject &&other) = delete;
 
-        virtual void render(RenderPass current_pass) override;
+        void render(RenderPass current_pass) override;
 
         void onTransformChange() override;
 

@@ -2,10 +2,14 @@
 #define ENTREPORTAIS_IRENDERABLE_H
 
 #include <memory>
-#include "Renderer.hpp"
+#include "Shader.hpp"
 
 namespace entre_portais {
     class Renderer;
+
+    enum RenderPass : int32_t;
+
+    using RenderPasses = int32_t;
 
     struct RendererData {
         RendererData() = default;

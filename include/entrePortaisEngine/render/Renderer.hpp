@@ -10,7 +10,7 @@
 namespace entre_portais {
     class IRenderable;
 
-    enum RenderPass {
+    enum RenderPass : int32_t {
         BACKGROUND = 0b00000001,
         PREPASS = 0b00000010,
         FOREGROUND = 0b00000100,

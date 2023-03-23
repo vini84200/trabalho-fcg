@@ -42,14 +42,15 @@ namespace entre_portais {
 //        obj4->getTransform()->setScale(glm::vec3(0.5f, 0.5f, 0.5f));
 //        obj3->addChild(obj4);
 
-        auto skybox = std::make_shared<AmbientFromTexture>({
-                                                                   "assets/textures/skybox/right.jpg",
-                                                                   "assets/textures/skybox/left.jpg",
-                                                                   "assets/textures/skybox/top.jpg",
-                                                                   "assets/textures/skybox/bottom.jpg",
-                                                                   "assets/textures/skybox/front.jpg",
-                                                                   "assets/textures/skybox/back.jpg"
-                                                           });
+        auto skybox = std::make_shared<AmbientFromTexture>(std::array<std::string, 6>({
+                                                                                              "assets/textures/skybox/right.jpg",
+                                                                                              "assets/textures/skybox/left.jpg",
+                                                                                              "assets/textures/skybox/top.jpg",
+                                                                                              "assets/textures/skybox/bottom.jpg",
+                                                                                              "assets/textures/skybox/front.jpg",
+                                                                                              "assets/textures/skybox/back.jpg"
+                                                                                      }));
+        addChild(skybox);
 
         char *cuboname = "Cubo";
         auto cube = std::make_shared<CubeObject>(cuboname);

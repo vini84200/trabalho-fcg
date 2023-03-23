@@ -1,4 +1,5 @@
 #include "entrePortaisEngine/render/IRenderable.hpp"
+#include "entrePortaisEngine/render/Renderer.hpp"
 
 namespace entre_portais {
     void IRenderable::submit(std::shared_ptr<Renderer> renderer, RenderPasses passes) {

@@ -73,7 +73,7 @@ namespace entre_portais {
     }
 
     void Camera::configureShaderUniformsOnlyViewRotation(Shader shader) {
-        shader.setUniformMat4("view", glm::mat4(glm::mat3(getViewMatrix()));
+        shader.setUniformMat4("view", glm::mat4(glm::mat3(getViewMatrix())));
         shader.setUniformMat4("projection", getProjectionMatrix());
     }
 

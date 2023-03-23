@@ -42,10 +42,17 @@ namespace entre_portais {
 
     }
 
+    void AmbientFromTexture::render(RenderPass current_pass) {
+        if (!IsVisible()) return;
+        if (current_pass == BACKGROUND) {
+            mesh_->Draw(getShader(), current_pass);
+        }
+    }
+
     void AmbientMesh::Draw(Shader shaderInUse, RenderPass current_pass) {
         UseVAO();
         glBindTexture(GL_TEXTURE_CUBE_MAP, textureid_);
-        glDrawArrays(GL_TRIANGLES, 0, GetNumVertices());
+        glDrawElements(GL_TRIANGLES, 36, GL_UNSIGNED_INT, 0);
         UnbindVAO();
     }
 
@@ -57,7 +64,7 @@ namespace entre_portais {
 
         int width, height, nrChannels;
         for (unsigned int i = 0; i < 6; i++) {
-            unsigned char *data = stbi_load(faceTextures[i].c_str(), &width, &height, &nrChannels, 0);
+            unsigned char *data = stbi_load(faceTextures[i].c_str(), &width, &height, &nrChannels, 4);
             if (data) {
                 glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
                              0, GL_RGBA, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data);
@@ -92,23 +99,23 @@ namespace entre_portais {
         };
         unsigned int indices[] = {
                 // Front
-                0, 2, 1,
-                0, 3, 2,
+                0, 1, 2,
+                0, 2, 3,
                 // Left
-                0, 4, 3,
-                3, 4, 5,
+                0, 3, 4,
+                3, 5, 4,
                 // Back
-                6, 7, 5,
-                6, 5, 4,
+                6, 5, 7,
+                6, 4, 5,
                 // Right
-                1, 2, 6,
-                2, 7, 6,
+                1, 6, 2,
+                2, 6, 7,
                 // Top
-                0, 1, 6,
-                6, 4, 0,
+                0, 6, 1,
+                6, 0, 4,
                 // Bottom
-                5, 7, 2,
-                2, 3, 5
+                5, 2, 7,
+                2, 5, 3
         };
 
         vboPos.addAttribute(POSITIONS_LOCATION, 3, GL_FLOAT, GL_FALSE, sizeof(float) * 3, (void *) 0);
