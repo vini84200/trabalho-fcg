@@ -64,18 +64,21 @@ namespace entre_portais {
         auto grnd = std::make_shared<Ground>();
         addChild(grnd);
 
-        //    char *teapotName = "Teapot";
-        //    auto teapot = std::make_shared<TeapotObject>(teapotName);
-    //    addChild(teapot);
+        auto grnd2 = std::make_shared<ObjFromFile>("Wood Plane", "assets/objs/wood_plane11.obj");
+        addChild(grnd2);
+
+        char *teapotName = "Teapot";
+        auto teapot = std::make_shared<TeapotObject>(teapotName);
+        addChild(teapot);
 
         //    char *cuelhoNome = "Cuelho";
         //    auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
         //    addChild(cuelho);
 
-        //    char *path = "assets/objs/Intercity1.obj";
-        //    char *name = "Train";
-        //    auto train = std::make_shared<ObjFromFile>(name, path);
-        //    addChild(train);
+        char *path = "assets/objs/Intercity1.obj";
+        char *name = "Train";
+        auto train = std::make_shared<ObjFromFile>(name, path);
+        addChild(train);
 
 //       addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
 //
@@ -111,8 +114,8 @@ namespace entre_portais {
 
     }
 
-    void TriScene::onResize(int /*width*/, int /*height*/) {
-
+    void TriScene::onResize(int width, int height) {
+        IScene::onResize(width, height);
     }
 
     void TriScene::onMouseButton(int /*button*/, int /*action*/, int /*mods*/) {

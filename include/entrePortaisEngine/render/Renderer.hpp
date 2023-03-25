@@ -6,6 +6,8 @@
 #include "Shader.hpp"
 #include "ShadersManager.hpp"
 #include "unordered_map"
+#include "FrameBuffer.hpp"
+#include "VertexArrayBuffer.hpp"
 
 namespace entre_portais {
     class IRenderable;
@@ -42,7 +44,11 @@ namespace entre_portais {
     public:
         Renderer();
 
+        ~Renderer();
+
         void render(Camera *camera);
+
+        void onWindowResize(int width, int height);
 
         int submit(IRenderable *renderable, int shaderID, RenderPasses passes_to_render);
 
@@ -50,11 +56,27 @@ namespace entre_portais {
 
         void unSubmit(int id);
 
+        void renderImGui();
+
     private:
         int lastID_ = 0;
 //        std::unordered_map<int, std::unordered_map<int, IRenderable *>> renderables_;
         PassesToShadersMap renderables_;
         std::unordered_map<int, RenderableData> renderableData_;
+
+        std::shared_ptr<FrameBuffer> frameBuffer;
+        std::shared_ptr<Shader> postProcessShader;
+
+        std::shared_ptr<VertexArrayBuffer> quadVAO;
+
+        // Configure post-processing
+        bool hdr = true;
+        bool bloom = true;
+        bool gammaCorrection = true;
+        float exposure = 1.0f;
+
+
+        void createQuadVAO();
 
     };
 

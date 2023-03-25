@@ -42,7 +42,7 @@ void main()
 
     vec3 Kd;
     if (texture_ == 1) {
-        Kd = texture(tex, texcoord_).rgb;
+        Kd = pow(texture(tex, texcoord_).rgb, vec3(1.0, 1.0, 1.0)*2.2);
     } else {
         Kd = KdIn;
         //        Kd = vec3(1.0, 0.0, 0.0);
@@ -58,7 +58,7 @@ void main()
     //    q = 32.0;
 
     // Espectro da fonte de iluminação
-    vec3 I = vec3(1.0, 1.0, 1.0);
+    vec3 I = vec3(2.0, 2.0, 2.0);
 
     // Espectro da luz ambiente
     vec3 Ia = vec3(0.02, 0.02, 0.02);
@@ -93,8 +93,8 @@ void main()
     // Cor final com correção gamma, considerando monitor sRGB.
     // Veja https://en.wikipedia.org/w/index.php?title=Gamma_correction&oldid=751281772#Windows.2C_Mac.2C_sRGB_and_TV.2Fvideo_standard_gammas
     //    color.rgb = n.xyz;
-    color.rgb = pow(color.rgb, vec3(1.0, 1.0, 1.0)/2.2);
-    //    color.rgb = vec3(texcoord_.xy, 0.4);
+    //    color.rgb = pow(color.rgb, vec3(1.0, 1.0, 1.0)/2.2);
+    //        color.rgb = vec3(texcoord_.xy, 0.4);
 }
 
 

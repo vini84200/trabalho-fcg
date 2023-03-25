@@ -20,6 +20,7 @@ set(sources
         src/entrePortaisEngine/render/Renderer.cpp
 		src/entrePortaisEngine/render/Texture.cpp
 		src/entrePortaisEngine/render/TextureManager.cpp
+		src/entrePortaisEngine/render/FrameBuffer.cpp
 		src/entrePortaisEngine/meshes/IMesh.cpp
 		src/entrePortaisEngine/meshes/CubeMesh.cpp
 		src/entrePortaisEngine/meshes/CylinderMesh.cpp

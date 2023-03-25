@@ -44,6 +44,10 @@ namespace entre_portais {
         std::stringstream shader;
         shader << file.rdbuf();
         std::string str = shader.str();
+        if (str.empty()) {
+            gShaderLogger.getLogger()->error("Shader::LoadShader - Empty shader file: {}", filename);
+            throw std::runtime_error("Empty shader file");
+        }
         const GLchar *shader_string = str.c_str();
         const GLint shader_string_length = static_cast<GLint>(str.length());
 
@@ -93,6 +97,10 @@ namespace entre_portais {
     }
 
     void Shader::setUniformInt(const char *name, int value) {
+        glUniform1i(glGetUniformLocation(program_, name), value);
+    }
+
+    void Shader::setUniformBool(const char *name, bool value) {
         glUniform1i(glGetUniformLocation(program_, name), value);
     }
 

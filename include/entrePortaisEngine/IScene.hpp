@@ -41,7 +41,13 @@ namespace entre_portais {
 
         virtual void renderImGui(bool *p_open = nullptr) override;
 
-        virtual void onResize(int width, int height) = 0;
+        virtual void renderImGuiWindows(
+                bool *p_tree_open = nullptr,
+                bool *p_physics_open = nullptr,
+                bool *p_renderer_open = nullptr
+        );
+
+        virtual void onResize(int width, int height);
 
         virtual void onKey(int key, int scancode, int action, int mods) = 0;
 
@@ -91,6 +97,8 @@ namespace entre_portais {
         std::shared_ptr<Camera> camera_;
         std::shared_ptr<Renderer> renderer_;
         std::shared_ptr<PhysicsEngine> physicsEngine_;
+
+        // Imgui windows
     };
 
 }

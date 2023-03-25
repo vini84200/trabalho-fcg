@@ -1,16 +1,34 @@
-//
-// Created by barbu on 13/02/2023.
-//
-
 #include "entrePortaisEngine/render/Renderer.hpp"
 
 #include "spdlog/spdlog.h"
 #include "utils/matrices.h"
+#include "entrePortaisEngine/Window.hpp"
 
 namespace entre_portais {
 
     Renderer::Renderer() {
         spdlog::info("renderer()");
+    }
+
+    void Renderer::createQuadVAO() {// Cria o quad para o postprocess renderizar em
+// FONTE: https://learnopengl.com/Advanced-OpenGL/Framebuffers
+        float quadVertices[] = {
+                // positions        // texture Coords
+                -1.0f, 1.0f, 0.0f, 0.0f, 1.0f, -1.0f, -1.0f, 0.0f, 0.0f, 0.0f, 1.0f, 1.0f, 0.0f, 1.0f, 1.0f, 1.0f,
+                -1.0f, 0.0f, 1.0f, 0.0f,};
+
+        BufferBuilder vboPos, texPos;
+        vboPos.addAttribute(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
+        vboPos.setData(quadVertices, sizeof(quadVertices));
+        vboPos.setUsage(GL_STATIC_DRAW);
+        quadVAO->addBufferToQueue(&vboPos);
+
+        texPos.addAttribute(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
+        texPos.setData(quadVertices, sizeof(quadVertices));
+        texPos.setUsage(GL_STATIC_DRAW);
+        quadVAO->addBufferToQueue(&texPos);
+
+        quadVAO->Commit();
     }
 
     int Renderer::submit(IRenderable *renderable, int shaderID, RenderPasses passes_to_render) {
@@ -28,6 +46,24 @@ namespace entre_portais {
 
     void Renderer::render(Camera *camera) {
         auto sm = ShadersManager::getInstance();
+
+        if (frameBuffer.get() == nullptr) {
+            frameBuffer = std::make_shared<FrameBuffer>();
+        }
+        if (postProcessShader.get() == nullptr) {
+            postProcessShader = std::make_shared<Shader>(sm->getShader("postprocess"));
+        }
+        if (quadVAO.get() == nullptr) {
+            quadVAO = std::make_shared<VertexArrayBuffer>();
+            createQuadVAO();
+        }
+
+
+        frameBuffer->bind();
+
+        glViewport(0, 0, frameBuffer->getWidth(), frameBuffer->getHeight());
+
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         camera->setUpCamera();
         // BACKGROUND
         glDepthMask(GL_FALSE);
@@ -77,8 +113,30 @@ namespace entre_portais {
 
         glPopDebugGroup();
 
+        frameBuffer->unbind();
+
         // POSTPROCESS
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 5, -1, "POSTPROCESS");
+
+
+        int width, height;
+        glfwGetWindowSize(glfwGetCurrentContext(), &width, &height);
+        glViewport(0, 0, width, height);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        postProcessShader->use();
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, frameBuffer->getColorAttachment());
+
+        postProcessShader->setUniformBool("hdr", hdr);
+        postProcessShader->setUniformBool("bloom", bloom);
+        postProcessShader->setUniformBool("gammaCorrect", gammaCorrection);
+        postProcessShader->setUniformFloat("exposure", exposure);
+
+
+        quadVAO->bind();
+        glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+        quadVAO->unbind();
+
 
         glPopDebugGroup();
 
@@ -106,6 +164,44 @@ namespace entre_portais {
         // Then remove it from the renderableData_ map
         renderableData_.erase(id);
     }
+
+    Renderer::~Renderer() {
+    }
+
+    void Renderer::onWindowResize(int width, int height) {
+        spdlog::info("Window resized to {}x{}", width, height);
+        frameBuffer.reset(new FrameBuffer(width, height));
+    }
+
+    void Renderer::renderImGui() {
+        ImGui::Begin("Renderer");
+        ImGui::Text("Renderables: %d", lastID_);
+        ImGui::Text("Passes:");
+        ImGui::Indent();
+        ImGui::Text("Background");
+        ImGui::Text("Prepass");
+        ImGui::Text("Foreground");
+        ImGui::Text("Lighting");
+        ImGui::Text("Transparency");
+        ImGui::Text("Postprocess");
+        ImGui::Unindent();
+
+        if (ImGui::TreeNode("Postprocess")) {
+            ImGui::Indent();
+            ImGui::Checkbox("HDR", &hdr);
+            ImGui::Checkbox("Bloom", &bloom);
+            ImGui::Checkbox("Gamma Correction", &gammaCorrection);
+            ImGui::SliderFloat("Exposure", &exposure, -2.0f, 10.0f);
+            ImGui::Unindent();
+
+            ImGui::TreePop();
+        }
+
+
+        ImGui::End();
+
+    }
+
 
     bool isInPass(RenderPass pass, RenderPasses passes) {
         return (pass & passes) == pass;

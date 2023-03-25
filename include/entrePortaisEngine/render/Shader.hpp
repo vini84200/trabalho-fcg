@@ -32,6 +32,8 @@ namespace entre_portais {
 
         virtual void UnbindShader();
 
+        void setUniformBool(const char *name, bool value);
+
     private:
         Shader(const char *vertexPath, const char *fragmentPath);
 
@@ -44,6 +46,7 @@ namespace entre_portais {
         int id_;
 
         friend class ShadersManager;
+
     };
 
 } // entre_portais
