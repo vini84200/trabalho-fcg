@@ -64,7 +64,7 @@ namespace entre_portais {
 //        auto grnd = std::make_shared<Ground>();
 //        addChild(grnd);
 
-        auto grnd2 = std::make_shared<ObjFromFile>("Wood Plane", "assets/objs/wood_plane11.obj");
+        auto grnd2 = std::make_shared<ObjFromFile>("Cube of Metal", "assets/objs/metal_cube.obj");
         addChild(grnd2);
         auto grnd3 = std::make_shared<ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");
         addChild(grnd3);
