@@ -1,5 +1,39 @@
 #version 330 core
 
+const int MAX_LIGHTS = 10;
+const uint UseBaseTexture = 0x00000001u;
+const uint UseSpecularTexture = 2u;
+const uint UseNormalTexture = 4u;
+const uint UseShininessTexture = 8u;
+
+struct Light {
+    vec3 intensity;
+    float ambient;
+};
+
+struct DirectionalLight {
+    Light base;
+    vec3 direction;
+};
+
+struct Material {
+    vec3 Ka;
+    vec3 Kd;
+    vec3 Ks;
+    float q;
+    uint use_texture;
+};
+
+struct PointLight {
+    vec4 position;
+    Light base;
+    float constant_attenuation;
+    float linear_attenuation;
+    float quadratic_attenuation;
+    float radius;
+};
+
+
 // Atributos de fragmentos recebidos como entrada ("in") pelo Fragment Shader.
 // Neste exemplo, este atributo foi gerado pelo rasterizador como a
 // interpolação da posição global e a normal de cada vértice, definidas em
@@ -13,15 +47,40 @@ uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-uniform vec3 Ka;
-uniform vec3 KdIn;
-uniform vec3 Ks;
-uniform float q;
-uniform int texture_;
-uniform sampler2D tex;
+// Vetor de luz direcional
+uniform DirectionalLight directionalLight;
+//uniform PointLight pointLights[MAX_LIGHTS];
+
+uniform Material material;
+
+uniform sampler2D baseTexture;
+uniform sampler2D specularTexture;
+uniform sampler2D normalTexture;
+uniform sampler2D specularHighlightTexture;
 
 // O valor de saída ("out") de um Fragment Shader é a cor final do fragmento.
 out vec4 color;
+
+// Calcula a iluminação de um ponto com uma fonte de luz direcional usando o
+// modelo de iluminação de Blinn-Phong.
+vec3 calcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 Ka, vec3 Ks, float q) {
+    vec3 lightDir = normalize(-light.direction);
+    vec3 halfDir = normalize(lightDir + viewDir);
+
+    // Difusa usando a lei dos cossenos de Lambert
+    float diffuse = max(dot(normal, lightDir), 0.0);
+
+    // Especular usando o modelo de iluminação de Blinn-Phong
+    float specular = pow(max(dot(normal, halfDir), 0.0), q);
+
+    vec3 diffuseColor = Kd * light.base.intensity * diffuse;
+    vec3 specularColor = Ks * light.base.intensity * specular;
+
+
+    vec3 ambientColor = Ka * light.base.intensity * light.base.ambient;
+
+    return diffuseColor + specularColor + ambientColor;
+}
 
 void main()
 {
@@ -34,67 +93,30 @@ void main()
 
     vec4 n = normalize(normal);
 
-    vec4 l = normalize(vec4(1.0, 1.0, 0.5, 0.0));
-
     vec4 v = normalize(camera_position - p);
 
-    vec4 r = 2 * n * dot(n, l) - l;
 
-    vec3 Kd;
-    if (texture_ == 1) {
-        Kd = pow(texture(tex, texcoord_).rgb, vec3(1.0, 1.0, 1.0)*2.2);
-    } else {
-        Kd = KdIn;
-        //        Kd = vec3(1.0, 0.0, 0.0);
-    }
-    //    vec3 Kd;// Refletância difusa
-    //    vec3 Ks;// Refletância especular
-    //    vec3 Ka;// Refletância ambiente
-    //    float q;// Expoente especular para o modelo de iluminação de Phong
-    //
-    //    Kd = vec3(0.08, 0.4, 0.8);
-    //    Ks = vec3(0.8, 0.8, 0.8);
-    //    Ka = vec3(0.04, 0.2, 0.4);
-    //    q = 32.0;
-
-    // Espectro da fonte de iluminação
-    vec3 I = vec3(2.0, 2.0, 2.0);
-
-    // Espectro da luz ambiente
-    vec3 Ia = vec3(0.02, 0.02, 0.02);
-
-    // Termo difuso utilizando a lei dos cossenos de Lambert
-    vec3 lambert_diffuse_term = Kd * I * max(dot(l, n), 0.0);
-
-    // Termo ambiente
-    vec3 ambient_term = Ka * Ia;
-
-    // Termo especular utilizando o modelo de iluminação de Phong
-    vec3 phong_specular_term  = Ks * I * pow(max(dot(r, v), 0.0), q);
-
-    // NOTE: Se você quiser fazer o rendering de objetos transparentes, é
-    // necessário:
-    // 1) Habilitar a operação de "blending" de OpenGL logo antes de realizar o
-    //    desenho dos objetos transparentes, com os comandos abaixo no código C++:
-    //      glEnable(GL_BLEND);
-    //      glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    // 2) Realizar o desenho de todos objetos transparentes *após* ter desenhado
-    //    todos os objetos opacos; e
-    // 3) Realizar o desenho de objetos transparentes ordenados de acordo com
-    //    suas distâncias para a câmera (desenhando primeiro objetos
-    //    transparentes que estão mais longe da câmera).
-    // Alpha default = 1 = 100% opaco = 0% transparente
     color.a = 1.0f;
 
-    // Cor final do fragmento calculada com uma combinação dos termos difuso,
-    // especular, e ambiente. Veja slide 129 do documento Aula_17_e_18_Modelos_de_Iluminacao.pdf.
-    color.rgb = lambert_diffuse_term + ambient_term + phong_specular_term;
+    vec3 baseColor = 0u != (material.use_texture & UseBaseTexture)
+    ? pow(texture(baseTexture, texcoord_).rgb, vec3(2.2))
+    : material.Kd;
+    vec3 ambientColor = bool(material.use_texture & UseBaseTexture)
+    ? texture(baseTexture, texcoord_).rgb
+    : material.Ka;
+    float q = bool(material.use_texture & UseShininessTexture)
+    ? pow(2, texture(specularHighlightTexture, texcoord_).r * 10.0)
+    : material.q;
+    vec3 specularColor = bool(material.use_texture & UseSpecularTexture)
+    ? texture(specularTexture, texcoord_).rgb
+    : material.Ks;
 
-    // Cor final com correção gamma, considerando monitor sRGB.
-    // Veja https://en.wikipedia.org/w/index.php?title=Gamma_correction&oldid=751281772#Windows.2C_Mac.2C_sRGB_and_TV.2Fvideo_standard_gammas
-    //    color.rgb = n.xyz;
-    //    color.rgb = pow(color.rgb, vec3(1.0, 1.0, 1.0)/2.2);
-    //        color.rgb = vec3(texcoord_.xy, 0.4);
+    //    vec3 normalMap = bool(material.use_texture & UseNormalTexture)
+    //        ? texture(normalTexture, texcoord_).rgb * 2.0 - 1.0
+    //        : vec3(0.0, 0.0, 1.0); // TODO: Fazer isso algum dia quando tiver tempo pra implementar tangentes e bitangentes
+
+
+    color.rgb = calcDirectionalLight(directionalLight, n.xyz, v.xyz, baseColor, ambientColor, specularColor, q);
 }
 
 

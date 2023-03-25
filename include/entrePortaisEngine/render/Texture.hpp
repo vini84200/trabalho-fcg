@@ -28,6 +28,8 @@ namespace entre_portais {
 
         void Bind() const;
 
+        void Bind(unsigned int slot) const;
+
         void Unbind() const;
 
         Texture() = default;

@@ -67,4 +67,17 @@ namespace entre_portais {
         }
         return (ImTextureID) id_;
     }
+
+    void Texture::Bind(unsigned int slot) const {
+        if (!valid_) {
+            spdlog::error("Trying to bind invalid texture {}", name_);
+            return;
+        }
+        if (slot > 31) {
+            spdlog::error("Trying to bind texture {} to slot {}, but only 32 slots are available", name_, slot);
+            return;
+        }
+        glActiveTexture(GL_TEXTURE0 + slot);
+        glBindTexture(GL_TEXTURE_2D, id_);
+    }
 } // entre_portais

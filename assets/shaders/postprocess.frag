@@ -23,7 +23,7 @@ void main()
         result = (result * (6.2 * result + 0.5)) / (result * (6.2 * result + 1.7) + 0.06);
         // also gamma correct while we're at it
         if (gammaCorrect) {
-            result = pow(result, vec3(1.0 / gamma));
+//            result = pow(result, vec3(1.0 / gamma));
         }
         FragColor = vec4(result, 1.0);
     }

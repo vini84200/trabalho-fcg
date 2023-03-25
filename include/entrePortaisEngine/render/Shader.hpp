@@ -16,6 +16,8 @@ namespace entre_portais {
 
         void setUniformInt(const char *name, int value);
 
+        void setUniformUInt(const char *name, unsigned int value) const;
+
         void setUniformFloat(const char *name, float value);
 
         void setUniformVec3(const char *name, float x, float y, float z);

@@ -140,4 +140,9 @@ namespace entre_portais {
     void Shader::UnbindShader() {
         glUseProgram(0);
     }
+
+    void Shader::setUniformUInt(const char *name, unsigned int value) const {
+        glUniform1ui(glGetUniformLocation(program_, name), value);
+
+    }
 }  // namespace entre_portais

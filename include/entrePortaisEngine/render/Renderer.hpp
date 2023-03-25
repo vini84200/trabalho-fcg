@@ -48,6 +48,8 @@ namespace entre_portais {
 
         void render(Camera *camera);
 
+        void setLightsOnShader(Shader *shader, Camera *camera);
+
         void onWindowResize(int width, int height);
 
         int submit(IRenderable *renderable, int shaderID, RenderPasses passes_to_render);
@@ -74,6 +76,11 @@ namespace entre_portais {
         bool bloom = true;
         bool gammaCorrection = true;
         float exposure = 1.0f;
+
+        // Directional light
+        glm::vec3 lightDir = glm::vec3(1.0f, -.1f, 0.0f);
+        glm::vec3 lightIntensity = glm::vec3(0.5f, 0.5f, 0.5f);
+        float lightAmbient = 0.01f;
 
 
         void createQuadVAO();

@@ -15,30 +15,47 @@ namespace entre_portais {
             if (current_pass == RenderPass::FOREGROUND) {
                 for (const auto &[materialId, range]: foregroundMaterialRanges_) {
                     auto [start, count] = range;
-                    std::optional<Texture> texture;
                     if (materialId < materials_.size()) {
                         auto material = materials_.at(materialId);
-                        shaderInUse.setUniformVec3("Ka", material.ambient[0], material.ambient[1], material.ambient[2]);
-                        shaderInUse.setUniformVec3("KdIn", material.diffuse[0], material.diffuse[1],
+                        shaderInUse.setUniformVec3("material.Ka", material.ambient[0], material.ambient[1],
+                                                   material.ambient[2]);
+                        shaderInUse.setUniformVec3("material.Kd", material.diffuse[0], material.diffuse[1],
                                                    material.diffuse[2]);
-                        shaderInUse.setUniformVec3("Ks", material.specular[0], material.specular[1],
+                        shaderInUse.setUniformVec3("material.Ks", material.specular[0], material.specular[1],
                                                    material.specular[2]);
-                        shaderInUse.setUniformFloat("q", material.shininess);
-                        shaderInUse.setUniformFloat("alpha", 1.0f); // Should be equal to 1.0f
+                        shaderInUse.setUniformFloat("material.q", material.shininess);
+//                        shaderInUse.setUniformFloat("alpha", 1.0f); // Should be equal to 1.0f
+                        unsigned int textureUsage = 0;
+                        shaderInUse.setUniformInt("baseTexture", 0);
+                        shaderInUse.setUniformInt("specularTexture", 1);
+                        shaderInUse.setUniformInt("normalTexture", 2);
+                        shaderInUse.setUniformInt("specularHighlightTexture", 3);
                         if (material.diffuse_texname != "") {
-                            texture = TextureManager::instance().getTexture(material.diffuse_texname);
-                            texture->Bind();
-                            shaderInUse.setUniformInt("texture_", 1);
-                        } else {
-                            shaderInUse.setUniformInt("texture_", 0);
+                            Texture texture = TextureManager::instance().getTexture(material.diffuse_texname);
+                            texture.Bind(0);
+                            textureUsage |= 1;
                         }
+                        if (material.specular_texname != "") {
+                            Texture texture = TextureManager::instance().getTexture(material.specular_texname);
+                            texture.Bind(1);
+                            textureUsage |= 2;
+                        }
+                        if (material.normal_texname != "") {
+                            Texture texture = TextureManager::instance().getTexture(material.normal_texname);
+                            texture.Bind(2);
+                            textureUsage |= 4;
+                        }
+                        if (material.specular_highlight_texname != "") {
+                            Texture texture = TextureManager::instance().getTexture(
+                                    material.specular_highlight_texname);
+                            texture.Bind(3);
+                            textureUsage |= 8;
+                        }
+                        shaderInUse.setUniformUInt("material.use_texture", textureUsage);
                     } else {
 //                    spdlog::warn("Material id {} out of range", materialId);
                     };
                     glDrawElements(GL_TRIANGLES, count, GL_UNSIGNED_INT, (void *) (start * sizeof(unsigned int)));
-                    if (texture) {
-                        texture->Unbind();
-                    }
                 }
             }
             if (current_pass == RenderPass::TRANSPARENCY) {

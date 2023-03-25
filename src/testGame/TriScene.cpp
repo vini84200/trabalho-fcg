@@ -61,11 +61,14 @@ namespace entre_portais {
         //    auto cylin = std::make_shared<CylinderObject>(cylinname);
         //    addChild(cylin);
 
-        auto grnd = std::make_shared<Ground>();
-        addChild(grnd);
+//        auto grnd = std::make_shared<Ground>();
+//        addChild(grnd);
 
         auto grnd2 = std::make_shared<ObjFromFile>("Wood Plane", "assets/objs/wood_plane11.obj");
         addChild(grnd2);
+        auto grnd3 = std::make_shared<ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");
+        addChild(grnd3);
+        grnd3->getTransform()->setPosition(glm::vec3(4.0, 0.2, 4.0));
 
         char *teapotName = "Teapot";
         auto teapot = std::make_shared<TeapotObject>(teapotName);
@@ -75,10 +78,10 @@ namespace entre_portais {
         //    auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
         //    addChild(cuelho);
 
-        char *path = "assets/objs/Intercity1.obj";
-        char *name = "Train";
-        auto train = std::make_shared<ObjFromFile>(name, path);
-        addChild(train);
+//        char *path = "assets/objs/Intercity1.obj";
+//        char *name = "Train";
+//        auto train = std::make_shared<ObjFromFile>(name, path);
+//        addChild(train);
 
 //       addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
 //

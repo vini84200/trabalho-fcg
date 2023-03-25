@@ -3,6 +3,7 @@
 #include "spdlog/spdlog.h"
 #include "utils/matrices.h"
 #include "entrePortaisEngine/Window.hpp"
+#include "glm/gtc/type_ptr.hpp"
 
 namespace entre_portais {
 
@@ -96,6 +97,7 @@ namespace entre_portais {
             auto shader = sm->getShaderByID(shaderID);
             shader.use();
             camera->configureShaderUniforms(shader);
+            setLightsOnShader(&shader, camera);
             for (auto [_, obj]: objs) {
                 shader.setUniformMat4("model", obj->getModelMatrix());
                 obj->render(FOREGROUND);
@@ -186,6 +188,29 @@ namespace entre_portais {
         ImGui::Text("Postprocess");
         ImGui::Unindent();
 
+        if (ImGui::TreeNode("FrameBuffer")) {
+            ImGui::Indent();
+            ImGui::Text("Width: %d", frameBuffer->getWidth());
+            ImGui::Text("Height: %d", frameBuffer->getHeight());
+            ImGui::Unindent();
+            ImGui::TreePop();
+        }
+
+        if (ImGui::TreeNode("Lights")) {
+            ImGui::Indent();
+            if (ImGui::TreeNode("Directional Light")) {
+                ImGui::Indent();
+                ImGui::SliderFloat3("Direction", glm::value_ptr(lightDir), -1.0f, 1.0f);
+                ImGui::DragFloat3("Intensity", glm::value_ptr(lightIntensity), 0.01f, 0.0f, 1.0f);
+                ImGui::SliderFloat("Ambient", &lightAmbient, 0.0f, 1.0f);
+                ImGui::Unindent();
+                ImGui::TreePop();
+            }
+            ImGui::Text("OTHER LIGHTS NOT IMPLEMENTED YET");
+            ImGui::Unindent();
+            ImGui::TreePop();
+        }
+
         if (ImGui::TreeNode("Postprocess")) {
             ImGui::Indent();
             ImGui::Checkbox("HDR", &hdr);
@@ -200,6 +225,15 @@ namespace entre_portais {
 
         ImGui::End();
 
+    }
+
+    void Renderer::setLightsOnShader(Shader *shader, Camera *camera) {
+        shader->setUniformVec3("directionalLight.direction", lightDir);
+        shader->setUniformVec3("directionalLight.base.intensity", lightIntensity);
+        shader->setUniformFloat("directionalLight.base.ambient", lightAmbient);
+
+        //TODO: Carregar as luzes do mundo
+        shader->setUniformInt("numLights", 0);
     }
 
 
