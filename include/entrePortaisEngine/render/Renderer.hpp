@@ -12,6 +12,8 @@
 namespace entre_portais {
     class IRenderable;
 
+    class PointLight;
+
     enum RenderPass : int32_t {
         BACKGROUND = 0b00000001,
         PREPASS = 0b00000010,
@@ -58,6 +60,10 @@ namespace entre_portais {
 
         void unSubmit(int id);
 
+        int addPointLight(PointLight *light);
+
+        void removePointLight(int id);
+
         void renderImGui();
 
     private:
@@ -82,6 +88,7 @@ namespace entre_portais {
         glm::vec3 lightIntensity = glm::vec3(0.5f, 0.5f, 0.5f);
         float lightAmbient = 0.01f;
 
+        std::unordered_map<int, PointLight *> pointLights_;
 
         void createQuadVAO();
 

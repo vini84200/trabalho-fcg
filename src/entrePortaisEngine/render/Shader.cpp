@@ -145,4 +145,32 @@ namespace entre_portais {
         glUniform1ui(glGetUniformLocation(program_, name), value);
 
     }
+
+    void Shader::setUniformFloatInArray(const char *name, int index, float value) {
+        glUniform1f(getLocationInArray(name, index), value);
+    }
+
+    void Shader::setUniformVec3InArray(const char *name, int index, float x, float y, float z) {
+        glUniform3f(getLocationInArray(name, index), x, y, z);
+    }
+
+    void Shader::setUniformVec3InArray(const char *name, int index, const glm::vec3 &value) {
+        glUniform3f(getLocationInArray(name, index), value.x, value.y, value.z);
+    }
+
+    GLint Shader::getLocationInArray(const char *name, int index) {
+        std::string nameString(name);
+        // Find the array index in the string
+        size_t arrayIndex = nameString.find('[');
+        // If the array index is found, insert the index in the string
+        if (arrayIndex != std::string::npos) {
+            nameString.insert(arrayIndex + 1, std::to_string(index));
+        }
+            // If the array index is not found, append the index to the string
+        else {
+            nameString += '[' + std::to_string(index) + ']';
+        }
+        return glGetUniformLocation(program_, nameString.c_str());
+
+    }
 }  // namespace entre_portais

@@ -28,6 +28,10 @@ namespace entre_portais {
 
         void setUniformMat4(const char *name, const glm::mat4 &value);
 
+        GLint getLocationInArray(const char *name, int index);
+
+        void setUniformFloatInArray(const char *name, int index, float value);
+
         void setID(int id);
 
         int getID() const;
@@ -35,6 +39,10 @@ namespace entre_portais {
         virtual void UnbindShader();
 
         void setUniformBool(const char *name, bool value);
+
+        void setUniformVec3InArray(const char *name, int index, float x, float y, float z);
+
+        void setUniformVec3InArray(const char *name, int index, const glm::vec3 &value);
 
     private:
         Shader(const char *vertexPath, const char *fragmentPath);

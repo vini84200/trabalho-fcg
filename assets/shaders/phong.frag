@@ -1,4 +1,4 @@
-#version 330 core
+#version 330
 
 const int MAX_LIGHTS = 10;
 const uint UseBaseTexture = 0x00000001u;
@@ -25,7 +25,7 @@ struct Material {
 };
 
 struct PointLight {
-    vec4 position;
+    vec3 position;
     Light base;
     float constant_attenuation;
     float linear_attenuation;
@@ -49,7 +49,8 @@ uniform mat4 projection;
 
 // Vetor de luz direcional
 uniform DirectionalLight directionalLight;
-//uniform PointLight pointLights[MAX_LIGHTS];
+uniform PointLight pointLights[MAX_LIGHTS];
+uniform int pointLightsCount;
 
 uniform Material material;
 
@@ -76,6 +77,31 @@ vec3 calcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec
     vec3 diffuseColor = Kd * light.base.intensity * diffuse;
     vec3 specularColor = Ks * light.base.intensity * specular;
 
+
+    vec3 ambientColor = Ka * light.base.intensity * light.base.ambient;
+
+    return diffuseColor + specularColor + ambientColor;
+}
+
+// Calcula a iluminação de um ponto com uma fonte de luz pontual usando o
+// modelo de iluminação de Blinn-Phong.
+vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 Ka, vec3 Ks, float q) {
+    vec3 lightDir = normalize(light.position - position_world.xyz);
+    vec3 halfDir = normalize(lightDir + viewDir);
+
+    // Difusa usando a lei dos cossenos de Lambert
+    float diffuse = max(dot(normal, lightDir), 0.0);
+
+    // Especular usando o modelo de iluminação de Blinn-Phong
+    float specular = pow(max(dot(normal, halfDir), 0.0), q);
+
+    // Calcula a atenuação da luz
+    float distance = length(light.position - position_world.xyz);
+    float attenuation = 1.0 / (light.constant_attenuation + light.linear_attenuation * distance + light.quadratic_attenuation * distance * distance);
+    attenuation = clamp(attenuation, 0.0, 1.0);
+
+    vec3 diffuseColor = Kd * light.base.intensity * diffuse * attenuation;
+    vec3 specularColor = Ks * light.base.intensity * specular * attenuation;
 
     vec3 ambientColor = Ka * light.base.intensity * light.base.ambient;
 
@@ -117,6 +143,9 @@ void main()
 
 
     color.rgb = calcDirectionalLight(directionalLight, n.xyz, v.xyz, baseColor, ambientColor, specularColor, q);
+    for (int i = 0; i < pointLightsCount; i++) {
+        color.rgb += calcPointLight(pointLights[i], n.xyz, v.xyz, baseColor, ambientColor, specularColor, q);
+    }
 }
 
 

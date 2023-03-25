@@ -14,6 +14,7 @@
 #include "entrePortaisEngine/Objects/ObjFromFile.hpp"
 #include "testGame/Ball.hpp"
 #include "entrePortaisEngine/Objects/AmbientFromTexture.hpp"
+#include "entrePortaisEngine/render/PointLight.hpp"
 
 namespace entre_portais {
     TriScene::TriScene() : IScene("TriScene") {
@@ -88,6 +89,7 @@ namespace entre_portais {
         auto b1 = std::make_shared<Ball>("Ball 1");
         b1->getTransform()->setPosition(glm::vec3(0.0f, 1.5f, 0.0f));
         addChild(b1);
+
 //        auto b2 = std::make_shared<Ball>("Ball 2");
 //        b2->getTransform()->setPosition(glm::vec3(0.0f, 2.5f, 0.0f));
 //        addChild(b2);
@@ -95,6 +97,14 @@ namespace entre_portais {
 //        auto b3 = std::make_shared<Ball>("Ball 3");
 //        b3->getTransform()->setPosition(glm::vec3(0.0f, 4.5f, 0.0f));
 //        addChild(b3);
+
+
+        auto l1 = std::make_shared<PointLight>(glm::vec3(0, 2, 1), glm::vec3(1, 0, 0), 1.0f, 0.09f, 0.032f, 2.f);
+        addChild(l1);
+        auto l2 = std::make_shared<PointLight>(glm::vec3(0, 2, 0), glm::vec3(0, 1, 0), 1.0f, 0.09f, 0.032f, 2.f);
+        addChild(l2);
+        auto l3 = std::make_shared<PointLight>(glm::vec3(1, 2, 1), glm::vec3(0, 0, 1), 1.0f, 0.09f, 0.032f, 2.f);
+        addChild(l3);
 
         char *charName = "Leoncio";
         auto character = std::make_shared<Player>(charName);

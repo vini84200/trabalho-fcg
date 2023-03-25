@@ -4,6 +4,8 @@
 #include "utils/matrices.h"
 #include "entrePortaisEngine/Window.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "entrePortaisEngine/render/PointLight.hpp"
+
 
 namespace entre_portais {
 
@@ -232,8 +234,30 @@ namespace entre_portais {
         shader->setUniformVec3("directionalLight.base.intensity", lightIntensity);
         shader->setUniformFloat("directionalLight.base.ambient", lightAmbient);
 
-        //TODO: Carregar as luzes do mundo
-        shader->setUniformInt("numLights", 0);
+        int maxLights = 10;
+        int lightsCount = 0;
+        lightsCount = std::min(maxLights, static_cast<int>(pointLights_.size()));
+        shader->setUniformInt("pointLightsCount", lightsCount);
+        int i = 0;
+        for (const auto &[_, light]: pointLights_) {
+            std::string lightName = "pointLights[" + std::to_string(lightsCount) + "]";
+            light->shaderSetup(shader, i);
+            i++;
+            if (i >= maxLights) {
+                break;
+            }
+        }
+
+    }
+
+    int Renderer::addPointLight(PointLight *light) {
+        int id = ++lastID_;
+        pointLights_.emplace(id, light);
+        return id;
+    }
+
+    void Renderer::removePointLight(int id) {
+        pointLights_.erase(id);
     }
 
 

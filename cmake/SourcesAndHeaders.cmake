@@ -21,6 +21,7 @@ set(sources
 		src/entrePortaisEngine/render/Texture.cpp
 		src/entrePortaisEngine/render/TextureManager.cpp
 		src/entrePortaisEngine/render/FrameBuffer.cpp
+		src/entrePortaisEngine/render/PointLight.cpp
 		src/entrePortaisEngine/meshes/IMesh.cpp
 		src/entrePortaisEngine/meshes/CubeMesh.cpp
 		src/entrePortaisEngine/meshes/CylinderMesh.cpp
