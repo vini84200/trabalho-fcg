@@ -4,6 +4,7 @@
 #include <memory>
 #include <utility>
 #include <vector>
+#include <cstring>
 #include "Transform.hpp"
 
 namespace entre_portais {
@@ -69,7 +70,7 @@ namespace entre_portais {
 
         const char *getName() { return name_; }
 
-        void setName(const char *name) { name_ = name; }
+        void setName(const char *name) { name_ = strcpy(new char[strlen(name) + 1], name); }
 
         inline Transform *getTransform() {
             return &transform_;

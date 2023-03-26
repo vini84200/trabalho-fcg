@@ -208,7 +208,7 @@ namespace entre_portais {
                 ImGui::Unindent();
                 ImGui::TreePop();
             }
-            ImGui::Text("OTHER LIGHTS NOT IMPLEMENTED YET");
+            ImGui::Text("Point Lights: %d / %d", pointLights_.size(), 10);
             ImGui::Unindent();
             ImGui::TreePop();
         }

@@ -79,10 +79,10 @@ namespace entre_portais {
         //    auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
         //    addChild(cuelho);
 
-//        char *path = "assets/objs/Intercity1.obj";
-//        char *name = "Train";
-//        auto train = std::make_shared<ObjFromFile>(name, path);
-//        addChild(train);
+        char *path = "assets/objs/Intercity1.obj";
+        char *name = "Train";
+        auto train = std::make_shared<ObjFromFile>(name, path);
+        addChild(train);
 
 //       addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
 //
