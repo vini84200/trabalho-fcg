@@ -9,7 +9,7 @@
 #define VSYNC 1
 #define DEFAULT_FPS 60
 #define WARNING_FPS 28
-#define TARGET_UPS 180.0f
+#define TARGET_UPS 60
 
 namespace entre_portais {
 

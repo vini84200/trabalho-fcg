@@ -76,7 +76,7 @@ namespace entre_portais {
 
     void FirstPersonCharacter::update(float deltaTime) {
         auto newDirection = transform_.rotateVector(direction_);
-        transform_.move(newDirection * deltaTime);
+        transform_.move(newDirection * speed_ * deltaTime);
     }
 
     void FirstPersonCharacter::initialize() {

@@ -63,6 +63,7 @@ set(exe_sources
 		src/labirinto/GameScene.cpp
 		src/labirinto/Player.cpp
 		src/labirinto/LabirintoMap.cpp
+		src/labirinto/InvisibleBox.cpp
 		${sources}
 		)
 

@@ -4,7 +4,7 @@
 #include "testGame/Player.hpp"
 #include "entrePortaisEngine/Objects/ObjFromFile.hpp"
 #include "entrePortaisEngine/physics/BoxCollider.hpp"
-#include "LabirintoMap.hpp"
+#include "labirinto/LabirintoMap.hpp"
 
 namespace labirinto {
     void GameScene::CustomImGui() {
@@ -48,7 +48,7 @@ namespace labirinto {
         char *name = "Player";
         auto player = std::make_shared<labirinto::Player>(name);
         addChild(player);
-        player->getTransform()->setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+        player->getTransform()->setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
         player->initializePropagate();
         setCamera(player->getCamera());
 
