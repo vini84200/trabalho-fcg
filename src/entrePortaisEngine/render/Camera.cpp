@@ -72,6 +72,11 @@ namespace entre_portais {
         shader.setUniformMat4("projection", getProjectionMatrix());
     }
 
+    void Camera::configureShaderUniformsOnlyViewRotation(Shader shader) {
+        shader.setUniformMat4("view", glm::mat4(glm::mat3(getViewMatrix())));
+        shader.setUniformMat4("projection", getProjectionMatrix());
+    }
+
     bool entre_portais::Camera::hasScene() {
         return !scene_.expired();
     }

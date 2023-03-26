@@ -4,9 +4,13 @@
 #include "entrePortaisEngine/IScene.hpp"
 #include "imgui.h"
 
-void entre_portais::IObject::render() {
+void entre_portais::IObject::render(RenderPass current_pass) {
     if (!IsVisible()) return;
-    Draw();
+    if (current_pass == RenderPass::FOREGROUND) {
+        if (mesh_ != nullptr) {
+            mesh_->Draw(getShader(), current_pass);
+        }
+    }
 }
 
 std::shared_ptr<entre_portais::IScene> entre_portais::IObject::getScene() {

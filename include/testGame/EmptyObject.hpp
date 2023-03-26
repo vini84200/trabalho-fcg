@@ -23,7 +23,7 @@ namespace entre_portais {
 
         EmptyObject &operator=(EmptyObject &&other) = delete;
 
-        void render() override;
+        void render(RenderPass current_pass) override;
 
         void update(float deltaTime) override;
 

@@ -83,6 +83,8 @@ namespace entre_portais {
         float aspectRatio_;
         int width_;
         int height_;
+
+        void configureShaderUniformsOnlyViewRotation(Shader shader);
     };
 
 }  // namespace entre_Portais

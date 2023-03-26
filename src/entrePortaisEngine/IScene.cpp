@@ -1,6 +1,7 @@
 #include "entrePortaisEngine/IScene.hpp"
 
 void entre_portais::IScene::renderImGui(bool *p_open) {
+
     if (ImGui::Begin(getName(), p_open)) {
         ImGui::Text("Scene");
         if (ImGui::CollapsingHeader("Objects")) {
@@ -12,7 +13,6 @@ void entre_portais::IScene::renderImGui(bool *p_open) {
     } else {
         ImGui::End();
     }
-    physicsEngine_->renderImGui(*camera_.get());
 }
 
 void entre_portais::IScene::render() {
@@ -46,4 +46,14 @@ void entre_portais::IScene::setPhysicsEngine(const std::shared_ptr<PhysicsEngine
 
 void entre_portais::IScene::update(float deltaTime) {
     physicsEngine_->update(deltaTime);
+}
+
+void entre_portais::IScene::onResize(int width, int height) {
+    renderer_->onWindowResize(width, height);
+}
+
+void entre_portais::IScene::renderImGuiWindows(bool *p_tree_open, bool *p_physics_open, bool *p_renderer_open) {
+    renderImGui(p_tree_open);
+    physicsEngine_->renderImGui(*camera_.get());
+    renderer_->renderImGui();
 }

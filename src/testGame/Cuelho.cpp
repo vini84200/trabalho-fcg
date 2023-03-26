@@ -20,8 +20,8 @@ namespace entre_portais {
 
     void Cuelho::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
-        loadShader("blinn-phong");
-        submit(renderer);
+        loadShader("phong");
+        submit(renderer, RenderPass::FOREGROUND);
     }
 
     void Cuelho::onResize(int width, int height) {

@@ -44,6 +44,10 @@ namespace entre_portais {
         std::stringstream shader;
         shader << file.rdbuf();
         std::string str = shader.str();
+        if (str.empty()) {
+            gShaderLogger.getLogger()->error("Shader::LoadShader - Empty shader file: {}", filename);
+            throw std::runtime_error("Empty shader file");
+        }
         const GLchar *shader_string = str.c_str();
         const GLint shader_string_length = static_cast<GLint>(str.length());
 
@@ -96,6 +100,10 @@ namespace entre_portais {
         glUniform1i(glGetUniformLocation(program_, name), value);
     }
 
+    void Shader::setUniformBool(const char *name, bool value) {
+        glUniform1i(glGetUniformLocation(program_, name), value);
+    }
+
     void Shader::setUniformFloat(const char *name, float value) {
         glUniform1f(glGetUniformLocation(program_, name), value);
     }
@@ -131,5 +139,38 @@ namespace entre_portais {
 
     void Shader::UnbindShader() {
         glUseProgram(0);
+    }
+
+    void Shader::setUniformUInt(const char *name, unsigned int value) const {
+        glUniform1ui(glGetUniformLocation(program_, name), value);
+
+    }
+
+    void Shader::setUniformFloatInArray(const char *name, int index, float value) {
+        glUniform1f(getLocationInArray(name, index), value);
+    }
+
+    void Shader::setUniformVec3InArray(const char *name, int index, float x, float y, float z) {
+        glUniform3f(getLocationInArray(name, index), x, y, z);
+    }
+
+    void Shader::setUniformVec3InArray(const char *name, int index, const glm::vec3 &value) {
+        glUniform3f(getLocationInArray(name, index), value.x, value.y, value.z);
+    }
+
+    GLint Shader::getLocationInArray(const char *name, int index) {
+        std::string nameString(name);
+        // Find the array index in the string
+        size_t arrayIndex = nameString.find('[');
+        // If the array index is found, insert the index in the string
+        if (arrayIndex != std::string::npos) {
+            nameString.insert(arrayIndex + 1, std::to_string(index));
+        }
+            // If the array index is not found, append the index to the string
+        else {
+            nameString += '[' + std::to_string(index) + ']';
+        }
+        return glGetUniformLocation(program_, nameString.c_str());
+
     }
 }  // namespace entre_portais

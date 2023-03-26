@@ -9,6 +9,7 @@
 #include "entrePortaisEngine/Compatibility.hpp"
 #include "entrePortaisEngine/render/Texture.hpp"
 #include "spdlog/spdlog.h"
+#include "entrePortaisEngine/render/Renderer.hpp"
 
 #define GLM_ENABLE_EXPERIMENTAL
 
@@ -36,7 +37,9 @@ namespace entre_portais {
         std::vector<glm::vec2> texCoords;
         std::vector<unsigned int> indices;
         std::vector<tinyobj::material_t> materials;
-        std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> materialRanges_;
+        std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> foregroundMaterialRanges;
+        std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> transparentMaterialRanges;
+
 
         ~ParsedObjResult() {
             spdlog::info("Deleting ParsedObjResult");
@@ -68,7 +71,7 @@ namespace entre_portais {
     public:
         MeshFromObj(std::string assetName);
 
-        void Draw(Shader shaderInUse) override;
+        void Draw(Shader shaderInUse, RenderPass current_pass) override;
 
         void FinishedLoading();
 
@@ -82,7 +85,8 @@ namespace entre_portais {
 
 
         std::vector<tinyobj::material_t> materials_;
-        std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> materialRanges_;
+        std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> foregroundMaterialRanges_;
+        std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> transparentMaterialRanges_;
         std::unordered_map<unsigned int, Texture> textures_;
 
         void initializeMesh();

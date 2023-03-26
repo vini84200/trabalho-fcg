@@ -21,7 +21,7 @@ namespace entre_portais {
     void TeapotObject::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
         loadShader("phong");
-        submit(renderer);
+        submit(renderer, RenderPass::FOREGROUND);
     }
 
     void TeapotObject::onResize(int width, int height) {

@@ -1,4 +1,5 @@
 #include "entrePortaisEngine/meshes/EasyMesh.hpp"
+#include "entrePortaisEngine/render/Renderer.hpp"
 
 namespace entre_portais {
     EasyMesh::EasyMesh(ManyVertices vertices, std::string shaderName) : IMesh() {
@@ -27,7 +28,7 @@ namespace entre_portais {
         SetVAO(std::move(vao), vertices.indices.size());
     }
 
-    void EasyMesh::Draw(Shader shaderInUse) {
+    void EasyMesh::Draw(Shader shaderInUse, RenderPass current_pass) {
         UseVAO();
         glDrawElements(GL_TRIANGLES, GetNumVertices(), GL_UNSIGNED_INT, 0);
         UnbindVAO();

@@ -15,6 +15,8 @@ namespace entre_portais {
 
         void LoadTexture(std::string name);
 
+        Texture getCubeMapTexture(char *name);
+
     private:
         TextureManager() = default;
 
@@ -23,6 +25,9 @@ namespace entre_portais {
 
         static TextureManager *instance_;
         std::unordered_map<std::string, Texture> textures_;
+        std::unordered_map<std::string, Texture> cubeMapTextures_;
+
+        Texture createCubeMapTexture(std::string name);
     };
 
 } // entre_portais

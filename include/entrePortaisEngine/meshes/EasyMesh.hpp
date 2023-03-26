@@ -30,7 +30,7 @@ namespace entre_portais {
 
         EasyMesh &operator=(EasyMesh &&other) = delete;
 
-        void Draw(Shader shaderInUse) override;
+        void Draw(Shader shaderInUse, RenderPass current_pass) override;
     };
 
 } // entre_portais

@@ -42,6 +42,10 @@ namespace entre_portais {
         bool taskManagerWindow_ = false;
         bool mestricsWindow_ = false;
         bool sceneDebugWindow_ = false;
+
+        bool show_scene_graph_ = false;
+        bool show_physics_debug_ = false;
+        bool show_renderer_debug_ = false;
     };
 }
 

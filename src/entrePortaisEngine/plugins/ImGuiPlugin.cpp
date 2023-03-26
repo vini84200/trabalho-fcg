@@ -25,11 +25,9 @@ void entre_portais::ImGuiPlugin::render() {
     }
 
     // Mostra janela para a cena atual
-    if (sceneDebugWindow_) {
-        auto scene = window_.lock()->GetScene();
-        if (scene) {
-            scene->renderImGui(&sceneDebugWindow_);
-        }
+    auto scene = window_.lock()->GetScene();
+    if (scene) {
+        scene->renderImGuiWindows(&show_scene_graph_, &show_physics_debug_, &show_renderer_debug_);
     }
 
     // Mostra janela de debug
@@ -130,11 +128,14 @@ bool entre_portais::ImGuiPlugin::onKey(int key, int scancode, int action, int mo
 void entre_portais::ImGuiPlugin::renderDebugConfigWindow() {
     ImGui::Begin("Debug", &debugConfigWindow_);
 
-    ImGui::Checkbox("Mostar janela da Scene atual", &sceneDebugWindow_);
-    ImGui::Checkbox("Mostar janela de Demo ImGui", &demoWindow_);
-    ImGui::Checkbox("Mostar janela de Performance ImGui", &mestricsWindow_);
-    ImGui::Checkbox("Mostar janela de Task Manager", &taskManagerWindow_);
-    ImGui::Checkbox("Mostar janela de Debug(this)", &debugConfigWindow_);
+    ImGui::Text("Mostar janelas");
+    ImGui::Checkbox("Scene Graph atual", &show_scene_graph_);
+    ImGui::Checkbox("Physics Debug", &show_physics_debug_);
+    ImGui::Checkbox("Renderer Debug", &show_renderer_debug_);
+    ImGui::Checkbox("Demo ImGui", &demoWindow_);
+    ImGui::Checkbox("Performance ImGui", &mestricsWindow_);
+    ImGui::Checkbox("Task Manager", &taskManagerWindow_);
+    ImGui::Checkbox("Debug(this)", &debugConfigWindow_);
 
     ImGui::Separator();
     // Titulo: Métricas de performance

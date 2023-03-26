@@ -39,9 +39,8 @@ namespace entre_portais {
                                                  *this->getScene()->getPhysicsEngine().get(),
                                                  this->transform_);
         rigidBody_->setInertiaTensor(matrices::inertiaTensorBox(1, glm::vec3(1.0f, 1.0f, 1.0f)));
-        rigidBody_->setIsStatic(false);
         loadShader("primitive");
-        submit(renderer);
+        submit(renderer, RenderPass::FOREGROUND);
 
     }
 

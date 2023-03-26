@@ -26,13 +26,7 @@ namespace entre_portais {
 
         IObject &operator=(IObject &&other) = delete;
 
-        void Draw() {
-            if (mesh_ != nullptr) {
-                mesh_->Draw(getShader());
-            }
-        }
-
-        void render() override;
+        void render(RenderPass current_pass) override;
 
         void onTransformChange() override;
 
