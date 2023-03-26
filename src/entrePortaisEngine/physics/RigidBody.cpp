@@ -498,4 +498,16 @@ namespace entre_portais {
         force_ += force;
         torque_ += glm::cross(point, force);
     }
+
+    void RigidBody::setTransformPtr(glm::mat4 *transform) {
+        transform_ = transform;
+    }
+
+    void RigidBody::setMass(float mass) {
+        mass_ = mass;
+    }
+
+    void RigidBody::setRestitution(float restitution) {
+        restitution_ = restitution;
+    }
 } // entre_portais

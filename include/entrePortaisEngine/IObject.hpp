@@ -60,6 +60,16 @@ namespace entre_portais {
         std::shared_ptr<IMesh> mesh_;
         std::weak_ptr<IScene> scene_;
         std::unique_ptr<RigidBody> rigidBody_;
+    public:
+        const std::shared_ptr<IMesh> &getMesh() const;
+
+        void setMesh(const std::shared_ptr<IMesh> &mesh);
+
+        const std::unique_ptr<RigidBody> &getRigidBody() const;
+
+        void setRigidBody(std::unique_ptr<RigidBody> rigidBody);
+
+    protected:
         bool visible_ = true;
     };
 

@@ -76,6 +76,9 @@ namespace entre_portais {
     private:
         glm::mat4 *transform_;
     public:
+        void setTransformPtr(glm::mat4 *transform);
+
+    public:
         glm::mat4 *getTransform() const;
 
     private:
@@ -112,6 +115,12 @@ namespace entre_portais {
 
     private:
         float mass_ = 1.0f;
+    public:
+        void setMass(float mass);
+
+        void setRestitution(float restitution);
+
+    private:
         float restitution_ = 0.2f;
     public:
         float getMass() const;

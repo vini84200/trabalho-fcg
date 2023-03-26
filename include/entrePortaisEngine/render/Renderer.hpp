@@ -85,7 +85,7 @@ namespace entre_portais {
 
         // Directional light
         glm::vec3 lightDir = glm::vec3(1.0f, -.1f, 0.0f);
-        glm::vec3 lightIntensity = glm::vec3(0.5f, 0.5f, 0.5f);
+        glm::vec3 lightIntensity = glm::vec3(10.0f, 10.0f, 10.0f);
         float lightAmbient = 0.01f;
 
         std::unordered_map<int, PointLight *> pointLights_;

@@ -60,8 +60,10 @@ set(sources
 
 set(exe_sources
 		src/main.cpp
+		src/labirinto/GameScene.cpp
+		src/labirinto/Player.cpp
 		${sources}
-)
+		)
 
 set(headers
 )

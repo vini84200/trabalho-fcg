@@ -104,3 +104,20 @@ void entre_portais::IObject::onTransformChange() {
     }
 
 }
+
+const std::shared_ptr<entre_portais::IMesh> &entre_portais::IObject::getMesh() const {
+    return mesh_;
+}
+
+void entre_portais::IObject::setMesh(const std::shared_ptr<IMesh> &mesh) {
+    mesh_ = mesh;
+}
+
+const std::unique_ptr<entre_portais::RigidBody> &entre_portais::IObject::getRigidBody() const {
+    return rigidBody_;
+}
+
+void entre_portais::IObject::setRigidBody(std::unique_ptr<RigidBody> rigidBody) {
+    rigidBody_ = std::move(rigidBody);
+    rigidBody_->setTransformPtr(&modelMatrix_);
+}
