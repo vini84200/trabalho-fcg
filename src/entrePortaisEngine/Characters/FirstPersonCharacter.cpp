@@ -95,7 +95,7 @@ namespace entre_portais {
         camera_ = camera;
         emptyObject2_->addChild(camera);
         auto renderer = IObject::getScene()->getRenderer();
-        loadShader("primitive");
+        loadShader("phong");
         submit(renderer, RenderPass::FOREGROUND);
 //        std::unique_ptr<ICollider> cubeCollider = std::make_unique<BoxCollider>(glm::vec3(1.0f, 1.0f, 1.0f),
 //                                                                                modelMatrix_);
