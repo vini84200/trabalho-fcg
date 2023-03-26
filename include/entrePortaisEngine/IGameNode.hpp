@@ -69,7 +69,7 @@ namespace entre_portais {
 
         const char *getName() { return name_; }
 
-        void setName(char *name) { name_ = name; }
+        void setName(const char *name) { name_ = name; }
 
         inline Transform *getTransform() {
             return &transform_;

@@ -85,6 +85,7 @@ vec3 calcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec
 
 // Calcula a iluminação de um ponto com uma fonte de luz pontual usando o
 // modelo de iluminação de Blinn-Phong.
+// FONTE: https://learnopengl.com/code_viewer_gh.php?code=src/2.lighting/6.multiple_lights/6.multiple_lights.fs
 vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 Ka, vec3 Ks, float q) {
     vec3 lightDir = normalize(light.position - position_world.xyz);
     vec3 halfDir = normalize(lightDir + viewDir);
@@ -93,17 +94,17 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 K
     float diffuse = max(dot(normal, lightDir), 0.0);
 
     // Especular usando o modelo de iluminação de Blinn-Phong
-    float specular = pow(max(dot(normal, halfDir), 0.0), q);
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float specular = pow(max(dot(normal, reflectDir), 0.0), q);
 
     // Calcula a atenuação da luz
     float distance = length(light.position - position_world.xyz);
     float attenuation = 1.0 / (light.constant_attenuation + light.linear_attenuation * distance + light.quadratic_attenuation * distance * distance);
-    attenuation = clamp(attenuation, 0.0, 1.0);
 
     vec3 diffuseColor = Kd * light.base.intensity * diffuse * attenuation;
     vec3 specularColor = Ks * light.base.intensity * specular * attenuation;
 
-    vec3 ambientColor = Ka * light.base.intensity * light.base.ambient;
+    vec3 ambientColor = Ka * light.base.intensity * light.base.ambient * attenuation;
 
     return diffuseColor + specularColor + ambientColor;
 }

@@ -32,8 +32,9 @@ namespace entre_portais {
 
     void PointLight::registerLight() {
         auto renderer = IObject::getScene()->getRenderer();
-        lightId_ =
-                renderer->addPointLight(this);
+        lightId_ = renderer->addPointLight(this);
+        std::string name = "Point Light " + std::to_string(lightId_);
+        setName(name.c_str());
     }
 
     PointLight::PointLight(glm::vec3 position, glm::vec3 color, float intensity, float constant, float linear,
@@ -45,18 +46,15 @@ namespace entre_portais {
         constant_ = constant;
         linear_ = linear;
         quadratic_ = quadratic;
-        radius_ = (-linear_ + sqrtf(linear_ * linear_ - 4 * quadratic_ * (constant_ - (256.0f / 5.0f)))) /
-                  (2 * quadratic_);
     }
 
     void PointLight::CustomImGui() {
         ImGui::Text("Point Light");
         ImGui::ColorEdit3("Color", glm::value_ptr(color_), ImGuiColorEditFlags_HDR | ImGuiColorEditFlags_Float);
         ImGui::DragFloat("Intensity", &intensity_, 0.1f);
-        ImGui::DragFloat("Constant", &constant_, 0.1f);
-        ImGui::DragFloat("Linear", &linear_, 0.1f);
-        ImGui::DragFloat("Quadratic", &quadratic_, 0.1f);
-        ImGui::DragFloat("Radius", &radius_, 0.1f);
+        ImGui::DragFloat("Constant", &constant_, 0.01f);
+        ImGui::DragFloat("Linear", &linear_, 0.001f);
+        ImGui::DragFloat("Quadratic", &quadratic_, 0.00001f);
     }
 
     void PointLight::shaderSetup(Shader *shader, int lightIndex) const {
