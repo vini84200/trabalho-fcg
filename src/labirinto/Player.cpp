@@ -1,4 +1,4 @@
-#include "Player.hpp"
+#include "labirinto/Player.hpp"
 #include "entrePortaisEngine/IScene.hpp"
 #include "entrePortaisEngine/physics/BoxCollider.hpp"
 

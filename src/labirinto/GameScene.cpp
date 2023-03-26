@@ -1,9 +1,10 @@
 #include "labirinto/GameScene.hpp"
 #include "entrePortaisEngine/Objects/AmbientFromTexture.hpp"
-#include "Player.hpp"
+#include "labirinto/Player.hpp"
 #include "testGame/Player.hpp"
 #include "entrePortaisEngine/Objects/ObjFromFile.hpp"
 #include "entrePortaisEngine/physics/BoxCollider.hpp"
+#include "LabirintoMap.hpp"
 
 namespace labirinto {
     void GameScene::CustomImGui() {
@@ -54,6 +55,8 @@ namespace labirinto {
 
 
         // Adicionar o mapa
+        auto map = std::make_shared<LabirintoMap>();
+        addChild(map);
 
         // Adicionar os objetos
 
