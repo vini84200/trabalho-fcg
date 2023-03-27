@@ -20,6 +20,9 @@ namespace labirinto {
         void initialize() override;
 
         void onResize(int width, int height) override;
+
+    private:
+        std::vector<glm::vec3> positions_;
     };
 
 } // labirinto

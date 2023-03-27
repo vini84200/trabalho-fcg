@@ -59,6 +59,10 @@ namespace labirinto {
         addChild(map);
 
         // Adicionar os objetos
+        auto rustyKey = std::make_shared<entre_portais::ObjFromFile>("key", "assets/objs/key.obj");
+        addChild(rustyKey);
+        rustyKey->getTransform()->setScale(glm::vec3(0.05, 0.05, 0.05));
+        rustyKey->getTransform()->setPosition(glm::vec3(-35.0, 1.2, 35.0));
 
         // Adicionar o objetivo
 

@@ -14,30 +14,30 @@ namespace entre_portais {
         switch (key) {
             case GLFW_KEY_W:
                 if (action == GLFW_PRESS) {
-                    direction_.z = -1;
+                    direction_.z = 1;
                 } else if (action == GLFW_RELEASE) {
                     direction_.z = 0;
                 }
                 break;
             case GLFW_KEY_A:
                 if (action == GLFW_PRESS) {
-                    direction_.x = -1;
+                    direction_.x = 1;
                 } else if (action == GLFW_RELEASE) {
                     direction_.x = 0;
                 }
                 break;
             case GLFW_KEY_S:
                 if (action == GLFW_PRESS) {
-                    direction_ += glm::vec3(0, 0, 1);
+                    direction_.z = -1;
                 } else if (action == GLFW_RELEASE) {
-                    direction_ -= glm::vec3(0, 0, 1);
+                    direction_.z = 0;
                 }
                 break;
             case GLFW_KEY_D:
                 if (action == GLFW_PRESS) {
-                    direction_ += glm::vec3(1, 0, 0);
+                    direction_.x = -1;
                 } else if (action == GLFW_RELEASE) {
-                    direction_ -= glm::vec3(1, 0, 0);
+                    direction_.x = 0;
                 }
                 break;
             case GLFW_KEY_LEFT_ALT:
@@ -63,6 +63,14 @@ namespace entre_portais {
                 if (action == GLFW_PRESS) {
                     switchCameraMode();
                 }
+                break;
+            case GLFW_KEY_LEFT_SHIFT:
+                if (action == GLFW_PRESS) {
+                    sprint_ = true;
+                } else if (action == GLFW_RELEASE) {
+                    sprint_ = false;
+                }
+                break;
         }
     }
 
@@ -76,14 +84,22 @@ namespace entre_portais {
 
     void FirstPersonCharacter::update(float deltaTime) {
         auto newDirection = transform_.rotateVector(direction_);
-        transform_.move(newDirection * speed_ * deltaTime);
+        float sprintBoost;
+        if (sprint_) {
+            sprintBoost = 3.0;
+        } else {
+            sprintBoost = 1.0;
+        }
+        transform_.move(newDirection * speed_ * deltaTime * sprintBoost);
     }
 
     void FirstPersonCharacter::initialize() {
         loadBodyMesh();
         pauseMode_ = false;
+        sprint_ = false;
         char *emptyObjectName = "empty";
         auto emptyObject = std::make_shared<EmptyObject>(emptyObjectName);
+        emptyObject->getTransform()->setRotation(glm::vec3(0.0, M_PI, 0.0));
         emptyObject1_ = emptyObject;
         addChild(emptyObject);
         char *emptyObjectName2 = "empty2";
@@ -148,7 +164,7 @@ namespace entre_portais {
             auto newCameraPosition = glm::vec3(0.0, 0.0, 0.0);
             getCamera()->getTransform()->setPosition(newCameraPosition);
             getCamera()->getTransform()->setRotation(emptyObject2_->getTransform()->getRotation());
-            emptyObject1_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
+//            emptyObject1_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
             emptyObject2_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
         } else { // Pause OFF -> ON
             auto cameraEuler = getCamera()->getTransform()->getRotationEulerZYX();

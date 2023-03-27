@@ -36,6 +36,7 @@ namespace entre_portais {
         std::shared_ptr<Camera> camera_;
         std::shared_ptr<EmptyObject> emptyObject1_;
         std::shared_ptr<EmptyObject> emptyObject2_;
+        bool sprint_;
         bool altMode_;
         bool pauseMode_;
         float speed_ = 2;

@@ -38,6 +38,8 @@ namespace labirinto {
         );
         addChild(grndBox);
 
+
+
 //        for (int x = 0; x < 40; x++) {
 //            for (int y = 0; y < 40; y++) {
 //                if (x + y % 3 == 0) {
@@ -49,6 +51,10 @@ namespace labirinto {
 //        }
 
         // Add lights
+
+    }
+
+    std::vector<glm::vec3> nearestWalls(glm::vec3 position) {
 
     }
 
