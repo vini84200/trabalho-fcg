@@ -265,7 +265,7 @@ include_directories(${OCTREE_DIR})
 
 # Linking with the project's dependencies
 # Executable linking
-target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_header_only tinyobjloader)
+target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_header_only tinyobjloader tbb) 
 if (WIN32)
   set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
 endif ()
