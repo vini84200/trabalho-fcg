@@ -64,7 +64,8 @@ set(exe_sources
 		src/labirinto/Player.cpp
 		src/labirinto/LabirintoMap.cpp
 		src/labirinto/InvisibleBox.cpp
-		${sources}
+        src/labirinto/Pillar.cpp
+        ${sources}
 		)
 
 set(headers

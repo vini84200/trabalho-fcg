@@ -5,6 +5,7 @@
 #include "entrePortaisEngine/Objects/ObjFromFile.hpp"
 #include "entrePortaisEngine/physics/BoxCollider.hpp"
 #include "labirinto/LabirintoMap.hpp"
+#include "labirinto/Pillar.hpp"
 
 namespace labirinto {
     void GameScene::CustomImGui() {
@@ -62,8 +63,26 @@ namespace labirinto {
         auto rustyKey = std::make_shared<entre_portais::ObjFromFile>("key", "assets/objs/key.obj");
         addChild(rustyKey);
         rustyKey->getTransform()->setScale(glm::vec3(0.05, 0.05, 0.05));
-        rustyKey->getTransform()->setPosition(glm::vec3(-35.0, 1.2, 35.0));
+        rustyKey->getTransform()->setPosition(glm::vec3(-35.0, 2.4, 35.0));
 
+
+        char *stonePillarName = "stonePillar";
+        char *pathToStone = "assets/objs/stonePillar.obj";
+        auto stonePillar = std::make_shared<Pillar>(pathToStone, stonePillarName);
+        addChild(stonePillar);
+        stonePillar->getTransform()->setPosition(glm::vec3(-36.5, 1.0, 35.0));
+
+        char *silverPillarName = "silverPillar";
+        char *pathToSilver = "assets/objs/silverPillar.obj";
+        auto silverPillar = std::make_shared<Pillar>(pathToSilver, silverPillarName);
+        addChild(silverPillar);
+        silverPillar->getTransform()->setPosition(glm::vec3(-35.0, 1.0, 35.0));
+
+        char *goldenPillarName = "goldenPillar";
+        char *pathToGolden = "assets/objs/goldenPillar.obj";
+        auto goldenPillar = std::make_shared<Pillar>(pathToGolden, goldenPillarName);
+        addChild(goldenPillar);
+        goldenPillar->getTransform()->setPosition(glm::vec3(-33.5, 1.0, 35.0));
         // Adicionar o objetivo
 
         auto grnd = std::make_shared<entre_portais::ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");
