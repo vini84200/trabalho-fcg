@@ -102,7 +102,7 @@ namespace reactphysics3d {
         float testFacesDirectionPolyhedronVsPolyhedron(const algo::shapes::ConvexPolyhedronShape *polyhedron1,
                                                        const algo::shapes::ConvexPolyhedronShape *polyhedron2,
                                                        const glm::mat4 &polyhedron1ToPolyhedron2,
-                                                       uint &minFaceIndex) const;
+                                                       uint32 &minFaceIndex) const;
 
         /// Compute the penetration depth between a face of the polyhedron and a sphere along the polyhedron face normal direction
         float computePolyhedronFaceVsSpherePenetrationDepth(uint32 faceIndex,

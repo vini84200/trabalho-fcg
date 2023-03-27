@@ -1,7 +1,3 @@
-//
-// Created by vini84200 on 3/26/23.
-//
-
 #ifndef ENTREPORTAIS_LABIRINTOMAP_HPP
 #define ENTREPORTAIS_LABIRINTOMAP_HPP
 

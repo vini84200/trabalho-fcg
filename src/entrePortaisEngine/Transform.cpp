@@ -61,8 +61,12 @@ glm::quat entre_portais::Transform::getRotation() const {
 }
 
 glm::vec3 entre_portais::Transform::getForward() const {
-    return rotation_ * glm::vec3(0, 0, -1);
+    return matrices::RotationFromQuat(rotation_) * glm::vec4(0, 0, 1, 0);
 }
+
+//glm::vec3 entre_portais::Transform::getForward() const {
+//    return rotation_ * glm::vec3(0, 0, -1);
+//}
 
 glm::vec3 entre_portais::Transform::getRotationEulerZYX() const {
     return glm::eulerAngles(rotation_);

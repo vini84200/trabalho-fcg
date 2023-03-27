@@ -14,16 +14,16 @@ namespace entre_portais {
         switch (key) {
             case GLFW_KEY_W:
                 if (action == GLFW_PRESS) {
-                    direction_ += glm::vec3(0, 0, -1);
+                    direction_.z = -1;
                 } else if (action == GLFW_RELEASE) {
-                    direction_ -= glm::vec3(0, 0, -1);
+                    direction_.z = 0;
                 }
                 break;
             case GLFW_KEY_A:
                 if (action == GLFW_PRESS) {
-                    direction_ += glm::vec3(-1, 0, 0);
+                    direction_.x = -1;
                 } else if (action == GLFW_RELEASE) {
-                    direction_ -= glm::vec3(-1, 0, 0);
+                    direction_.x = 0;
                 }
                 break;
             case GLFW_KEY_S:
@@ -139,7 +139,7 @@ namespace entre_portais {
             if (glm::dot(rightEmptyObject, newRightEmptyObject) < 0) {
                 emptyObject2_->getTransform()->rotateBy(conjugate(rotationHead));
             }
-            emptyObject1_->getTransform()->rotateBy(rotationBody);
+            getTransform()->rotateBy(rotationBody);
         }
     }
 
@@ -147,15 +147,18 @@ namespace entre_portais {
         if (pauseMode_) { // Pause ON -> OFF
             auto newCameraPosition = glm::vec3(0.0, 0.0, 0.0);
             getCamera()->getTransform()->setPosition(newCameraPosition);
+            getCamera()->getTransform()->setRotation(emptyObject2_->getTransform()->getRotation());
             emptyObject1_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
             emptyObject2_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
         } else { // Pause OFF -> ON
             auto cameraEuler = getCamera()->getTransform()->getRotationEulerZYX();
             auto cameraPosition = getCamera()->getTransform()->getPosition();
             auto newCameraPosition = glm::vec3(cameraPosition.x,
-                                               cameraPosition.y - cameraEuler.z,
-                                               cameraPosition.z + (M_PI_2 - abs(cameraEuler.z)));
+                                               cameraPosition.y,
+                                               cameraPosition.z + M_PI_2);
             getCamera()->getTransform()->setPosition(newCameraPosition);
+            emptyObject2_->getTransform()->setRotation(getCamera()->getTransform()->getRotation());
+            getCamera()->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
         }
         pauseMode_ = !pauseMode_;
     }

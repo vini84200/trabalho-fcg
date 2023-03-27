@@ -265,7 +265,7 @@ void clipPolygonWithPlane(const std::vector<glm::vec3> &polygonVertices, const g
     float vStartDotN = glm::dot(polygonVertices[vStartIndex] - planePoint, planeNormal);
 
     // For each edge of the polygon
-    for (uint vEndIndex = 0; vEndIndex < nbInputVertices; vEndIndex++) {
+    for (uint32 vEndIndex = 0; vEndIndex < nbInputVertices; vEndIndex++) {
 
         const glm::vec3 &vStart = polygonVertices[vStartIndex];
         const glm::vec3 &vEnd = polygonVertices[vEndIndex];
@@ -1262,7 +1262,7 @@ SATAlgorithm::testSingleFaceDirectionPolyhedronVsPolyhedron(const algo::shapes::
 float SATAlgorithm::testFacesDirectionPolyhedronVsPolyhedron(const algo::shapes::ConvexPolyhedronShape *polyhedron1,
                                                              const algo::shapes::ConvexPolyhedronShape *polyhedron2,
                                                              const glm::mat4 &polyhedron1ToPolyhedron2,
-                                                             uint &minFaceIndex) const {
+                                                             uint32 &minFaceIndex) const {
 
     float minPenetrationDepth = std::numeric_limits<float>::max();
 
