@@ -33,6 +33,13 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")    #this will allow to use same _DEBUG macro available in both Linux as well as Windows - MSCV environment. Easy to put Debug specific code.
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
+find_program(CCACHE_PROGRAM ccache)
+if(CCACHE_PROGRAM)
+    set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+    set(CMAKE_CUDA_COMPILER_LAUNCHER "${CCACHE_PROGRAM}") # CMake 3.9+
+endif()
+
+
 #
 # Setup alternative names
 #
