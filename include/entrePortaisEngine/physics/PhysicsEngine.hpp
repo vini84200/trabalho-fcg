@@ -9,7 +9,7 @@
 #define MAX_OCTREE_DEPTH 10
 #define MAX_OCTREE_OBJECTS 2
 
-#define MAX_OCTREE_SIZE 45
+#define MAX_OCTREE_SIZE 55
 #define OCTREE_PARALLELISM true
 
 namespace entre_portais {

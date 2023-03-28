@@ -2,6 +2,7 @@
 #include "entrePortaisEngine/IScene.hpp"
 #include "entrePortaisEngine/meshes/MeshFromObj.hpp"
 #include "labirinto/InvisibleBox.hpp"
+#include "glm/gtx/string_cast.hpp"
 
 namespace labirinto {
     void LabirintoMap::onKey(int key, int scancode, int action, int mods) {
@@ -26,7 +27,7 @@ namespace labirinto {
         auto playerPosition = getPlayerPosition();
         int index = posToIndex(playerPosition);
         if (index_ != index) {
-
+            spdlog::info("Player moved from {} to {}", index_, index);
             buildCollision();
         }
     }
@@ -44,6 +45,7 @@ namespace labirinto {
         );
         addChild(grndBox);
 
+        buildInitialCollision();
         buildCollision();
 
 //        for (int x = 0; x < 80; x += 2) {
@@ -84,6 +86,7 @@ namespace labirinto {
     std::vector<int> LabirintoMap::indexSquare(int index) {
         auto playerPosition = getPlayerPosition();
         std::vector<int> indexes;
+        // TODO: Checar out of bouds
         indexes.push_back(index - 42);
         indexes.push_back(index - 41);
         indexes.push_back(index - 40);
@@ -92,6 +95,7 @@ namespace labirinto {
         indexes.push_back(index + 40);
         indexes.push_back(index + 41);
         indexes.push_back(index + 42);
+        indexes.push_back(index);
         return indexes;
     }
 
@@ -131,6 +135,32 @@ namespace labirinto {
         int index = posToIndex(playerPosition);
         index_ = index;
         std::vector<int> indexes = indexSquare(index);
-        indexesDraw(indexes);
+        // indexesDraw(indexes);
+        for (int i = 0; i < 9; i++) {
+            // TODO: Checar out of bouds
+            // if (indexes.count(i) == 0) {
+            //     colliders_[i]->getTransform()->setPosition(glm::vec3(-40, -40, 0));
+            //     continue;
+            // }
+            if (array_[indexes.at(i)]) {
+                glm::vec2 positionToDraw = indexToPos(indexes.at(i));
+                colliders_[i]->getTransform()->setPosition(glm::vec3(positionToDraw.x, 0, positionToDraw.y));
+                spdlog::info("Collider {} at {}", i, glm::to_string(indexToPos(indexes.at(i))));
+            } else {
+                // colliders_[i]->getTransform()->setPosition(glm::vec3(-40, -40, 0));
+                // spdlog::info("Collider {} at {}", i, glm::to_string(glm::vec2(-40, -40)));
+            }
+        }
+    }
+
+    void LabirintoMap::buildInitialCollision() {
+        // Create the object that will be used to check the collision
+        // outside the map
+        for (int i = 0; i < 9; i++) {
+            auto box = std::make_shared<InvisibleBox>(-40, -40);
+            box->getTransform()->setPosition(glm::vec3(-40, -40, 0));
+            addChild(box);
+            colliders_[i] = box;
+        }
     }
 } // labirinto

@@ -2,6 +2,7 @@
 #define ENTREPORTAIS_LABIRINTOMAP_HPP
 
 #include "entrePortaisEngine/IObject.hpp"
+#include "labirinto/InvisibleBox.hpp"
 
 namespace labirinto {
 
@@ -32,9 +33,11 @@ namespace labirinto {
         glm::vec2 indexToPos(int index);
 
         void buildCollision();
+        void buildInitialCollision();
 
     private:
         int index_;
+        std::array<std::shared_ptr<InvisibleBox>, 9> colliders_;
         const int array_[1681] = {1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
                                   1, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 1, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1,

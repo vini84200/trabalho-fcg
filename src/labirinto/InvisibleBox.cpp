@@ -17,6 +17,7 @@ void InvisibleBox::initialize() {
                                                             *this->getScene()->getPhysicsEngine().get(),
                                                             this->transform_);
     rigidBody_->setInertiaTensor(matrices::inertiaTensorBox(1, glm::vec3(1.0f, 1.0f, 1.0f)));
+    spdlog::info("InvisibleBox initialized");
 }
 
 void InvisibleBox::render(entre_portais::RenderPass current_pass) {
