@@ -112,12 +112,17 @@ namespace labirinto {
     }
 
     glm::vec2 LabirintoMap::indexToPos(int index) {
-        int x = index % 41;
-        int y = index / 41;
-        x *= 2;
-        y *= 2;
-        x -= 40;
-        y -= 40;
+        int xInt = index % 41;
+        int yInt = index / 41;
+        xInt *= 2;
+        yInt *= 2;
+        xInt -= 40;
+        yInt -= 40;
+        float x = static_cast<float>(xInt);
+        float y = static_cast<float>(yInt);
+        x *= (40.f / 41.f);
+        y *= (40.f / 41.f);
+        spdlog::info("X and Y at {}, {}", x, y);
 //        if (x % 2 == 0){
 //            x++;
 //        }

@@ -51,7 +51,7 @@ namespace labirinto {
         char *name = "Player";
         auto player = std::make_shared<labirinto::Player>(name);
         addChild(player);
-        player->getTransform()->setPosition(glm::vec3(0.0f, 3.0f, 0.0f));
+        player->getTransform()->setPosition(glm::vec3(35.0f, 3.0f, 0.0f));
         player->initializePropagate();
         setCamera(player->getCamera());
 
@@ -69,7 +69,7 @@ namespace labirinto {
         rustyKey->setMesh(keyMesh);
         addChild(rustyKey);
         rustyKey->getTransform()->setScale(glm::vec3(0.05, 0.05, 0.05));
-        rustyKey->getTransform()->setPosition(glm::vec3(-36.5, 2.4, 35.0));
+        rustyKey->getTransform()->setPosition(glm::vec3(-37.0, 2.4, 35.0));
 
         char *nameA = "RustyDeadlyKey1";
         rustyKey = std::make_shared<Key>(false, nameA);
@@ -83,7 +83,7 @@ namespace labirinto {
         rustyKey->setMesh(keyMesh);
         addChild(rustyKey);
         rustyKey->getTransform()->setScale(glm::vec3(0.05, 0.05, 0.05));
-        rustyKey->getTransform()->setPosition(glm::vec3(-33.5, 2.4, 35.0));
+        rustyKey->getTransform()->setPosition(glm::vec3(-33.0, 2.4, 35.0));
 
 
         char *stonePillarName = "stonePillar";
