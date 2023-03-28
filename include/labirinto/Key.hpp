@@ -21,6 +21,8 @@ namespace labirinto {
 
         void onResize(int width, int height) override;
 
+        glm::vec2 getPlayerPosition();
+
     private:
         bool isDoor_;
     };
