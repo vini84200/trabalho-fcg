@@ -211,7 +211,6 @@ namespace entre_portais {
     }
 
     void Renderer::renderImGui() {
-        ImGui::Begin("Renderer");
         ImGui::Text("Renderables: %d", lastID_);
         ImGui::Text("Passes:");
         ImGui::Indent();
@@ -258,7 +257,6 @@ namespace entre_portais {
         }
 
 
-        ImGui::End();
 
     }
 

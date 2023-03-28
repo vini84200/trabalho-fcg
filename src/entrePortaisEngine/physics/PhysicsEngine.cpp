@@ -167,7 +167,6 @@ namespace entre_portais {
     }
 
     void PhysicsEngine::renderImGui(Camera &camera) {
-        ImGui::Begin("Physics Engine");
         // Show octree
         // TODO: implementar octree render
 
@@ -247,7 +246,6 @@ namespace entre_portais {
 
             }
         }
-        ImGui::End();
 
     }
 } // entre_portais

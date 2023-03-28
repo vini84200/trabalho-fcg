@@ -53,7 +53,18 @@ void entre_portais::IScene::onResize(int width, int height) {
 }
 
 void entre_portais::IScene::renderImGuiWindows(bool *p_tree_open, bool *p_physics_open, bool *p_renderer_open) {
-    renderImGui(p_tree_open);
-    physicsEngine_->renderImGui(*camera_.get());
-    renderer_->renderImGui();
+    if (*p_tree_open) {
+        renderImGui(p_tree_open);
+    }
+
+    if (*p_physics_open) {
+        ImGui::Begin("Physics Engine", p_physics_open);
+        physicsEngine_->renderImGui(*camera_.get());
+        ImGui::End();
+    }
+    if (*p_renderer_open) {
+        ImGui::Begin("Renderer", p_renderer_open);
+        renderer_->renderImGui();
+        ImGui::End();
+    }
 }
