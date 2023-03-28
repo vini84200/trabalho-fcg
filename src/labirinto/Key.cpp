@@ -26,11 +26,7 @@ namespace labirinto {
                 return;
             }
 
-            if (isDoor_) {
-                spdlog::info("You won");
-            } else {
-                spdlog::info("You lost");
-            }
+            animationRunning_ = true;
         }
     }
 
@@ -43,11 +39,22 @@ namespace labirinto {
     }
 
     Key::Key(bool isDoor, char *name) : IObject(name), isDoor_(isDoor) {
-
     }
 
 
     void Key::update(float deltaTime) {
+        if (animationRunning_) {
+            t += deltaTime;
+            float animationTime = t; // Permite depois mudar a função de interpolação 
+            if (animationTime >= 1) {
+                // Player won
+                spdlog::info("You won!!");
+                exit();
+                return;
+            }
+            transform_.setPosition(animation.cubicPositionBezierCurve(animationTime));
+            transform_.setRotation(animation.cubicRotationBezierCurve(animationTime));
+        }
     }
 
     void Key::initialize() {
@@ -58,6 +65,26 @@ namespace labirinto {
         auto renderer = IObject::getScene()->getRenderer();
         loadShader("phong");
         submit(renderer, entre_portais::RenderPass::FOREGROUND);
+
+        if (isDoor_) {
+            animation = entre_portais::Bezier();
+            animation.add(
+                transform_.getPosition(),
+                glm::quat(1,0,0,0)
+            );
+            animation.add(
+                glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.4, 0),
+                glm::quat(0.7,0,0.4,0)
+            );
+            animation.add(
+                glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.5, -.1),
+                glm::quat(0.707,0,0,0.707)
+            );
+            animation.add(
+                glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.5, -.2),
+                glm::quat(0.707,0,0,0.707)
+            );
+        }
     }
 
     void Key::onResize(int width, int height) {

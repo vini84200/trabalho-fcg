@@ -2,6 +2,7 @@
 #define ENTREPORTAIS_Key_HPP
 
 #include "entrePortaisEngine/IObject.hpp"
+#include "entrePortaisEngine/Bezier.hpp"
 
 namespace labirinto {
 
@@ -25,6 +26,9 @@ namespace labirinto {
 
     private:
         bool isDoor_;
+        bool animationRunning_ = false;
+        float t = 0.f;
+        entre_portais::Bezier animation;
     };
 
 } // labirinto

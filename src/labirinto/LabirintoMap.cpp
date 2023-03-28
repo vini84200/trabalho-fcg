@@ -78,8 +78,8 @@ namespace labirinto {
         yFloat += 40;
         xFloat /= 2;
         yFloat /= 2;
-        int x = static_cast<int>(trunc(xFloat));
-        int y = static_cast<int>(trunc(yFloat));
+        int x = static_cast<int>(std::floor(xFloat));
+        int y = static_cast<int>(std::floor(yFloat));
         return (x + 41 * y);
     }
 
