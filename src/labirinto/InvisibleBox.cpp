@@ -2,7 +2,7 @@
 #include "entrePortaisEngine/physics/BoxCollider.hpp"
 #include "entrePortaisEngine/IScene.hpp"
 
-InvisibleBox::InvisibleBox(int x, int y) : InvisibleBox(glm::vec3(x, 0, y), glm::vec3(1, 12, 1), "InvisibleBox") {
+InvisibleBox::InvisibleBox(int x, int y) : InvisibleBox(glm::vec3(x, 0, y), glm::vec3(2, 12, 2), "InvisibleBox") {
 
     // Generate the name from x, y
     char name[100];

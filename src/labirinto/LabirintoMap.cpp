@@ -23,6 +23,12 @@ namespace labirinto {
 
 
     void LabirintoMap::update(float deltaTime) {
+        auto playerPosition = getPlayerPosition();
+        int index = posToIndex(playerPosition);
+        if (index_ != index) {
+
+            buildCollision();
+        }
     }
 
     void LabirintoMap::initialize() {
@@ -38,14 +44,11 @@ namespace labirinto {
         );
         addChild(grndBox);
 
+        buildCollision();
 
-
-//        for (int x = 0; x < 40; x++) {
-//            for (int y = 0; y < 40; y++) {
-//                if (x + y % 3 == 0) {
-//                    continue;
-//                }
-//                auto box = std::make_shared<InvisibleBox>(x-20, y-20);
+//        for (int x = 0; x < 80; x += 2) {
+//            for (int y = 0; y < 80; y += 2) {
+//                auto box = std::make_shared<InvisibleBox>(x-39, y-39);
 //                addChild(box);
 //            }
 //        }
@@ -59,5 +62,75 @@ namespace labirinto {
     }
 
     void LabirintoMap::onResize(int width, int height) {
+    }
+
+    glm::vec2 LabirintoMap::getPlayerPosition() {
+        // Retorna a posição do jogador
+        auto playerPosition = getParent()->getScene()->getCamera()->getParent()->getParent()->getParent()->getTransform()->getPosition();
+        return glm::vec2(playerPosition.x, playerPosition.z);
+    }
+
+    int LabirintoMap::posToIndex(glm::vec2 position) {
+        float xFloat = position.x, yFloat = position.y;
+        xFloat += 40;
+        yFloat += 40;
+        xFloat /= 2;
+        yFloat /= 2;
+        int x = static_cast<int>(trunc(xFloat));
+        int y = static_cast<int>(trunc(yFloat));
+        return (x + 41 * y);
+    }
+
+    std::vector<int> LabirintoMap::indexSquare(int index) {
+        auto playerPosition = getPlayerPosition();
+        std::vector<int> indexes;
+        indexes.push_back(index - 42);
+        indexes.push_back(index - 41);
+        indexes.push_back(index - 40);
+        indexes.push_back(index - 1);
+        indexes.push_back(index + 1);
+        indexes.push_back(index + 40);
+        indexes.push_back(index + 41);
+        indexes.push_back(index + 42);
+        return indexes;
+    }
+
+    void LabirintoMap::indexesDraw(std::vector<int> indexes) {
+        glm::vec2 positionToDraw;
+        for (int i = 0; i < indexes.size(); i++) {
+            // indexes é um vetor de indices
+            if (array_[indexes.at(i)]) {
+                positionToDraw = indexToPos(indexes.at(i));
+                auto box = std::make_shared<InvisibleBox>(positionToDraw.x, positionToDraw.y);
+                addChild(box);
+            }
+        }
+    }
+
+    glm::vec2 LabirintoMap::indexToPos(int index) {
+        int x = index % 41;
+        int y = index / 41;
+        x *= 2;
+        y *= 2;
+        x -= 40;
+        y -= 40;
+//        if (x % 2 == 0){
+//            x++;
+//        }
+//        if (y % 2 == 0){
+//            y++;
+//        }
+//        x++;
+//        y++;
+        glm::vec2 position = glm::vec2(x, y);
+        return position;
+    }
+
+    void LabirintoMap::buildCollision() {
+        auto playerPosition = getPlayerPosition();
+        int index = posToIndex(playerPosition);
+        index_ = index;
+        std::vector<int> indexes = indexSquare(index);
+        indexesDraw(indexes);
     }
 } // labirinto

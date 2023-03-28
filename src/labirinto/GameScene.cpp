@@ -90,7 +90,7 @@ namespace labirinto {
         char *pathToStone = "assets/objs/stonePillar.obj";
         auto stonePillar = std::make_shared<Pillar>(pathToStone, stonePillarName);
         addChild(stonePillar);
-        stonePillar->getTransform()->setPosition(glm::vec3(-36.5, 1.0, 35.0));
+        stonePillar->getTransform()->setPosition(glm::vec3(-37.0, 1.0, 35.0));
 
         char *silverPillarName = "silverPillar";
         char *pathToSilver = "assets/objs/silverPillar.obj";
@@ -102,7 +102,7 @@ namespace labirinto {
         char *pathToGolden = "assets/objs/goldenPillar.obj";
         auto goldenPillar = std::make_shared<Pillar>(pathToGolden, goldenPillarName);
         addChild(goldenPillar);
-        goldenPillar->getTransform()->setPosition(glm::vec3(-33.5, 1.0, 35.0));
+        goldenPillar->getTransform()->setPosition(glm::vec3(-33.0, 1.0, 35.0));
         // Adicionar o objetivo
 
         auto grnd = std::make_shared<entre_portais::ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");
