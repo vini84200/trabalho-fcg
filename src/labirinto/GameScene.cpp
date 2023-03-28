@@ -3,9 +3,11 @@
 #include "labirinto/Player.hpp"
 #include "testGame/Player.hpp"
 #include "entrePortaisEngine/Objects/ObjFromFile.hpp"
+#include "entrePortaisEngine/meshes/MeshFromObj.hpp"
 #include "entrePortaisEngine/physics/BoxCollider.hpp"
 #include "labirinto/LabirintoMap.hpp"
 #include "labirinto/Pillar.hpp"
+#include "labirinto/Key.hpp"
 
 namespace labirinto {
     void GameScene::CustomImGui() {
@@ -60,10 +62,28 @@ namespace labirinto {
         addChild(map);
 
         // Adicionar os objetos
-        auto rustyKey = std::make_shared<entre_portais::ObjFromFile>("key", "assets/objs/key.obj");
+        // Adicionar a chave usando instanciacao
+        auto keyMesh = std::make_shared<entre_portais::MeshFromObj>("assets/objs/key.obj");
+        char *nameR = "RustyRealKey";
+        auto rustyKey = std::make_shared<Key>(true, nameR);
+        rustyKey->setMesh(keyMesh);
+        addChild(rustyKey);
+        rustyKey->getTransform()->setScale(glm::vec3(0.05, 0.05, 0.05));
+        rustyKey->getTransform()->setPosition(glm::vec3(-36.5, 2.4, 35.0));
+
+        char *nameA = "RustyDeadlyKey1";
+        rustyKey = std::make_shared<Key>(false, nameA);
+        rustyKey->setMesh(keyMesh);
         addChild(rustyKey);
         rustyKey->getTransform()->setScale(glm::vec3(0.05, 0.05, 0.05));
         rustyKey->getTransform()->setPosition(glm::vec3(-35.0, 2.4, 35.0));
+
+        char *nameB = "RustyDeadlyKey2";
+        rustyKey = std::make_shared<Key>(false, nameB);
+        rustyKey->setMesh(keyMesh);
+        addChild(rustyKey);
+        rustyKey->getTransform()->setScale(glm::vec3(0.05, 0.05, 0.05));
+        rustyKey->getTransform()->setPosition(glm::vec3(-33.5, 2.4, 35.0));
 
 
         char *stonePillarName = "stonePillar";

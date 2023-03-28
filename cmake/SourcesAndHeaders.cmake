@@ -65,6 +65,7 @@ set(exe_sources
 		src/labirinto/LabirintoMap.cpp
 		src/labirinto/InvisibleBox.cpp
         src/labirinto/Pillar.cpp
+		src/labirinto/Key.cpp
         ${sources}
 		)
 
