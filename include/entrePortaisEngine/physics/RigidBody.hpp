@@ -131,6 +131,8 @@ namespace entre_portais {
 
         glm::vec3 getAngularVelocity() const;
 
+        void applyImpulse(glm::vec3 impulse);
+
     private:
         float friction_ = 0.5f;
 
