@@ -122,6 +122,9 @@ namespace entre_portais {
         // glm::quat spin = angu
 
     }
+    void RigidBody::setVelocity(glm::vec3 vel) {
+        velocity_  = vel;
+    }
 
     void RigidBody::updatePosition(float deltaTime) {
         if (isStatic_)

@@ -133,6 +133,8 @@ namespace entre_portais {
 
         void applyImpulse(glm::vec3 impulse);
 
+        void setVelocity(glm::vec3 vel);
+
     private:
         float friction_ = 0.5f;
 
@@ -149,6 +151,7 @@ namespace entre_portais {
         glm::quat getWorldRotation();
 
         glm::vec3 getVelocityAtPoint(const glm::vec3 &r1) const;
+
     };
 
 } // entre_portais

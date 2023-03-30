@@ -21,6 +21,13 @@ void labirinto::Player::onExit() {
 
 void labirinto::Player::update(float deltaTime) {
     FirstPersonCharacter::update(deltaTime);
+
+    if (transform_.getPosition().y < -1.f) {
+       // TP player 
+    
+        transform_.setPosition(glm::vec3(0,0,0));
+        rigidBody_->setVelocity(glm::vec3(0,0,0));
+    }
 }
 
 void labirinto::Player::initialize() {
