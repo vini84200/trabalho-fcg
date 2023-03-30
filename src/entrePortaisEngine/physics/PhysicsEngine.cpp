@@ -14,8 +14,31 @@ namespace entre_portais {
 
     void PhysicsEngine::update(float deltaTime) {
         // Detecta colisões
-        auto possible_collisions = octreeBbc_.CollisionDetection();
+        // auto possible_collisions = octreeBbc_.CollisionDetection();
         collisions.clear();
+       std::vector<std::pair<int, int>> possible_collisions;
+       // Check for collisions in the bounding boxes
+       for (int i = 0; i < rigidBodies_.size(); i++) {
+           auto const &rigidBody1 = rigidBodies_[i];
+           if (rigidBody1->getCollider() == nullptr) {
+               continue;
+           }
+           auto const &collider1 = rigidBody1->getCollider().get();
+           auto const &collider1Bbc = collider1->getBoundingBox();
+           for (int o = i + 1; o < rigidBodies_.size(); o++) {
+               auto const &rigidBody2 = rigidBodies_[o];
+               if (rigidBody2->getCollider() == nullptr) {
+                   continue;
+               }
+               auto const &collider2 = rigidBody2->getCollider().get();
+               auto const &collider2Bbc = collider2->getBoundingBox();
+               if (collider1Bbc.intersects(collider2Bbc)) {
+                   possible_collisions.emplace_back(i, o);
+               }
+           }
+       }
+//
+
 
         for (auto const &collision: possible_collisions) {
             if (collision.first == collision.second) {
@@ -41,7 +64,7 @@ namespace entre_portais {
                     // Static objects don't have to be checked for possible_collisions
                     // Unless they have a trigger collider //TODO: implement triggers
                     //                spdlog::warn("Colisão entre objetos estáticos");
-                    //continue;
+                    continue;
                 }
 
                 if (cont) {
@@ -58,7 +81,7 @@ namespace entre_portais {
         }
 
         // Resolve colisões
-        for (int step = 0; step < 8; ++step) {
+        for (int step = 0; step < 3; ++step) {
             float maxConstraintViolation = 0;
             for (auto &[rigidBody1, rigidBody2, collision]: collisions) {
                 if (rigidBody1->isStatic() && rigidBody2->isStatic()) {
@@ -144,7 +167,6 @@ namespace entre_portais {
     }
 
     void PhysicsEngine::renderImGui(Camera &camera) {
-        ImGui::Begin("Physics Engine");
         // Show octree
         // TODO: implementar octree render
 
@@ -224,7 +246,6 @@ namespace entre_portais {
 
             }
         }
-        ImGui::End();
 
     }
 } // entre_portais

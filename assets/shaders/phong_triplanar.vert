@@ -5,6 +5,7 @@ layout (location = 2) in vec3 original_normal;
 layout (location = 3) in vec2 texcoord;
 
 out vec4 position_world;
+out vec4 position_modelspace_;
 out vec4 normal;
 out vec2 texcoord_;
 
@@ -19,4 +20,5 @@ void main()
     normal = inverse(transpose(model)) * vec4(original_normal, 0.0);
     normal.w = 0.0;
     texcoord_ = texcoord;
+    position_modelspace_ = vec4(position_modelspace, 1.0);
 }

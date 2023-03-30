@@ -14,30 +14,30 @@ namespace entre_portais {
         switch (key) {
             case GLFW_KEY_W:
                 if (action == GLFW_PRESS) {
-                    direction_ += glm::vec3(0, 0, -1);
+                    direction_.z = 1;
                 } else if (action == GLFW_RELEASE) {
-                    direction_ -= glm::vec3(0, 0, -1);
+                    direction_.z = 0;
                 }
                 break;
             case GLFW_KEY_A:
                 if (action == GLFW_PRESS) {
-                    direction_ += glm::vec3(-1, 0, 0);
+                    direction_.x = 1;
                 } else if (action == GLFW_RELEASE) {
-                    direction_ -= glm::vec3(-1, 0, 0);
+                    direction_.x = 0;
                 }
                 break;
             case GLFW_KEY_S:
                 if (action == GLFW_PRESS) {
-                    direction_ += glm::vec3(0, 0, 1);
+                    direction_.z = -1;
                 } else if (action == GLFW_RELEASE) {
-                    direction_ -= glm::vec3(0, 0, 1);
+                    direction_.z = 0;
                 }
                 break;
             case GLFW_KEY_D:
                 if (action == GLFW_PRESS) {
-                    direction_ += glm::vec3(1, 0, 0);
+                    direction_.x = -1;
                 } else if (action == GLFW_RELEASE) {
-                    direction_ -= glm::vec3(1, 0, 0);
+                    direction_.x = 0;
                 }
                 break;
             case GLFW_KEY_LEFT_ALT:
@@ -63,6 +63,14 @@ namespace entre_portais {
                 if (action == GLFW_PRESS) {
                     switchCameraMode();
                 }
+                break;
+            case GLFW_KEY_LEFT_SHIFT:
+                if (action == GLFW_PRESS) {
+                    sprint_ = true;
+                } else if (action == GLFW_RELEASE) {
+                    sprint_ = false;
+                }
+                break;
         }
     }
 
@@ -76,14 +84,29 @@ namespace entre_portais {
 
     void FirstPersonCharacter::update(float deltaTime) {
         auto newDirection = transform_.rotateVector(direction_);
-        transform_.move(newDirection * deltaTime);
+        float sprintBoost;
+        if (sprint_) {
+            sprintBoost = 3.0;
+        } else {
+            sprintBoost = 1.0;
+        }
+        // transform_.move(newDirection * speed_ * deltaTime * sprintBoost);
+        glm::vec3 velocity = rigidBody_->getVelocity();
+        glm::vec3 diffVelocity = newDirection * speed_ * sprintBoost * 10.f - velocity;
+        float diffVelocityLength = glm::length(diffVelocity);
+        float maxVelocityChange = rigidBody_->getMass() * 10.f * sprintBoost;
+        float impulse = std::min(maxVelocityChange, diffVelocityLength);
+        glm::vec3 impulseVector = impulse * glm::normalize(diffVelocity);
+        rigidBody_->applyImpulse(impulseVector);
     }
 
     void FirstPersonCharacter::initialize() {
         loadBodyMesh();
         pauseMode_ = false;
+        sprint_ = false;
         char *emptyObjectName = "empty";
         auto emptyObject = std::make_shared<EmptyObject>(emptyObjectName);
+        emptyObject->getTransform()->setRotation(glm::vec3(0.0, M_PI, 0.0));
         emptyObject1_ = emptyObject;
         addChild(emptyObject);
         char *emptyObjectName2 = "empty2";
@@ -95,7 +118,7 @@ namespace entre_portais {
         camera_ = camera;
         emptyObject2_->addChild(camera);
         auto renderer = IObject::getScene()->getRenderer();
-        loadShader("primitive");
+        loadShader("phong");
         submit(renderer, RenderPass::FOREGROUND);
 //        std::unique_ptr<ICollider> cubeCollider = std::make_unique<BoxCollider>(glm::vec3(1.0f, 1.0f, 1.0f),
 //                                                                                modelMatrix_);
@@ -139,7 +162,7 @@ namespace entre_portais {
             if (glm::dot(rightEmptyObject, newRightEmptyObject) < 0) {
                 emptyObject2_->getTransform()->rotateBy(conjugate(rotationHead));
             }
-            emptyObject1_->getTransform()->rotateBy(rotationBody);
+            getTransform()->rotateBy(rotationBody);
         }
     }
 
@@ -147,15 +170,18 @@ namespace entre_portais {
         if (pauseMode_) { // Pause ON -> OFF
             auto newCameraPosition = glm::vec3(0.0, 0.0, 0.0);
             getCamera()->getTransform()->setPosition(newCameraPosition);
-            emptyObject1_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
+            getCamera()->getTransform()->setRotation(emptyObject2_->getTransform()->getRotation());
+//            emptyObject1_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
             emptyObject2_->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
         } else { // Pause OFF -> ON
             auto cameraEuler = getCamera()->getTransform()->getRotationEulerZYX();
             auto cameraPosition = getCamera()->getTransform()->getPosition();
             auto newCameraPosition = glm::vec3(cameraPosition.x,
-                                               cameraPosition.y - cameraEuler.z,
-                                               cameraPosition.z + (M_PI_2 - abs(cameraEuler.z)));
+                                               cameraPosition.y,
+                                               cameraPosition.z + M_PI_2);
             getCamera()->getTransform()->setPosition(newCameraPosition);
+            emptyObject2_->getTransform()->setRotation(getCamera()->getTransform()->getRotation());
+            getCamera()->getTransform()->setRotation(glm::vec3(0.0, 0.0, 0.0));
         }
         pauseMode_ = !pauseMode_;
     }

@@ -33,6 +33,15 @@ if (CMAKE_BUILD_TYPE STREQUAL "Debug")
   add_compile_options("$<$<CONFIG:DEBUG>:-DDEBUG>")    #this will allow to use same _DEBUG macro available in both Linux as well as Windows - MSCV environment. Easy to put Debug specific code.
 endif (CMAKE_BUILD_TYPE STREQUAL "Debug")
 
+find_program(CCACHE_PROGRAM ccache)
+if (CCACHE_PROGRAM)
+  set(CMAKE_CXX_COMPILER_LAUNCHER "${CCACHE_PROGRAM}")
+  set(CMAKE_CUDA_COMPILER_LAUNCHER "${CCACHE_PROGRAM}") # CMake 3.9+
+else ()
+  message(STATUS "DIDN'T FIND CCACHE")
+endif ()
+
+
 #
 # Setup alternative names
 #
@@ -265,9 +274,12 @@ include_directories(${OCTREE_DIR})
 
 # Linking with the project's dependencies
 # Executable linking
-target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_header_only tinyobjloader)
+
 if (WIN32)
+  target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_header_only tinyobjloader)
   set(CMAKE_EXE_LINKER_FLAGS "-static-libgcc -static-libstdc++ -static")
+else ()
+  target_link_libraries(${PROJECT_NAME} PUBLIC glad glm glfw imgui spdlog::spdlog_header_only tinyobjloader tbb)
 endif ()
 
 #target_link_options(${PROJECT_NAME} PRIVATE -static-libgcc -static-libstdc++)

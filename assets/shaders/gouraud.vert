@@ -1,30 +1,115 @@
-#version 330 core
+#version 330
 
-layout (location = 0) in vec3 position_modelspace;
-layout (location = 2) in vec3 original_normal;
-layout (location = 3) in vec2 texcoord;
+const int MAX_LIGHTS = 10;
+const uint UseBaseTexture = 0x00000001u;
+const uint UseSpecularTexture = 2u;
+const uint UseNormalTexture = 4u;
+const uint UseShininessTexture = 8u;
 
+struct Light {
+    vec3 intensity;
+    float ambient;
+};
+
+struct DirectionalLight {
+    Light base;
+    vec3 direction;
+};
+
+struct Material {
+    vec3 Ka;
+    vec3 Kd;
+    vec3 Ks;
+    float q;
+    uint use_texture;
+};
+
+struct PointLight {
+    vec3 position;
+    Light base;
+    float constant_attenuation;
+    float linear_attenuation;
+    float quadratic_attenuation;
+    float radius;
+};
+
+
+// Atributos de fragmentos recebidos como entrada ("in") pelo Fragment Shader.
+// Neste exemplo, este atributo foi gerado pelo rasterizador como a
+// interpolação da posição global e a normal de cada vértice, definidas em
+// "shader_vertex.glsl" e "main.cpp".
+in vec4 position_world;
+in vec4 normal;
+in vec2 texcoord_;
+
+// Matrizes computadas no código C++ e enviadas para a GPU
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
 
-uniform vec3 Ka;
-uniform vec3 KdIn;
-uniform vec3 Ks;
-uniform float q;
-uniform int texture_;
-uniform sampler2D tex;
+// Vetor de luz direcional
+uniform DirectionalLight directionalLight;
+uniform PointLight pointLights[MAX_LIGHTS];
+uniform int pointLightsCount;
+
+uniform Material material;
+
+uniform sampler2D baseTexture;
+uniform sampler2D specularTexture;
+uniform sampler2D normalTexture;
+uniform sampler2D specularHighlightTexture;
 
 out vec4 cor;
 
+// Calcula a iluminação de um ponto com uma fonte de luz direcional usando o
+// modelo de iluminação de Blinn-Phong.
+vec3 calcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 Ka, vec3 Ks, float q) {
+    vec3 lightDir = normalize(-light.direction);
+    vec3 halfDir = normalize(lightDir + viewDir);
+
+    // Difusa usando a lei dos cossenos de Lambert
+    float diffuse = max(dot(normal, lightDir), 0.0);
+
+    // Especular usando o modelo de iluminação de Blinn-Phong
+    float specular = pow(max(dot(normal, halfDir), 0.0), q);
+
+    vec3 diffuseColor = Kd * light.base.intensity * diffuse;
+    vec3 specularColor = Ks * light.base.intensity * specular;
+
+
+    vec3 ambientColor = Ka * light.base.intensity * light.base.ambient;
+
+    return diffuseColor + specularColor + ambientColor;
+}
+
+// Calcula a iluminação de um ponto com uma fonte de luz pontual usando o
+// modelo de iluminação de Blinn-Phong.
+// FONTE: https://learnopengl.com/code_viewer_gh.php?code=src/2.lighting/6.multiple_lights/6.multiple_lights.fs
+vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 Ka, vec3 Ks, float q) {
+    vec3 lightDir = normalize(light.position - position_world.xyz);
+    vec3 halfDir = normalize(lightDir + viewDir);
+
+    // Difusa usando a lei dos cossenos de Lambert
+    float diffuse = max(dot(normal, lightDir), 0.0);
+
+    // Especular usando o modelo de iluminação de Blinn-Phong
+    vec3 reflectDir = reflect(-lightDir, normal);
+    float specular = pow(max(dot(normal, reflectDir), 0.0), q);
+
+    // Calcula a atenuação da luz
+    float distance = length(light.position - position_world.xyz);
+    float attenuation = 1.0 / (light.constant_attenuation + light.linear_attenuation * distance + light.quadratic_attenuation * distance * distance);
+
+    vec3 diffuseColor = Kd * light.base.intensity * diffuse * attenuation;
+    vec3 specularColor = Ks * light.base.intensity * specular * attenuation;
+
+    vec3 ambientColor = Ka * light.base.intensity * light.base.ambient * attenuation;
+
+    return diffuseColor + specularColor + ambientColor;
+}
+
 void main()
 {
-    gl_Position = projection * view * model * vec4(position_modelspace, 1.0);
-    vec4 position_world = model * vec4(position_modelspace, 1.0);
-    vec4 normal = inverse(transpose(model)) * vec4(original_normal, 0.0);
-    normal.w = 0.0;
-    vec2 texcoord_ = texcoord;
-
     // Obtemos a posição da câmera utilizando a inversa da matriz que define o
     // sistema de coordenadas da câmera.
     vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
@@ -34,42 +119,33 @@ void main()
 
     vec4 n = normalize(normal);
 
-    vec4 l = normalize(vec4(1.0, 1.0, 0.5, 0.0));
-
     vec4 v = normalize(camera_position - p);
 
-    vec4 r = 2 * n * dot(n, l) - l;
 
-    vec3 Kd;
-    if (texture_ == 1) {
-        Kd = texture(tex, texcoord_).rgb;
-    } else {
-        Kd = KdIn;
-    }
-
-
-    // Espectro da fonte de iluminação
-    vec3 I = vec3(1.0, 1.0, 1.0);
-
-    // Espectro da luz ambiente
-    vec3 Ia = vec3(0.02, 0.02, 0.02);
-
-    // Termo difuso utilizando a lei dos cossenos de Lambert
-    vec3 lambert_diffuse_term = Kd * I * max(dot(l, n), 0.0);
-
-    // Termo ambiente
-    vec3 ambient_term = Ka * Ia;
-
-    // Termo especular utilizando o modelo de iluminação de Phong
-    vec3 phong_specular_term = Ks * I * pow(max(dot(r, v), 0.0), q);
-
-    // Alpha default = 1 = 100% opaco = 0% transparente
     cor.a = 1.0f;
 
+    vec3 baseColor = 0u != (material.use_texture & UseBaseTexture)
+    ? pow(texture(baseTexture, texcoord_).rgb, vec3(2.2))
+    : material.Kd;
+    vec3 ambientColor = bool(material.use_texture & UseBaseTexture)
+    ? texture(baseTexture, texcoord_).rgb
+    : material.Ka;
+    float q = bool(material.use_texture & UseShininessTexture)
+    ? pow(2, texture(specularHighlightTexture, texcoord_).r * 10.0)
+    : material.q;
+    vec3 specularColor = bool(material.use_texture & UseSpecularTexture)
+    ? texture(specularTexture, texcoord_).rgb
+    : material.Ks;
 
-    cor.rgb = lambert_diffuse_term + ambient_term + phong_specular_term;
+    //    vec3 normalMap = bool(material.use_texture & UseNormalTexture)
+    //        ? texture(normalTexture, texcoord_).rgb * 2.0 - 1.0
+    //        : vec3(0.0, 0.0, 1.0); // TODO: Fazer isso algum dia quando tiver tempo pra implementar tangentes e bitangentes
 
 
-    cor.rgb = pow(cor.rgb, vec3(1.0, 1.0, 1.0) / 2.2);
-
+    cor.rgb = calcDirectionalLight(directionalLight, n.xyz, v.xyz, baseColor, ambientColor, specularColor, q);
+    for (int i = 0; i < pointLightsCount; i++) {
+        cor.rgb += calcPointLight(pointLights[i], n.xyz, v.xyz, baseColor, ambientColor, specularColor, q);
+    }
 }
+
+

@@ -6,6 +6,7 @@
 #include "entrePortaisEngine/Window.hpp"
 #include "entrePortaisEngine/tasks/TaskManager.hpp"
 #include "testGame/TriScene.hpp"
+#include "labirinto/GameScene.hpp"
 
 static const int WIDTH = 800;
 static const int HEIGHT = 600;
@@ -13,7 +14,7 @@ static const int HEIGHT = 600;
 int main() {
     entre_portais::Logger::initialize();
     std::string title = "Entre Portais";
-    auto scene = std::make_shared<entre_portais::TriScene>();
+    auto scene = std::make_shared<labirinto::GameScene>();
     std::shared_ptr<entre_portais::Window> janela(
             new entre_portais::Window(WIDTH, HEIGHT, title.c_str(), std::move(scene)));
 

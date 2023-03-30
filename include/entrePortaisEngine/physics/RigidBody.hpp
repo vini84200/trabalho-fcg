@@ -76,6 +76,9 @@ namespace entre_portais {
     private:
         glm::mat4 *transform_;
     public:
+        void setTransformPtr(glm::mat4 *transform);
+
+    public:
         glm::mat4 *getTransform() const;
 
     private:
@@ -112,6 +115,12 @@ namespace entre_portais {
 
     private:
         float mass_ = 1.0f;
+    public:
+        void setMass(float mass);
+
+        void setRestitution(float restitution);
+
+    private:
         float restitution_ = 0.2f;
     public:
         float getMass() const;
@@ -121,6 +130,10 @@ namespace entre_portais {
         float getFriction() const;
 
         glm::vec3 getAngularVelocity() const;
+
+        void applyImpulse(glm::vec3 impulse);
+
+        void setVelocity(glm::vec3 vel);
 
     private:
         float friction_ = 0.5f;
@@ -138,6 +151,7 @@ namespace entre_portais {
         glm::quat getWorldRotation();
 
         glm::vec3 getVelocityAtPoint(const glm::vec3 &r1) const;
+
     };
 
 } // entre_portais

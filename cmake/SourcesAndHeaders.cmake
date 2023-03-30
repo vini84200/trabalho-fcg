@@ -60,13 +60,19 @@ set(sources
 
 set(exe_sources
 		src/main.cpp
-		${sources}
-)
+		src/labirinto/GameScene.cpp
+		src/labirinto/Player.cpp
+		src/labirinto/LabirintoMap.cpp
+		src/labirinto/InvisibleBox.cpp
+        src/labirinto/Pillar.cpp
+		src/labirinto/Key.cpp
+        ${sources}
+		)
 
 set(headers
 )
 
 set(test_sources
-		src/rotations.cpp
-		src/TransformsTest.cpp
+		#		src/rotations.cpp
+		#		src/TransformsTest.cpp
 		)

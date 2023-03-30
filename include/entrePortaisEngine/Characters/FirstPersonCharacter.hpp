@@ -31,13 +31,15 @@ namespace entre_portais {
         void switchCameraMode();
 
 
-    private:
+    protected:
         glm::vec3 direction_ = {0, 0, 0};
         std::shared_ptr<Camera> camera_;
         std::shared_ptr<EmptyObject> emptyObject1_;
         std::shared_ptr<EmptyObject> emptyObject2_;
+        bool sprint_;
         bool altMode_;
         bool pauseMode_;
+        float speed_ = 2;
     };
 
 } // entre_portais

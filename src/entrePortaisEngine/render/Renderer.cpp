@@ -6,6 +6,13 @@
 #include "glm/gtc/type_ptr.hpp"
 #include "entrePortaisEngine/render/PointLight.hpp"
 
+#ifdef OLD_OPENGL
+#define NOT_USING_OPENGL_DEBUG
+#endif
+
+#ifndef NOT_USING_OPENGL_DEBUG
+#define OPENGL_DEBUG
+#endif
 
 namespace entre_portais {
 
@@ -70,7 +77,9 @@ namespace entre_portais {
         camera->setUpCamera();
         // BACKGROUND
         glDepthMask(GL_FALSE);
+        #ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "BACKGROUND");
+        #endif
         for (auto [shaderID, objs]: renderables_[BACKGROUND]) {
             auto shader = sm->getShaderByID(shaderID);
             shader.use();
@@ -84,15 +93,25 @@ namespace entre_portais {
             }
         }
         glDepthMask(GL_TRUE);
+        #ifdef OPENGL_DEBUG
         glPopDebugGroup();
+        #endif
 
 
         // PREPASS
+        #ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 1, -1, "PREPASS");
+        #endif
 
+
+        #ifdef OPENGL_DEBUG
         glPopDebugGroup();
+        #endif
         // FOREGROUND
+
+        #ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 2, -1, "FOREGROUND");
+        #endif
 
         camera->setUpCamera();
         for (auto [shaderID, objs]: renderables_[FOREGROUND]) {
@@ -105,22 +124,34 @@ namespace entre_portais {
                 obj->render(FOREGROUND);
             }
         }
+        #ifdef OPENGL_DEBUG
         glPopDebugGroup();
+        #endif
 
         // LIGHTING
+        #ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 3, -1, "LIGHTING");
+        #endif
 
+        #ifdef OPENGL_DEBUG
         glPopDebugGroup();
+        #endif
 
         // TRANSPARENCY
+        #ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 4, -1, "TRANSPARENCY");
+        #endif
 
+        #ifdef OPENGL_DEBUG
         glPopDebugGroup();
+        #endif
 
         frameBuffer->unbind();
 
         // POSTPROCESS
+        #ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 5, -1, "POSTPROCESS");
+        #endif
 
 
         int width, height;
@@ -142,7 +173,9 @@ namespace entre_portais {
         quadVAO->unbind();
 
 
+        #ifdef OPENGL_DEBUG
         glPopDebugGroup();
+        #endif
 
     }
 
@@ -178,7 +211,6 @@ namespace entre_portais {
     }
 
     void Renderer::renderImGui() {
-        ImGui::Begin("Renderer");
         ImGui::Text("Renderables: %d", lastID_);
         ImGui::Text("Passes:");
         ImGui::Indent();
@@ -225,7 +257,6 @@ namespace entre_portais {
         }
 
 
-        ImGui::End();
 
     }
 

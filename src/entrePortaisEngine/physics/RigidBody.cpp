@@ -122,6 +122,9 @@ namespace entre_portais {
         // glm::quat spin = angu
 
     }
+    void RigidBody::setVelocity(glm::vec3 vel) {
+        velocity_  = vel;
+    }
 
     void RigidBody::updatePosition(float deltaTime) {
         if (isStatic_)
@@ -207,7 +210,7 @@ namespace entre_portais {
 
             float beta = 0.2f;
             float bias = beta / dt;
-            float slop = 0.1f;
+            float slop = 0.01f;
 
             float v_bias = bias * glm::max(0.0f, contact.depth - slop);
 
@@ -326,7 +329,7 @@ namespace entre_portais {
             glm::vec3 r1 = r1Local;
             const glm::mat3 worldInverseInertiaA = getWorldInverseInertia();
 
-            glm::vec3 veldiff = -getVelocityAtPoint(r1);
+            glm::vec3 veldiff = -this->getVelocity();
 
 
             float kn = (1 / getMass()) /*+
@@ -343,9 +346,9 @@ namespace entre_portais {
             }
 
 
-            float beta = 0.2f;
+            float beta = 0.8f;
             float bias = beta / dt;
-            float slop = 0.1f;
+            float slop = 0.01f;
 
             float v_bias = bias * glm::max(0.0f, contact.depth - slop);
 
@@ -390,6 +393,7 @@ namespace entre_portais {
             glm::vec3 dvelA = P / getMass();
 //            glm::vec3 deltaAngVelA = worldInverseInertiaA * glm::cross(r1, P);
             velocity_ -= dvelA;
+            // transformToModify_.move(-contact.normal * v_bias/((float)possibleCollision.contacts.size()));
 //            angularVelocity_ -= deltaAngVelA;
 //            glm::vec3 newveldiff = - velocity_ - glm::cross(angularVelocity_, r1);
 //            if (!glm::epsilonEqual(glm::dot(newveldiff, contact.normal), 0.0f, 0.001f)) {
@@ -430,6 +434,9 @@ namespace entre_portais {
 
     glm::vec3 RigidBody::getVelocityAtPoint(const glm::vec3 &r1) const {
         return velocity_ + glm::cross(angularVelocity_, r1);
+    }
+    void RigidBody::applyImpulse(glm::vec3 impulse) {
+        velocity_ += impulse / getMass();
     }
 
     float RigidBody::getMass() const {
@@ -497,5 +504,17 @@ namespace entre_portais {
     void RigidBody::applyForceOnLocalPoint(glm::vec3 force, glm::vec3 point) {
         force_ += force;
         torque_ += glm::cross(point, force);
+    }
+
+    void RigidBody::setTransformPtr(glm::mat4 *transform) {
+        transform_ = transform;
+    }
+
+    void RigidBody::setMass(float mass) {
+        mass_ = mass;
+    }
+
+    void RigidBody::setRestitution(float restitution) {
+        restitution_ = restitution;
     }
 } // entre_portais
