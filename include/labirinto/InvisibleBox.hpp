@@ -23,7 +23,6 @@ public:
     void onMouseButton(int button, int action, int mods) override;
 
     void onExit() override;
-
 };
 
 
