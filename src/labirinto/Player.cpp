@@ -25,8 +25,8 @@ void labirinto::Player::update(float deltaTime) {
     if (transform_.getPosition().y < -1.f) {
        // TP player 
     
-        transform_.setPosition(glm::vec3(0,0,0));
-        rigidBody_->setVelocity(glm::vec3(0,0,0));
+        transform_.setPosition(glm::vec3(35.0f, 3.0f, 0.0f));
+        rigidBody_->setVelocity(glm::vec3(0, 0, 0));
     }
 }
 
