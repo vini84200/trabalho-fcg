@@ -44,8 +44,7 @@ namespace entre_portais {
         glfwMakeContextCurrent(window_);
 
 
-        glfwSetInputMode(window_, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
-        cursorIsVisible_ = false;
+        cursorIsVisible_ = true;
 
 
         glfwSetWindowUserPointer(window_, this);
@@ -86,6 +85,8 @@ namespace entre_portais {
         glfwSwapInterval(VSYNC);
         glEnable(GL_DEPTH_TEST);
         glEnable(GL_CULL_FACE);
+        glEnable(GL_BLEND);
+        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
         scene_->setWindow(this);
         scene_->initializePropagate();
     }
@@ -116,6 +117,15 @@ namespace entre_portais {
             accumulator += timeDifference;
             float deltaTime = 1.0 / TARGET_UPS;
 
+            // If there is a need to change the scene, do it
+            if (nextScene_ != nullptr) {
+                scene_->onExit();
+                scene_.swap(nextScene_);
+                scene_->setWindow(this);
+                scene_->initializePropagate();
+                nextScene_.reset();
+            }
+
             // Update
             // Usa fixed timestep (veja https://gafferongames.com/post/fix_your_timestep/)
             try {
@@ -137,6 +147,7 @@ namespace entre_portais {
             // render
             try {
                 render();
+                frameCount_++;
             }
             catch (const std::exception &e) {
                 getLogger()->error("Exception while rendering: {}", e.what());
@@ -162,6 +173,10 @@ namespace entre_portais {
         }
         scene_->onExit();
         onExit();
+    }
+
+    long Window::getFrameCount() const {
+        return frameCount_;
     }
 
     void Window::update(float deltaTime) {
@@ -306,4 +321,6 @@ namespace entre_portais {
     bool Window::isCursorVisible() {
         return cursorIsVisible_;
     }
+
+
 }  // namespace entre_portais

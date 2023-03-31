@@ -26,7 +26,7 @@ namespace entre_portais {
 
         virtual void render(RenderPass current_pass) = 0;
 
-        virtual void renderUi(VertexArrayBuffer *quadVao, Shader shader) {};
+        virtual void renderUi(VertexArrayBuffer *quadVao, Shader &shader) {};
 
         void loadShader(std::string name);
 

@@ -43,6 +43,14 @@ namespace entre_portais {
 
         bool isCursorVisible();
 
+        long getFrameCount() const;
+
+        template<typename T, typename... Args>
+        void setScene(Args &&... args) {
+            static_assert(std::is_base_of<IScene, T>::value, "T must be derived from IScene");
+            nextScene_ = std::make_shared<T>(std::forward<Args>(args)...);
+        }
+
     protected:
         void update(float deltaTime);
 
@@ -68,6 +76,7 @@ namespace entre_portais {
 
         void onMouseDeltaMovement(glm::vec2 delta);
 
+
     private:
         GLFWwindow *window_;
         bool running_;
@@ -75,12 +84,15 @@ namespace entre_portais {
         int height_;
         char *title_;
         std::shared_ptr<IScene> scene_;
+        std::shared_ptr<IScene> nextScene_;
         std::vector<std::shared_ptr<IPlugin>> registeredPlugins_;
         double targetFPS_ = DEFAULT_FPS;
         double lastFrameTime_ = 0.0f;
         Logger logger_ = Logger("Window");
         glm::vec2 mousePos_;
         bool cursorIsVisible_;
+        long int frameCount_ = 0;
+
     };
 }
 #endif  // ENTREPORTAIS_WINDOW_HPP
