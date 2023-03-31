@@ -1,4 +1,4 @@
-#version 330
+#version 330 core
 
 const int MAX_LIGHTS = 10;
 const uint UseBaseTexture = 0x00000001u;
@@ -33,16 +33,10 @@ struct PointLight {
     float radius;
 };
 
+layout (location = 0) in vec3 position_modelspace;
+layout (location = 2) in vec3 original_normal;
+layout (location = 3) in vec2 texcoord;
 
-// Atributos de fragmentos recebidos como entrada ("in") pelo Fragment Shader.
-// Neste exemplo, este atributo foi gerado pelo rasterizador como a
-// interpolação da posição global e a normal de cada vértice, definidas em
-// "shader_vertex.glsl" e "main.cpp".
-in vec4 position_world;
-in vec4 normal;
-in vec2 texcoord_;
-
-// Matrizes computadas no código C++ e enviadas para a GPU
 uniform mat4 model;
 uniform mat4 view;
 uniform mat4 projection;
@@ -85,7 +79,7 @@ vec3 calcDirectionalLight(DirectionalLight light, vec3 normal, vec3 viewDir, vec
 // Calcula a iluminação de um ponto com uma fonte de luz pontual usando o
 // modelo de iluminação de Blinn-Phong.
 // FONTE: https://learnopengl.com/code_viewer_gh.php?code=src/2.lighting/6.multiple_lights/6.multiple_lights.fs
-vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 Ka, vec3 Ks, float q) {
+vec3 calcPointLight(vec4 position_world, PointLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 Ka, vec3 Ks, float q) {
     vec3 lightDir = normalize(light.position - position_world.xyz);
     vec3 halfDir = normalize(lightDir + viewDir);
 
@@ -110,17 +104,19 @@ vec3 calcPointLight(PointLight light, vec3 normal, vec3 viewDir, vec3 Kd, vec3 K
 
 void main()
 {
+    gl_Position = projection * view * model * vec4(position_modelspace, 1.0);
+    vec4 position_world = model * vec4(position_modelspace, 1.0);
+    vec4 normal = inverse(transpose(model)) * vec4(original_normal, 0.0);
+    normal.w = 0.0;
+    vec2 texcoord_ = texcoord;
+
     // Obtemos a posição da câmera utilizando a inversa da matriz que define o
     // sistema de coordenadas da câmera.
     vec4 origin = vec4(0.0, 0.0, 0.0, 1.0);
     vec4 camera_position = inverse(view) * origin;
-
     vec4 p = position_world;
-
     vec4 n = normalize(normal);
-
     vec4 v = normalize(camera_position - p);
-
 
     cor.a = 1.0f;
 
@@ -144,8 +140,6 @@ void main()
 
     cor.rgb = calcDirectionalLight(directionalLight, n.xyz, v.xyz, baseColor, ambientColor, specularColor, q);
     for (int i = 0; i < pointLightsCount; i++) {
-        cor.rgb += calcPointLight(pointLights[i], n.xyz, v.xyz, baseColor, ambientColor, specularColor, q);
+        cor.rgb += calcPointLight(position_world, pointLights[i], n.xyz, v.xyz, baseColor, ambientColor, specularColor, q);
     }
 }
-
-
