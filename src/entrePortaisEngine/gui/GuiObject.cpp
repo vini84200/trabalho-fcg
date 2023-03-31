@@ -96,11 +96,15 @@ namespace entre_portais {
               height_(RelativeScale(1.0f)), zIndex_(0) {
         int width, height;
         glfwGetWindowSize(glfwGetCurrentContext(), &width, &height);
+        onResize(width, height);
     }
 
     GuiObject::GuiObject(const char *name, PositionConstraint x, PositionConstraint y, ScaleConstraint width,
                          ScaleConstraint height, zIndex_t zIndex)
             : IObject(name), x_(x), y_(y), width_(width), height_(height), zIndex_(zIndex) {
+        int w, h;
+        glfwGetWindowSize(glfwGetCurrentContext(), &w, &h);
+        onResize(w, h);
 
     }
 
@@ -125,6 +129,12 @@ namespace entre_portais {
         quadVao->bind();
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
         quadVao->unbind();
+    }
+
+    bool GuiObject::isInHoverState() const {
+        double currentMousePosX, currentMousePosY;
+        glfwGetCursorPos(glfwGetCurrentContext(), &currentMousePosX, &currentMousePosY);
+        return isInsideBB(static_cast<float>(currentMousePosX), static_cast<float>(currentMousePosY));
     }
 
 

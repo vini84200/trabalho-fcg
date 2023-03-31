@@ -122,8 +122,10 @@ namespace labirinto {
                                                                                         189.f / 256.f, 1));
         uiTest->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::Anchor::CENTER));
         uiTest->setY(entre_portais::FixedToAnchorPosition(30.0f, entre_portais::Anchor::BOTTOM));
-        uiTest->setWitdhtConstraint(entre_portais::RelativeScale(0.5f));
+        uiTest->setWitdhtConstraint(entre_portais::FixedScale(20.0f));
         uiTest->setHeightConstraint(entre_portais::FixedScale(20.0f));
+        uiTest->setTexturePath("hair.png");
+        uiTest->setHoverTexturePath("cloth.png");
         addChild(uiTest);
     }
 

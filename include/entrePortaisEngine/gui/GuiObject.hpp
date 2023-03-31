@@ -232,6 +232,22 @@ namespace entre_portais {
 
         void onExit() override;
 
+        /*
+         * Events of GuiObject
+         */
+
+        void onMouseEnter();
+
+        void onMouseLeave();
+
+        // Pos is in pixels from the center of the object's bounding box
+        void onClick(float posX, float posY);
+
+
+        /*
+         * Getters and setters
+         */
+
         inline glm::vec2 getPosToNDC() const {
             return glm::vec2(-currentPosX_ / currentWindowWidth_ * 2 + 1, currentPosY_ / currentWindowHeight_ * 2 - 1);
         }
@@ -240,11 +256,26 @@ namespace entre_portais {
             return glm::vec2(currentWidth_ / currentWindowWidth_, currentHeight_ / currentWindowHeight_);
         }
 
+        inline glm::vec2 getBBMinScreenSpace() const {
+            return glm::vec2(currentPosX_ - currentWidth_ / 2,
+                             currentWindowHeight_ - currentPosY_ - currentHeight_ / 2);
+        }
 
-        /*
-         * Getters and setters
-         */
+        inline glm::vec2 getBBMaxScreenSpace() const {
+            return glm::vec2(currentPosX_ + currentWidth_ / 2,
+                             currentWindowHeight_ - currentPosY_ + currentHeight_ / 2);
+        }
 
+        inline bool isInsideBB(glm::vec2 point) const {
+            return isInsideBB(point.x, point.y);
+        }
+
+        inline bool isInsideBB(float x, float y) const {
+            return x >= getBBMinScreenSpace().x && x <= getBBMaxScreenSpace().x &&
+                   y >= getBBMinScreenSpace().y && y <= getBBMaxScreenSpace().y;
+        }
+
+        bool isInHoverState() const;
 
 
         const PositionConstraint &getXConstraint() const;
