@@ -47,16 +47,6 @@ namespace labirinto {
 
         buildInitialCollision();
         buildCollision();
-
-//        for (int x = 0; x < 80; x += 2) {
-//            for (int y = 0; y < 80; y += 2) {
-//                auto box = std::make_shared<InvisibleBox>(x-39, y-39);
-//                addChild(box);
-//            }
-//        }
-
-        // Add lights
-
     }
 
     std::vector<glm::vec3> nearestWalls(glm::vec3 position) {
@@ -74,10 +64,12 @@ namespace labirinto {
 
     int LabirintoMap::posToIndex(glm::vec2 position) {
         float xFloat = position.x, yFloat = position.y;
-        xFloat += 40;
-        yFloat += 40;
-        xFloat /= 2;
-        yFloat /= 2;
+        xFloat *= (41.0 / 40.0);
+        yFloat *= (41.0 / 40.0);
+        xFloat += 39.0;
+        yFloat += 39.0;
+        xFloat /= 2.0;
+        yFloat /= 2.0;
         int x = static_cast<int>(std::floor(xFloat));
         int y = static_cast<int>(std::floor(yFloat));
         return (x + 41 * y);
@@ -87,15 +79,15 @@ namespace labirinto {
         auto playerPosition = getPlayerPosition();
         std::vector<int> indexes;
         // TODO: Checar out of bouds
-        indexes.push_back(index - 42);
-        indexes.push_back(index - 41);
-        indexes.push_back(index - 40);
-        indexes.push_back(index - 1);
+        indexes.push_back(index);
         indexes.push_back(index + 1);
-        indexes.push_back(index + 40);
+        indexes.push_back(index + 2);
         indexes.push_back(index + 41);
         indexes.push_back(index + 42);
-        indexes.push_back(index);
+        indexes.push_back(index + 43);
+        indexes.push_back(index + 82);
+        indexes.push_back(index + 83);
+        indexes.push_back(index + 84);
         return indexes;
     }
 
@@ -114,23 +106,15 @@ namespace labirinto {
     glm::vec2 LabirintoMap::indexToPos(int index) {
         int xInt = index % 41;
         int yInt = index / 41;
-        xInt *= 2;
-        yInt *= 2;
-        xInt -= 40;
-        yInt -= 40;
         float x = static_cast<float>(xInt);
         float y = static_cast<float>(yInt);
-        x *= (40.f / 41.f);
-        y *= (40.f / 41.f);
+        x *= 2.0;
+        y *= 2.0;
+        x -= 40.0;
+        y -= 40.0;
+        x *= (40.0 / 41.0);
+        y *= (40.0 / 41.0);
         spdlog::info("X and Y at {}, {}", x, y);
-//        if (x % 2 == 0){
-//            x++;
-//        }
-//        if (y % 2 == 0){
-//            y++;
-//        }
-//        x++;
-//        y++;
         glm::vec2 position = glm::vec2(x, y);
         return position;
     }
@@ -140,8 +124,7 @@ namespace labirinto {
         int index = posToIndex(playerPosition);
         index_ = index;
         std::vector<int> indexes = indexSquare(index);
-        // indexesDraw(indexes);
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < indexes.size(); i++) {
             // TODO: Checar out of bouds
             // if (indexes.count(i) == 0) {
             //     colliders_[i]->getTransform()->setPosition(glm::vec3(-40, -40, 0));
