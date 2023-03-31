@@ -9,6 +9,7 @@
 #include "labirinto/Pillar.hpp"
 #include "labirinto/Key.hpp"
 #include "entrePortaisEngine/gui/GuiRectangle.hpp"
+#include "testGame/TeapotObject.hpp"
 
 namespace labirinto {
     void GameScene::CustomImGui() {
@@ -104,6 +105,30 @@ namespace labirinto {
         auto goldenPillar = std::make_shared<Pillar>(pathToGolden, goldenPillarName);
         addChild(goldenPillar);
         goldenPillar->getTransform()->setPosition(glm::vec3(-33.0, 1.0, 35.0));
+
+        char *goldenPillarName2 = "goldenPillar2";
+        auto goldenPillar2 = std::make_shared<Pillar>(pathToGolden, goldenPillarName2);
+        addChild(goldenPillar2);
+        goldenPillar2->getTransform()->setPosition(glm::vec3(8.0, 1.0, 10.5));
+
+        char *goldenPillarName3 = "goldenPillar3";
+        auto goldenPillar3 = std::make_shared<Pillar>(pathToGolden, goldenPillarName3);
+        addChild(goldenPillar3);
+        goldenPillar3->getTransform()->setPosition(glm::vec3(8.0, 1.0, 9.0));
+
+        char *gouraudHinataName = "gouraudHinata";
+        auto gouraudHinata = std::make_shared<entre_portais::TeapotObject>(gouraudHinataName);
+        addChild(gouraudHinata);
+        gouraudHinata->getTransform()->setPosition(glm::vec3(8.0, 1.8, 10.5));
+        gouraudHinata->getTransform()->setRotationZYX(glm::vec3(0.0, M_PI_2, 0.0));
+        gouraudHinata->getTransform()->setScale(glm::vec3(0.08, 0.08, 0.08));
+
+        char *phongHinataName = "phongHinata";
+        auto phongHinata = std::make_shared<entre_portais::ObjFromFile>(phongHinataName, "assets/objs/hinata4.obj");
+        addChild(phongHinata);
+        phongHinata->getTransform()->setPosition(glm::vec3(8.0, 1.8, 9.0));
+        phongHinata->getTransform()->setRotationZYX(glm::vec3(0.0, M_PI_2, 0.0));
+        phongHinata->getTransform()->setScale(glm::vec3(0.08, 0.08, 0.08));
         // Adicionar o objetivo
 
         auto grnd = std::make_shared<entre_portais::ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");
@@ -118,7 +143,7 @@ namespace labirinto {
 
 
         // Add UI test
-        auto uiTest = std::make_shared<entre_portais::GuiRectangle>("uiTest", glm::vec4(119.f / 256.f, 38.f / 256.f,
+        /*auto uiTest = std::make_shared<entre_portais::GuiRectangle>("uiTest", glm::vec4(119.f / 256.f, 38.f / 256.f,
                                                                                         189.f / 256.f, 1));
         uiTest->setX(entre_portais::FixedToAnchorPosition(300.0f, entre_portais::Anchor::RIGHT));
         uiTest->setY(entre_portais::FixedToAnchorPosition(70.0f, entre_portais::Anchor::BOTTOM));
@@ -135,7 +160,7 @@ namespace labirinto {
             uiTest->setTextureOffset(glm::vec2(0.0f, 0.0f));
             this->removeChild(uiTest);
         });
-        addChild(uiTest);
+        addChild(uiTest);*/
     }
 
 } // labirinto
