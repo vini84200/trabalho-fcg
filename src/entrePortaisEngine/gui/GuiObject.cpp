@@ -53,6 +53,7 @@ namespace entre_portais {
 
     void GuiObject::setX(const PositionConstraint &x) {
         x_ = x;
+        recalculatePosition();
     }
 
     const PositionConstraint &GuiObject::getYConstraint() const {
@@ -61,14 +62,17 @@ namespace entre_portais {
 
     void GuiObject::setY(const PositionConstraint &y) {
         y_ = y;
+        recalculatePosition();
     }
 
     void GuiObject::setWitdhtConstraint(const ScaleConstraint &width) {
         width_ = width;
+        recalculatePosition();
     }
 
     void GuiObject::setHeightConstraint(const ScaleConstraint &height) {
         height_ = height;
+        recalculatePosition();
     }
 
     float GuiObject::getPositionX() const {
@@ -90,7 +94,8 @@ namespace entre_portais {
     GuiObject::GuiObject(const char *name)
             : IObject(name), x_(FixedPosition(0.0f)), y_(FixedPosition(0.0f)), width_(RelativeScale(1.0f)),
               height_(RelativeScale(1.0f)), zIndex_(0) {
-
+        int width, height;
+        glfwGetWindowSize(glfwGetCurrentContext(), &width, &height);
     }
 
     GuiObject::GuiObject(const char *name, PositionConstraint x, PositionConstraint y, ScaleConstraint width,
