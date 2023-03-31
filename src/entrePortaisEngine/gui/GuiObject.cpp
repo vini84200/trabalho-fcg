@@ -23,10 +23,6 @@ namespace entre_portais {
         currentHeight_ = std::visit(ScaleYConstraintsVisit(screen_width, screen_height), height_);
     }
 
-    GuiObject::~GuiObject() {
-        // Nothing to do for now
-    }
-
     void GuiObject::onKey(int key, int scancode, int action, int mods) {
 
     }

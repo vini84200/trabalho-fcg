@@ -128,9 +128,12 @@ namespace labirinto {
         uiTest->setHoverTexturePath("btn/Hovered.png");
         uiTest->setTextureSize(glm::vec2(2.0f, 4.0f));
         uiTest->setTextureOffset(glm::vec2(1.0f, 0.6f));
-        uiTest->registerClickCallback([this, uiTest](float x, float y) {
+        auto uiTestWk = std::weak_ptr<entre_portais::GuiRectangle>(uiTest);
+        uiTest->registerClickCallback([this, uiTestWk](float x, float y) {
+            auto uiTest = uiTestWk.lock();
             uiTest->setTextureSize(glm::vec2(1.0f, 1.0f));
             uiTest->setTextureOffset(glm::vec2(0.0f, 0.0f));
+            this->removeChild(uiTest);
         });
         addChild(uiTest);
     }

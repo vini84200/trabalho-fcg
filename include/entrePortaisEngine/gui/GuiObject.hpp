@@ -220,8 +220,6 @@ namespace entre_portais {
         GuiObject(const char *name, PositionConstraint x, PositionConstraint y, ScaleConstraint width,
                   ScaleConstraint height, zIndex_t zIndex);
 
-        ~GuiObject() override;
-
         void render(RenderPass current_pass) override;
 
         void onResize(int width, int height) override;
