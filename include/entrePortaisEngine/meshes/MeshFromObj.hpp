@@ -87,7 +87,6 @@ namespace entre_portais {
         std::vector<tinyobj::material_t> materials_;
         std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> foregroundMaterialRanges_;
         std::unordered_multimap<unsigned int, std::pair<unsigned int, unsigned int>> transparentMaterialRanges_;
-        std::unordered_map<unsigned int, Texture> textures_;
 
         void initializeMesh();
 

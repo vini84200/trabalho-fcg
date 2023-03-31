@@ -22,6 +22,7 @@ namespace labirinto {
         void onExit() override;
 
     private:
+        std::queue<std::string> texturePreloadQueue;
     };
 
 } // labirinto

@@ -53,9 +53,11 @@ namespace entre_portais {
 
         Texture createCubeMapTexture(std::string name);
 
-        Texture getTextureOrWait(std::string name);
+        Texture getTextureAsync(std::string name);
 
         Texture createTextureTask(std::string name);
+
+        Texture doLoad(std::string &name);
     };
 
 

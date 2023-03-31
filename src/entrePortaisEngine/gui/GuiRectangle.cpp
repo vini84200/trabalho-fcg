@@ -14,7 +14,6 @@ namespace entre_portais {
     }
 
     void GuiRectangle::renderUi(VertexArrayBuffer *quadVao, Shader &shader) {
-        spdlog::info("Rendering GuiRectangle");
         setupUniformsForGui(shader);
 
         shader.setUniformVec4("color", color);

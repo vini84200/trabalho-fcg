@@ -166,10 +166,13 @@ namespace entre_portais {
         // TODO: Usar uma task para carregar as texturas
         for (int i = 0; i < materials.size(); ++i) {
             auto &material = materials[i];
-            if (material.diffuse_texname.empty()) {
-                continue;
+            if (!material.diffuse_texname.empty()) {
+                TextureManager::instance().LoadTexture(material.diffuse_texname);
             }
-            textures_.insert({i, TextureManager::instance().getTextureSync(material.diffuse_texname)});
+            if (!material.specular_texname.empty()) {
+                TextureManager::instance().LoadTexture(material.specular_texname);
+            }
+
         }
     }
 
@@ -179,7 +182,7 @@ namespace entre_portais {
         if (loaded_) {
             ImGui::Text("Loaded");
             ImGui::Text("Material Count: %d", materials_.size());
-            ImGui::Text("Texture Count: %d", textures_.size());
+//            ImGui::Text("Texture Count: %d", textures_.size());
             ImGui::Text("Material Ranges: %d", foregroundMaterialRanges_.size());
             ImGui::Text("Index Count: %d", GetNumVertices());
 
@@ -202,10 +205,18 @@ namespace entre_portais {
                         ImGui::ColorEdit3("Ks", material.specular);
                         ImGui::DragFloat("q", &material.shininess, 0.1f, 0.0f, 100.0f, "%.1f",
                                          ImGuiSliderFlags_Logarithmic);
-                        ImGui::Text("Texture: %s", material.diffuse_texname.c_str());
-                        if (textures_.count(selectedMaterial) > 0)
-                            ImGui::Image(textures_.at(selectedMaterial).GetImTextureID(), ImVec2(128, 128),
+                        if (!material.diffuse_texname.empty()) {
+                            ImGui::Text("Texture: %s", material.diffuse_texname.c_str());
+                            Texture tex = TextureManager::instance().getTextureSync(material.diffuse_texname);
+                            ImGui::Image(tex.GetImTextureID(), ImVec2(128, 128),
                                          ImVec2(0, 1), ImVec2(1, 0));
+                        }
+                        if (!material.specular_texname.empty()) {
+                            ImGui::Text("Specular Texture: %s", material.specular_texname.c_str());
+                            Texture tex = TextureManager::instance().getTextureSync(material.specular_texname);
+                            ImGui::Image(tex.GetImTextureID(), ImVec2(128, 128),
+                                         ImVec2(0, 1), ImVec2(1, 0));
+                        }
                     }
                     ImGui::GetStateStorage()->SetInt(ImGui::GetID("##Material"), selectedMaterial);
                 } else {
@@ -215,17 +226,17 @@ namespace entre_portais {
                 ImGui::TreePop();
             }
 
-            if (ImGui::TreeNode("Textures:")) {
-                if (textures_.size() == 0) {
-                    ImGui::Text("No Textures");
-                }
-                for (auto &[mat, tex]: textures_) {
-                    ImGui::Text("Material: %d", mat);
-                    ImGui::Text("Texture: %s", materials_[mat].diffuse_texname.c_str());
-                    ImGui::Image(tex.GetImTextureID(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));
-                }
-                ImGui::TreePop();
-            }
+//            if (ImGui::TreeNode("Textures:")) {
+//                if (textures_.size() == 0) {
+//                    ImGui::Text("No Textures");
+//                }
+//                for (auto &[mat, tex]: textures_) {
+//                    ImGui::Text("Material: %d", mat);
+//                    ImGui::Text("Texture: %s", materials_[mat].diffuse_texname.c_str());
+//                    ImGui::Image(tex.GetImTextureID(), ImVec2(128, 128), ImVec2(0, 1), ImVec2(1, 0));
+//                }
+//                ImGui::TreePop();
+//            }
 
         } else {
             ImGui::Text("Loading...");

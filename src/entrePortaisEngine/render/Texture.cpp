@@ -37,16 +37,14 @@ namespace entre_portais {
     }
 
     void Texture::Bind() const {
-        if (!valid_) {
-            return;
-        }
+//        if (!valid_) {
+//            spdlog::error("Trying to bind invalid texture {}", name_);
+//            return;
+//        }
         glBindTexture(GL_TEXTURE_2D, id_);
     }
 
     void Texture::Unbind() const {
-        if (!valid_) {
-            return;
-        }
         glBindTexture(GL_TEXTURE_2D, 0);
 
     }
@@ -61,15 +59,17 @@ namespace entre_portais {
 
     ImTextureID Texture::GetImTextureID() const {
         if (!valid_) {
+
             return 0;
         }
         return (ImTextureID) id_;
     }
 
     void Texture::Bind(unsigned int slot) const {
-        if (!valid_) {
-            return;
-        }
+//        if (!valid_) {
+//            spdlog::error("Trying to bind invalid texture {}", name_);
+//            return;
+//        }
         if (slot > 31) {
             spdlog::error("Trying to bind texture {} to slot {}, but only 32 slots are available", name_, slot);
             return;
@@ -112,6 +112,7 @@ namespace entre_portais {
     void Texture::setData(TextureData data) {
         spdlog::info("Setting data for texture {}", name_);
         if (data.data) {
+            glBindTexture(GL_TEXTURE_2D, id_);
             glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.width, data.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data);
             glGenerateMipmap(GL_TEXTURE_2D); // TODO: generate mipmaps outside of the main thread
 //            stbi_image_free(data.data);
@@ -120,5 +121,9 @@ namespace entre_portais {
         }
 
 
+    }
+
+    void Texture::setName(std::string name) {
+        name_ = name;
     }
 } // entre_portais

@@ -37,6 +37,8 @@ namespace entre_portais {
         friend class TextureManager;
 
         void setData(TextureData data);
+
+        void setName(std::string name);
     };
 
 } // entre_portais

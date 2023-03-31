@@ -117,6 +117,15 @@ namespace entre_portais {
             accumulator += timeDifference;
             float deltaTime = 1.0 / TARGET_UPS;
 
+            // If there is a need to change the scene, do it
+            if (nextScene_ != nullptr) {
+                scene_->onExit();
+                scene_.swap(nextScene_);
+                scene_->setWindow(this);
+                scene_->initializePropagate();
+                nextScene_.reset();
+            }
+
             // Update
             // Usa fixed timestep (veja https://gafferongames.com/post/fix_your_timestep/)
             try {
@@ -312,4 +321,6 @@ namespace entre_portais {
     bool Window::isCursorVisible() {
         return cursorIsVisible_;
     }
+
+
 }  // namespace entre_portais

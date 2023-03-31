@@ -15,112 +15,97 @@ namespace entre_portais {
 
 
     Texture TextureManager::getTextureSync(std::string name) {
-        if (textures_.find(name) == textures_.end()) {
-            return createTextureSync(name);
+        // Is loading
+        const bool isLoading = texturesLoading_.find(name) != texturesLoading_.end();
+        if (isLoading) {
+            return getTextureAsync(name);
         }
-        if (textures_.at(name).valid_ == false) {
-            return createTextureTask(name);
+        // Is not loading, is it already loaded?
+        const bool isLoaded = textures_.find(name) != textures_.end();
+        if (isLoaded) {
+            return textures_.at(name);
         }
-        return textures_.at(name);
+        // It is not loaded, so create it Sync
+        return createTextureSync(name);
+
     }
 
-    Texture TextureManager::getTextureOrWait(std::string name) {
-        if (textures_.find(name) == textures_.end() || textures_.at(name).valid_ == false) {
-            return createTextureTask(name);
+    Texture TextureManager::getTextureAsync(std::string name) {
+        // Is loading?
+        const bool isLoading = texturesLoading_.find(name) != texturesLoading_.end();
+        if (isLoading) {
+            // Is it ready?
+            dataToLoadMutex_->lock();
+            const bool isReady = dataToLoad_.find(name) != dataToLoad_.end();
+            dataToLoadMutex_->unlock();
+            if (isReady) {
+                return doLoad(name);
+            }
         }
-        return textures_.at(name);
+        // Is it already loaded?
+        if (textures_.find(name) != textures_.end()) {
+            return textures_.at(name);
+        }
+
+        // It is not loaded, so create it Async
+        return createTextureTask(name);
     }
 
     Texture TextureManager::createTextureSync(std::string name) {
-        const bool isLoaded = dataToLoad_.find(name) != dataToLoad_.end();
-        if (isLoaded) {
-            TextureData const data = dataToLoad_.at(name);
-            Texture texture(name, data);
-            textures_.emplace(name, texture);
-            return texture;
-        }
-        const bool isAlreadyLoading = texturesLoading_.find(name) != texturesLoading_.end();
-        if (isAlreadyLoading) {
-            return getTextureOrWait(name);
-        }
+        // Assume that the texture is not loaded
+        // Nor is it loading
+        assert(textures_.find(name) == textures_.end());
+        assert(texturesLoading_.find(name) == texturesLoading_.end());
+        // Load the texture
         Texture texture = Texture(name);
         textures_.insert({name, texture});
         return texture;
     }
 
     Texture TextureManager::createTextureTask(std::string name) {
+        // Assume that the texture is not loaded
+        // Nor is it loading
+        assert(textures_.find(name) == textures_.end());
+        assert(texturesLoading_.find(name) == texturesLoading_.end());
 
-        // Check if data is ready
-        dataToLoadMutex_->lock();
-        const bool isReady = dataToLoad_.find(name) != dataToLoad_.end();
-        dataToLoadMutex_->unlock();
-        if (isReady) {
-            // It is ready, so create the texture
-            TextureData data = dataToLoad_.at(name);
-            // Check if texture is already created
-            if (textures_.find(name) != textures_.end()) {
-                textures_.at(name).setData(data);
-                return textures_.at(name);
-            } else {
-                Texture texture(name, data);
-                textures_.emplace(name, texture);
-                return texture;
-            }
-        }
-
-        // Check if the task is already created
-        const bool isAlreadyLoading = texturesLoading_.find(name) != texturesLoading_.end();
-        if (isAlreadyLoading) {
-            // Check if texture is already created
-            if (textures_.find(name) != textures_.end()) {
-                return textures_.at(name);
-            } else {
-                Texture texture = {};
-                textures_.insert({name, texture});
-                return texture;
-            }
-        }
-
-        // It is not loaded, so create task to Load
         texturesLoading_.insert(name);
         TaskManager::getInstance()->addTask<TextureLoadingTask>(name);
+        Texture texture = Texture();
+        texture.setName(name);
+        textures_.insert({name, texture});
+        return texture;
+    }
+
+    Texture TextureManager::doLoad(std::string &name) {
+        TextureData data = dataToLoad_.at(name);
         // Check if texture is already created
         if (textures_.find(name) != textures_.end()) {
+            Texture &tex = textures_.at(name);
+            tex.setData(data);
+            dataToLoadMutex_->lock();
+            dataToLoad_.erase(name);
+            dataToLoadMutex_->unlock();
             return textures_.at(name);
         } else {
-            Texture texture = {}; // This is an empty texture, it will be filled when the task is finished
-            textures_.insert({name, texture});
+            Texture texture(name, data);
+            textures_.emplace(name, texture);
+            dataToLoadMutex_->lock();
+            dataToLoad_.erase(name);
+            dataToLoadMutex_->unlock();
             return texture;
         }
     }
 
     void TextureManager::LoadTexture(std::string name) {
-        const bool isAlreadyLoaded = textures_.contains(name);
-        if (isAlreadyLoaded) {
+        // Check if texture is already created
+        if (textures_.find(name) != textures_.end()) {
             return;
         }
-
-        const bool isAlreadyLoading = texturesLoading_.contains(name);
-        if (isAlreadyLoading) {
-            // Assert this is running on the main thread
-            assert(utils::is_opengl_thread() && "This function should only be called from the main thread");
-            // Check if data is ready
-            dataToLoadMutex_->lock();
-            const bool isReady = dataToLoad_.count(name) > 0;
-            dataToLoadMutex_->unlock();
-            if (isReady) {
-                // It is ready, so create the texture
-                TextureData data = dataToLoad_.at(name);
-                Texture texture(name, data);
-                textures_.emplace(name, texture);
-            }
-
-
+        // Check if texture is already loading
+        if (texturesLoading_.find(name) != texturesLoading_.end()) {
             return;
         }
-        // Create task to Load
-        texturesLoading_.emplace(name);
-        TaskManager::getInstance()->addTask<TextureLoadingTask>(name);
+        getTextureAsync(name);
 
     }
 
