@@ -78,16 +78,33 @@ namespace labirinto {
     std::vector<int> LabirintoMap::indexSquare(int index) {
         auto playerPosition = getPlayerPosition();
         std::vector<int> indexes;
-        // TODO: Checar out of bouds
-        indexes.push_back(index);
-        indexes.push_back(index + 1);
-        indexes.push_back(index + 2);
-        indexes.push_back(index + 41);
-        indexes.push_back(index + 42);
-        indexes.push_back(index + 43);
-        indexes.push_back(index + 82);
-        indexes.push_back(index + 83);
-        indexes.push_back(index + 84);
+        if (index < 1680) {
+            indexes.push_back(index);
+        }
+        if (index + 1 < 1680) {
+            indexes.push_back(index + 1);
+        }
+        if (index + 2 < 1680) {
+            indexes.push_back(index + 2);
+        }
+        if (index + 41 < 1680) {
+            indexes.push_back(index + 41);
+        }
+        if (index + 42 < 1680) {
+            indexes.push_back(index + 42);
+        }
+        if (index + 43 < 1680) {
+            indexes.push_back(index + 43);
+        }
+        if (index + 82 < 1680) {
+            indexes.push_back(index + 82);
+        }
+        if (index + 83 < 1680) {
+            indexes.push_back(index + 83);
+        }
+        if (index + 84 < 1680) {
+            indexes.push_back(index + 84);
+        }
         return indexes;
     }
 
@@ -125,18 +142,10 @@ namespace labirinto {
         index_ = index;
         std::vector<int> indexes = indexSquare(index);
         for (int i = 0; i < indexes.size(); i++) {
-            // TODO: Checar out of bouds
-            // if (indexes.count(i) == 0) {
-            //     colliders_[i]->getTransform()->setPosition(glm::vec3(-40, -40, 0));
-            //     continue;
-            // }
             if (array_[indexes.at(i)]) {
                 glm::vec2 positionToDraw = indexToPos(indexes.at(i));
                 colliders_[i]->getTransform()->setPosition(glm::vec3(positionToDraw.x, 0, positionToDraw.y));
                 spdlog::info("Collider {} at {}", i, glm::to_string(indexToPos(indexes.at(i))));
-            } else {
-                // colliders_[i]->getTransform()->setPosition(glm::vec3(-40, -40, 0));
-                // spdlog::info("Collider {} at {}", i, glm::to_string(glm::vec2(-40, -40)));
             }
         }
     }

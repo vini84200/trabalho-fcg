@@ -56,9 +56,6 @@ void entre_portais::ImGuiPlugin::render() {
     }
 }
 
-void entre_portais::ImGuiPlugin::onEvent(Event &event) {
-}
-
 void entre_portais::ImGuiPlugin::InitializeImGui() {
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -142,7 +139,6 @@ void entre_portais::ImGuiPlugin::renderDebugConfigWindow() {
     ImGui::Text("Métricas de performance");
     // FPS
     ImGui::Text("FPS: %.1f", ImGui::GetIO().Framerate);
-    // TODO: Calcular UPS
 
     ImGui::End();
 }
