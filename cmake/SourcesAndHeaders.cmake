@@ -67,6 +67,7 @@ set(sources
 set(exe_sources
 		src/main.cpp
 		src/labirinto/LoadingScene.cpp
+		src/labirinto/MenuScene.cpp
 		src/labirinto/GameScene.cpp
 		src/labirinto/Player.cpp
 		src/labirinto/LabirintoMap.cpp

@@ -64,6 +64,7 @@ namespace entre_portais {
 
         int width, height, nrChannels;
         for (unsigned int i = 0; i < 6; i++) {
+            stbi_set_flip_vertically_on_load(false);
             unsigned char *data = stbi_load(faceTextures[i].c_str(), &width, &height, &nrChannels, 4);
             if (data) {
                 glTexImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
