@@ -35,6 +35,14 @@ namespace labirinto {
     }
 
     void LoadingScene::initialize() {
+
+        // Put the textures to be loaded in the queue
+        texturePreloadQueue.push("ui/loadingBkg.jpg");
+        texturePreloadQueue.push("ui/loadingTxt.png");
+        texturePreloadQueue.push("skin.png");
+        texturePreloadQueue.push("hair.png");
+        texturePreloadQueue.push("StoneBricksBeige015_COL_2K.jpg");
+
         // Loading Text
         auto loadingText = std::make_shared<entre_portais::GuiRectangle>("LoadingText",
                                                                          glm::vec4(0.0f, 0.0f, 0.0f, 0.0f));
