@@ -21,8 +21,6 @@ namespace entre_portais {
 
         void render() override;
 
-        void onEvent(Event &event) override;
-
         bool onKey(int key, int scancode, int action, int mods) override;
 
         bool onMouseButton(int button, int action, int mods) override;

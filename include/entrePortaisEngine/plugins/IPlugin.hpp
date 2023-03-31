@@ -1,7 +1,6 @@
 #ifndef ENTREPORTAIS_IPLUGIN_HPP
 #define ENTREPORTAIS_IPLUGIN_HPP
 
-#include "entrePortaisEngine/Event.hpp"
 #include "entrePortaisEngine/Logger.hpp"
 #include <memory>
 
@@ -21,8 +20,6 @@ namespace entre_portais {
         virtual void update(float deltaTime) = 0;
 
         virtual void render() = 0;
-
-        virtual void onEvent(Event &event) = 0;
 
         virtual bool onKey(int key, int scancode, int action, int mods) {};
 
