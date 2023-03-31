@@ -11,6 +11,7 @@
 #include "entrePortaisEngine/gui/GuiRectangle.hpp"
 #include "entrePortaisEngine/Window.hpp"
 #include "testGame/TeapotObject.hpp"
+#include "entrePortaisEngine/render/PointLight.hpp"
 
 namespace labirinto {
     void GameScene::CustomImGui() {
@@ -130,6 +131,15 @@ namespace labirinto {
         phongHinata->getTransform()->setPosition(glm::vec3(8.0, 1.8, 9.0));
         phongHinata->getTransform()->setRotationZYX(glm::vec3(0.0, M_PI_2, 0.0));
         phongHinata->getTransform()->setScale(glm::vec3(0.08, 0.08, 0.08));
+
+        // Adicionar uma luz
+        auto light = std::make_shared<entre_portais::PointLight>();
+        light->getTransform()->setPosition(glm::vec3(8.0, 3.0, 10.5));
+        addChild(light);
+        auto light2 = std::make_shared<entre_portais::PointLight>();
+        light2->getTransform()->setPosition(glm::vec3(8.0, 3.0, 9.0));
+        addChild(light2);
+
         // Adicionar o objetivo
 
         auto grnd = std::make_shared<entre_portais::ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");

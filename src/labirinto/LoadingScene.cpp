@@ -3,6 +3,7 @@
 #include "entrePortaisEngine/Window.hpp"
 #include "entrePortaisEngine/render/TextureManager.hpp"
 #include "labirinto/GameScene.hpp"
+#include "labirinto/MenuScene.hpp"
 
 // Lista de texturas a serem carregadas
 
@@ -20,7 +21,7 @@ namespace labirinto {
         if (getWindow()->getFrameCount() > 3) {
             if (texturePreloadQueue.empty()) {
                 // Load the next scene
-                getWindow()->setScene<labirinto::GameScene>();
+                getWindow()->setScene<labirinto::MenuScene>();
             } else {
                 // Load the next texture
                 auto texturePath = texturePreloadQueue.front();
