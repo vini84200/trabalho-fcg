@@ -105,7 +105,6 @@ namespace entre_portais {
         int w, h;
         glfwGetWindowSize(glfwGetCurrentContext(), &w, &h);
         onResize(w, h);
-
     }
 
     void GuiObject::setupUniformsForGui(Shader shader) {

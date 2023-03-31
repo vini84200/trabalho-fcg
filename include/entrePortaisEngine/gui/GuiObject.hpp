@@ -257,12 +257,12 @@ namespace entre_portais {
         }
 
         inline glm::vec2 getBBMinScreenSpace() const {
-            return glm::vec2(currentPosX_ - currentWidth_ / 2,
+            return glm::vec2(currentWindowWidth_ - currentPosX_ - currentWidth_ / 2,
                              currentWindowHeight_ - currentPosY_ - currentHeight_ / 2);
         }
 
         inline glm::vec2 getBBMaxScreenSpace() const {
-            return glm::vec2(currentPosX_ + currentWidth_ / 2,
+            return glm::vec2(currentWindowWidth_ - currentPosX_ + currentWidth_ / 2,
                              currentWindowHeight_ - currentPosY_ + currentHeight_ / 2);
         }
 
