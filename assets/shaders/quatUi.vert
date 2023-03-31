@@ -19,7 +19,7 @@ void main()
     // Transforma a posição position_modelspace para a posição da tela
     vec2 position_screen = position_modelspace.xy * size + position;
 
-    TexCoord = position_modelspace.xy;
+    TexCoord = (position_modelspace.xy + 1)/2;
 
     gl_Position = vec4(position_screen, z_index, 1.0);
 }

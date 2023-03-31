@@ -121,11 +121,11 @@ namespace labirinto {
         auto uiTest = std::make_shared<entre_portais::GuiRectangle>("uiTest", glm::vec4(119.f / 256.f, 38.f / 256.f,
                                                                                         189.f / 256.f, 1));
         uiTest->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::Anchor::CENTER));
-        uiTest->setY(entre_portais::FixedToAnchorPosition(30.0f, entre_portais::Anchor::BOTTOM));
-        uiTest->setWitdhtConstraint(entre_portais::FixedScale(20.0f));
-        uiTest->setHeightConstraint(entre_portais::FixedScale(20.0f));
-        uiTest->setTexturePath("hair.png");
-        uiTest->setHoverTexturePath("cloth.png");
+        uiTest->setY(entre_portais::FixedToAnchorPosition(70.0f, entre_portais::Anchor::BOTTOM));
+        uiTest->setWitdhtConstraint(entre_portais::FixedScale(200.0f));
+        uiTest->setHeightConstraint(entre_portais::FixedScale(40.0f));
+        uiTest->setTexturePath("btn/Normal.png");
+        uiTest->setHoverTexturePath("btn/Hovered.png");
         addChild(uiTest);
     }
 
