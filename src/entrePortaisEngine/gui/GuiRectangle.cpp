@@ -28,6 +28,9 @@ namespace entre_portais {
             TextureManager::instance().getTexture(hover_texture_path_).Bind(1);
         }
         shader.setUniformInt("isHovering", isInHoverState());
+        shader.setUniformVec2("textureResize", texture_size_);
+        shader.setUniformVec2("textureOffset", texture_offset_);
+
         drawQuad(quadVao);
     }
 
@@ -70,5 +73,32 @@ namespace entre_portais {
         double x, y;
         glfwGetCursorPos(glfwGetCurrentContext(), &x, &y);
         ImGui::Text("Mouse: %f, %f", x, y);
+    }
+
+    void GuiRectangle::onClick(float posX, float posY) {
+        spdlog::trace("GuiRectangle::onClick({},{})", posX, posY);
+        if (click_callback_) {
+            click_callback_(posX, posY);
+        }
+    }
+
+    void GuiRectangle::registerClickCallback(std::function<void(float, float)> callback) {
+        click_callback_ = callback;
+    }
+
+    const glm::vec2 &GuiRectangle::getTextureSize() const {
+        return texture_size_;
+    }
+
+    void GuiRectangle::setTextureSize(const glm::vec2 &textureSize) {
+        texture_size_ = textureSize;
+    }
+
+    const glm::vec2 &GuiRectangle::getTextureOffset() const {
+        return texture_offset_;
+    }
+
+    void GuiRectangle::setTextureOffset(const glm::vec2 &textureOffset) {
+        texture_offset_ = textureOffset;
     }
 } // entre_portais

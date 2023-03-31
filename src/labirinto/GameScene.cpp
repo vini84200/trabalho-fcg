@@ -126,6 +126,12 @@ namespace labirinto {
         uiTest->setHeightConstraint(entre_portais::FixedScale(40.0f));
         uiTest->setTexturePath("btn/Normal.png");
         uiTest->setHoverTexturePath("btn/Hovered.png");
+        uiTest->setTextureSize(glm::vec2(2.0f, 4.0f));
+        uiTest->setTextureOffset(glm::vec2(1.0f, 0.6f));
+        uiTest->registerClickCallback([this, uiTest](float x, float y) {
+            uiTest->setTextureSize(glm::vec2(1.0f, 1.0f));
+            uiTest->setTextureOffset(glm::vec2(0.0f, 0.0f));
+        });
         addChild(uiTest);
     }
 

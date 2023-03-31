@@ -241,7 +241,7 @@ namespace entre_portais {
         void onMouseLeave();
 
         // Pos is in pixels from the center of the object's bounding box
-        void onClick(float posX, float posY);
+        virtual void onClick(float posX, float posY) {};
 
 
         /*
@@ -311,7 +311,6 @@ namespace entre_portais {
 
 
     private:
-
         PositionConstraint x_;
         PositionConstraint y_;
         ScaleConstraint width_;

@@ -32,6 +32,16 @@ namespace entre_portais {
     }
 
     void GuiObject::onMouseButton(int button, int action, int mods) {
+        // Check if the mouse is inside the bounding box of the object
+        double x, y;
+        glfwGetCursorPos(glfwGetCurrentContext(), &x, &y);
+        if (isInsideBB(x, y)) {
+            // If the mouse is inside the bounding box, check if the mouse button is pressed
+            if (action == GLFW_PRESS) {
+                // If the mouse button is pressed, check if the mouse is inside the bounding box of the object
+                onClick(x - currentPosX_, y - currentPosY_);
+            }
+        }
 
     }
 

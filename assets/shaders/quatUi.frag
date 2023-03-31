@@ -10,14 +10,18 @@ out vec4 outColor;
 uniform vec4 color;
 uniform uint flags;
 uniform bool isHovering;
+uniform vec2 textureResize;
+uniform vec2 textureOffset;
 
 uniform sampler2D texture;
 uniform sampler2D textureHover;
 
 void main()
 {
-    vec4 texColor = texture2D(texture, TexCoord.st);
-    vec4 texColorHover = texture2D(textureHover, TexCoord.st);
+    vec2 texCoord = TexCoord * textureResize + textureOffset;
+
+    vec4 texColor = texture2D(texture, texCoord.st);
+    vec4 texColorHover = texture2D(textureHover, texCoord.st);
     vec4 finalColor = color;
     if (isHovering && (flags & useHoverTexture) != 0u)
     {

@@ -94,8 +94,12 @@ namespace entre_portais {
     }
 
     void IGameNode::removeChild(std::shared_ptr<IGameNode> child) {
-        children_.erase(std::remove(children_.begin(), children_.end(), child), children_.end());
+        if (child.get() == nullptr) {
+            spdlog::warn("Trying to remove null child");
+            return;
+        }
         child->setParent(nullptr);
+        children_.erase(std::remove(children_.begin(), children_.end(), child), children_.end());
     }
 
     bool IGameNode::hasChild(std::shared_ptr<IGameNode> child) {

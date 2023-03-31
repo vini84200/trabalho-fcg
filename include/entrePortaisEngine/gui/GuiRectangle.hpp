@@ -35,15 +35,30 @@ namespace entre_portais {
 
         std::string getHoverTexturePath() const { return hover_texture_path_; }
 
+        const glm::vec2 &getTextureSize() const;
+
+        void setTextureSize(const glm::vec2 &textureSize);
+
+        const glm::vec2 &getTextureOffset() const;
+
+        void setTextureOffset(const glm::vec2 &textureOffset);
+
         void loadTextures();
 
         void CustomImGui() override;
+
+        void onClick(float posX, float posY) override;
+
+        void registerClickCallback(std::function<void(float, float)> callback);
 
 
     private:
         glm::vec4 color;
         std::string texture_path_;
         std::string hover_texture_path_;
+        std::function<void(float, float)> click_callback_;
+        glm::vec2 texture_size_ = glm::vec2(1.0f, 1.0f);
+        glm::vec2 texture_offset_ = glm::vec2(0.0f, 0.0f);
     };
 
 } // entre_portais
