@@ -8,6 +8,7 @@
 #include "labirinto/LabirintoMap.hpp"
 #include "labirinto/Pillar.hpp"
 #include "labirinto/Key.hpp"
+#include "entrePortaisEngine/gui/GuiRectangle.hpp"
 
 namespace labirinto {
     void GameScene::CustomImGui() {
@@ -114,6 +115,27 @@ namespace labirinto {
                                                                       *getPhysicsEngine().get(),
                                                                       *grnd->getTransform()));
         grnd->getRigidBody()->setIsStatic(true);
+
+
+        // Add UI test
+        auto uiTest = std::make_shared<entre_portais::GuiRectangle>("uiTest", glm::vec4(119.f / 256.f, 38.f / 256.f,
+                                                                                        189.f / 256.f, 1));
+        uiTest->setX(entre_portais::FixedToAnchorPosition(300.0f, entre_portais::Anchor::RIGHT));
+        uiTest->setY(entre_portais::FixedToAnchorPosition(70.0f, entre_portais::Anchor::BOTTOM));
+        uiTest->setWitdhtConstraint(entre_portais::FixedScale(200.0f));
+        uiTest->setHeightConstraint(entre_portais::FixedScale(40.0f));
+        uiTest->setTexturePath("btn/Normal.png");
+        uiTest->setHoverTexturePath("btn/Hovered.png");
+        uiTest->setTextureSize(glm::vec2(2.0f, 4.0f));
+        uiTest->setTextureOffset(glm::vec2(1.0f, 0.6f));
+        auto uiTestWk = std::weak_ptr<entre_portais::GuiRectangle>(uiTest);
+        uiTest->registerClickCallback([this, uiTestWk](float x, float y) {
+            auto uiTest = uiTestWk.lock();
+            uiTest->setTextureSize(glm::vec2(1.0f, 1.0f));
+            uiTest->setTextureOffset(glm::vec2(0.0f, 0.0f));
+            this->removeChild(uiTest);
+        });
+        addChild(uiTest);
     }
 
 } // labirinto

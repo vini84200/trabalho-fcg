@@ -173,4 +173,20 @@ namespace entre_portais {
         return glGetUniformLocation(program_, nameString.c_str());
 
     }
+
+    void Shader::setUniformVec2(const char *name, float x, float y) {
+        glUniform2f(glGetUniformLocation(program_, name), x, y);
+    }
+
+    void Shader::setUniformVec2(const char *name, const glm::vec2 &value) {
+        glUniform2f(glGetUniformLocation(program_, name), value.x, value.y);
+    }
+
+    void Shader::setUniformVec4(const char *name, float x, float y, float z, float w) {
+        glUniform4f(glGetUniformLocation(program_, name), x, y, z, w);
+    }
+
+    void Shader::setUniformVec4(const char *name, const glm::vec4 &value) {
+        glUniform4f(glGetUniformLocation(program_, name), value.x, value.y, value.z, value.w);
+    }
 }  // namespace entre_portais

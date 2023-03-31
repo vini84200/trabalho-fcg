@@ -3,6 +3,7 @@
 
 #include <memory>
 #include "Shader.hpp"
+#include "VertexArrayBuffer.hpp"
 
 namespace entre_portais {
     class Renderer;
@@ -24,6 +25,8 @@ namespace entre_portais {
         void unSubmit();
 
         virtual void render(RenderPass current_pass) = 0;
+
+        virtual void renderUi(VertexArrayBuffer *quadVao, Shader shader) {};
 
         void loadShader(std::string name);
 

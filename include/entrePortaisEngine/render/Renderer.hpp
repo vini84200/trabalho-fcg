@@ -75,7 +75,7 @@ namespace entre_portais {
         std::shared_ptr<FrameBuffer> frameBuffer;
         std::shared_ptr<Shader> postProcessShader;
 
-        std::shared_ptr<VertexArrayBuffer> quadVAO;
+        std::shared_ptr<VertexArrayBuffer> quadVAO_;
 
         // Configure post-processing
         bool hdr = true;
