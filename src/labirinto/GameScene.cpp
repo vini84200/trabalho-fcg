@@ -8,6 +8,7 @@
 #include "labirinto/LabirintoMap.hpp"
 #include "labirinto/Pillar.hpp"
 #include "labirinto/Key.hpp"
+#include "entrePortaisEngine/gui/GuiRectangle.hpp"
 
 namespace labirinto {
     void GameScene::CustomImGui() {
@@ -114,6 +115,16 @@ namespace labirinto {
                                                                       *getPhysicsEngine().get(),
                                                                       *grnd->getTransform()));
         grnd->getRigidBody()->setIsStatic(true);
+
+
+        // Add UI test
+        auto uiTest = std::make_shared<entre_portais::GuiRectangle>("uiTest", glm::vec4(119.f / 256.f, 38.f / 256.f,
+                                                                                        189.f / 256.f, 1));
+        uiTest->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::Anchor::CENTER));
+        uiTest->setY(entre_portais::FixedToAnchorPosition(30.0f, entre_portais::Anchor::BOTTOM));
+        uiTest->setWitdhtConstraint(entre_portais::RelativeScale(0.5f));
+        uiTest->setHeightConstraint(entre_portais::FixedScale(20.0f));
+        addChild(uiTest);
     }
 
 } // labirinto

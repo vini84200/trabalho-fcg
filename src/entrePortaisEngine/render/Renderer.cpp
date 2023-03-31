@@ -31,14 +31,14 @@ namespace entre_portais {
         vboPos.addAttribute(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) 0);
         vboPos.setData(quadVertices, sizeof(quadVertices));
         vboPos.setUsage(GL_STATIC_DRAW);
-        quadVAO->addBufferToQueue(&vboPos);
+        quadVAO_->addBufferToQueue(&vboPos);
 
         texPos.addAttribute(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void *) (3 * sizeof(float)));
         texPos.setData(quadVertices, sizeof(quadVertices));
         texPos.setUsage(GL_STATIC_DRAW);
-        quadVAO->addBufferToQueue(&texPos);
+        quadVAO_->addBufferToQueue(&texPos);
 
-        quadVAO->Commit();
+        quadVAO_->Commit();
     }
 
     int Renderer::submit(IRenderable *renderable, int shaderID, RenderPasses passes_to_render) {
@@ -63,8 +63,8 @@ namespace entre_portais {
         if (postProcessShader.get() == nullptr) {
             postProcessShader = std::make_shared<Shader>(sm->getShader("postprocess"));
         }
-        if (quadVAO.get() == nullptr) {
-            quadVAO = std::make_shared<VertexArrayBuffer>();
+        if (quadVAO_.get() == nullptr) {
+            quadVAO_ = std::make_shared<VertexArrayBuffer>();
             createQuadVAO();
         }
 
@@ -168,15 +168,31 @@ namespace entre_portais {
         postProcessShader->setUniformFloat("exposure", exposure);
 
 
-        quadVAO->bind();
+        quadVAO_->bind();
         glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-        quadVAO->unbind();
+        quadVAO_->unbind();
 
 
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPopDebugGroup();
-        #endif
+#endif
 
+#ifdef OPENGL_DEBUG
+        glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 6, -1, "UI");
+#endif
+        glClear(GL_DEPTH_BUFFER_BIT);
+        VertexArrayBuffer *quadVAO = quadVAO_.get();
+        for (auto [shaderID, objs]: renderables_[UI]) {
+            auto shader = sm->getShaderByID(shaderID);
+            shader.use();
+            camera->configureShaderUniformsForUi(shader);
+            for (auto [_, obj]: objs) {
+                obj->renderUi(quadVAO, shader);
+            }
+        }
+#ifdef OPENGL_DEBUG
+        glPopDebugGroup();
+#endif
     }
 
     int Renderer::submit(IRenderable *renderable, Shader shader, RenderPasses passes_to_render) {

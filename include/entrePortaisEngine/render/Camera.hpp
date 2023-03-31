@@ -30,6 +30,10 @@ namespace entre_portais {
 
         void configureShaderUniforms(Shader shader);
 
+        void configureShaderUniformsOnlyViewRotation(Shader shader);
+
+        void configureShaderUniformsForUi(Shader shader);
+
         glm::mat4 getProjectionMatrix();
 
         glm::mat4 getViewMatrix();
@@ -46,8 +50,6 @@ namespace entre_portais {
 
         void onExit() override {};
 
-        void CustomImGui() override {};
-
         std::shared_ptr<IScene> getScene() override;
 
         void setScene(std::shared_ptr<IScene> scene) override;
@@ -55,6 +57,12 @@ namespace entre_portais {
         bool hasScene() override;
 
         glm::vec4 getViewVector();
+
+        /*
+         *  Funções para debug
+         */
+
+        void CustomImGui() override {};
 
         std::optional<ImVec2> worldToImScreen(glm::vec4 worldPoint);
 
@@ -84,7 +92,6 @@ namespace entre_portais {
         int width_;
         int height_;
 
-        void configureShaderUniformsOnlyViewRotation(Shader shader);
     };
 
 }  // namespace entre_Portais

@@ -260,4 +260,10 @@ namespace entre_portais {
         ImGui::GetBackgroundDrawList(ImGui::GetMainViewport())->AddCircleFilled(screen_pos.value(), size, color);
     }
 
+    void Camera::configureShaderUniformsForUi(Shader shader) {
+        // Configure shader uniforms
+        shader.setUniformVec3("windowSize", glm::vec3(ImGui::GetIO().DisplaySize.x, ImGui::GetIO().DisplaySize.y, 0));
+
+    }
+
 }

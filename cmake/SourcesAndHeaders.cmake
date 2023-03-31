@@ -18,19 +18,24 @@ set(sources
         src/entrePortaisEngine/render/ShadersManager.cpp
         src/entrePortaisEngine/render/IRenderable.cpp
         src/entrePortaisEngine/render/Renderer.cpp
-		src/entrePortaisEngine/render/Texture.cpp
-		src/entrePortaisEngine/render/TextureManager.cpp
-		src/entrePortaisEngine/render/FrameBuffer.cpp
-		src/entrePortaisEngine/render/PointLight.cpp
-		src/entrePortaisEngine/meshes/IMesh.cpp
-		src/entrePortaisEngine/meshes/CubeMesh.cpp
-		src/entrePortaisEngine/meshes/CylinderMesh.cpp
-		src/entrePortaisEngine/meshes/PlaneMesh.cpp
-		src/entrePortaisEngine/meshes/MeshFromObj.cpp
-		src/entrePortaisEngine/meshes/ComputeNormals.cpp
-		src/entrePortaisEngine/Characters/FirstPersonCharacter.cpp
-		src/entrePortaisEngine/Objects/ObjFromFile.cpp
-		src/entrePortaisEngine/Objects/AmbientFromTexture.cpp
+        src/entrePortaisEngine/render/Texture.cpp
+        src/entrePortaisEngine/render/TextureManager.cpp
+        src/entrePortaisEngine/render/FrameBuffer.cpp
+        src/entrePortaisEngine/render/PointLight.cpp
+
+        src/entrePortaisEngine/gui/GuiObject.cpp
+        src/entrePortaisEngine/gui/GuiRectangle.cpp
+
+
+        src/entrePortaisEngine/meshes/IMesh.cpp
+        src/entrePortaisEngine/meshes/CubeMesh.cpp
+        src/entrePortaisEngine/meshes/CylinderMesh.cpp
+        src/entrePortaisEngine/meshes/PlaneMesh.cpp
+        src/entrePortaisEngine/meshes/MeshFromObj.cpp
+        src/entrePortaisEngine/meshes/ComputeNormals.cpp
+        src/entrePortaisEngine/Characters/FirstPersonCharacter.cpp
+        src/entrePortaisEngine/Objects/ObjFromFile.cpp
+        src/entrePortaisEngine/Objects/AmbientFromTexture.cpp
 		src/entrePortaisEngine/physics/PhysicsEngine.cpp
 		src/entrePortaisEngine/physics/RigidBody.cpp
 		src/entrePortaisEngine/physics/ICollider.cpp

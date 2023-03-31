@@ -20,9 +20,17 @@ namespace entre_portais {
 
         void setUniformFloat(const char *name, float value);
 
+        void setUniformVec2(const char *name, float x, float y);
+
+        void setUniformVec2(const char *name, const glm::vec2 &value);
+
         void setUniformVec3(const char *name, float x, float y, float z);
 
         void setUniformVec3(const char *name, const glm::vec3 &value);
+
+        void setUniformVec4(const char *name, float x, float y, float z, float w);
+
+        void setUniformVec4(const char *name, const glm::vec4 &value);
 
         void setUniformMat4(const char *name, const float *value);
 
