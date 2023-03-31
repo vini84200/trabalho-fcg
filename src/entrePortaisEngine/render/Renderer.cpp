@@ -183,7 +183,7 @@ namespace entre_portais {
         glClear(GL_DEPTH_BUFFER_BIT);
         VertexArrayBuffer *quadVAO = quadVAO_.get();
         for (auto [shaderID, objs]: renderables_[UI]) {
-            auto shader = sm->getShaderByID(shaderID);
+            Shader shader = sm->getShaderByID(shaderID);
             shader.use();
             camera->configureShaderUniformsForUi(shader);
             for (auto [_, obj]: objs) {

@@ -31,22 +31,22 @@ namespace entre_portais {
                         shaderInUse.setUniformInt("normalTexture", 2);
                         shaderInUse.setUniformInt("specularHighlightTexture", 3);
                         if (material.diffuse_texname != "") {
-                            Texture texture = TextureManager::instance().getTexture(material.diffuse_texname);
+                            Texture texture = TextureManager::instance().getTextureSync(material.diffuse_texname);
                             texture.Bind(0);
                             textureUsage |= 1;
                         }
                         if (material.specular_texname != "") {
-                            Texture texture = TextureManager::instance().getTexture(material.specular_texname);
+                            Texture texture = TextureManager::instance().getTextureSync(material.specular_texname);
                             texture.Bind(1);
                             textureUsage |= 2;
                         }
                         if (material.normal_texname != "") {
-                            Texture texture = TextureManager::instance().getTexture(material.normal_texname);
+                            Texture texture = TextureManager::instance().getTextureSync(material.normal_texname);
                             texture.Bind(2);
                             textureUsage |= 4;
                         }
                         if (material.specular_highlight_texname != "") {
-                            Texture texture = TextureManager::instance().getTexture(
+                            Texture texture = TextureManager::instance().getTextureSync(
                                     material.specular_highlight_texname);
                             texture.Bind(3);
                             textureUsage |= 8;
@@ -73,7 +73,7 @@ namespace entre_portais {
                         shaderInUse.setUniformFloat("alpha", material.dissolve);
 
                         if (material.diffuse_texname != "") {
-                            texture = TextureManager::instance().getTexture(material.diffuse_texname);
+                            texture = TextureManager::instance().getTextureSync(material.diffuse_texname);
                             texture->Bind();
                             shaderInUse.setUniformInt("texture_", 1);
                         } else {
@@ -169,7 +169,7 @@ namespace entre_portais {
             if (material.diffuse_texname.empty()) {
                 continue;
             }
-            textures_.insert({i, TextureManager::instance().getTexture(material.diffuse_texname)});
+            textures_.insert({i, TextureManager::instance().getTextureSync(material.diffuse_texname)});
         }
     }
 

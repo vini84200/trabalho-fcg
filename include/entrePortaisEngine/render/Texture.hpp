@@ -3,23 +3,16 @@
 
 #include <string>
 #include "imgui.h"
+#include "stb_image.h"
 
 namespace entre_portais {
 
+    struct TextureData;
+
     class Texture {
     public:
-        enum class Type {
-            DIFFUSE,
-            SPECULAR,
-            NORMAL,
-            AMBIENT,
-            EMISSIVE,
-            SHININESS,
-            OPACITY,
-            DISPLACEMENT,
-            LIGHTMAP,
-            REFLECTION,
-        }; //TODO: Use
+        Texture(std::string name, TextureData data);
+
         unsigned int GetTextureID() const;
 
         ImTextureID GetImTextureID() const;
@@ -32,7 +25,7 @@ namespace entre_portais {
 
         void Unbind() const;
 
-        Texture() = default;
+        Texture();
 
     private:
         Texture(std::string name);
@@ -43,6 +36,7 @@ namespace entre_portais {
 
         friend class TextureManager;
 
+        void setData(TextureData data);
     };
 
 } // entre_portais

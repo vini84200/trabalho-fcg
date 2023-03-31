@@ -9,6 +9,7 @@
 #include "labirinto/Pillar.hpp"
 #include "labirinto/Key.hpp"
 #include "entrePortaisEngine/gui/GuiRectangle.hpp"
+#include "entrePortaisEngine/Window.hpp"
 #include "testGame/TeapotObject.hpp"
 
 namespace labirinto {
@@ -143,7 +144,7 @@ namespace labirinto {
 
 
         // Add UI test
-        /*auto uiTest = std::make_shared<entre_portais::GuiRectangle>("uiTest", glm::vec4(119.f / 256.f, 38.f / 256.f,
+        auto uiTest = std::make_shared<entre_portais::GuiRectangle>("uiTest", glm::vec4(119.f / 256.f, 38.f / 256.f,
                                                                                         189.f / 256.f, 1));
         uiTest->setX(entre_portais::FixedToAnchorPosition(300.0f, entre_portais::Anchor::RIGHT));
         uiTest->setY(entre_portais::FixedToAnchorPosition(70.0f, entre_portais::Anchor::BOTTOM));
@@ -160,7 +161,7 @@ namespace labirinto {
             uiTest->setTextureOffset(glm::vec2(0.0f, 0.0f));
             this->removeChild(uiTest);
         });
-        addChild(uiTest);*/
+        addChild(uiTest);
     }
 
 } // labirinto

@@ -59,12 +59,15 @@ set(sources
 		src/testGame/Player.cpp
 		src/testGame/TeapotObject.cpp
 		src/testGame/Cuelho.cpp
-        src/testGame/EmptyObject.cpp
+		src/testGame/EmptyObject.cpp
 		src/testGame/Ball.cpp
+
+		src/utils/utils.cpp
 		)
 
 set(exe_sources
 		src/main.cpp
+		src/labirinto/LoadingScene.cpp
 		src/labirinto/GameScene.cpp
 		src/labirinto/Player.cpp
 		src/labirinto/LabirintoMap.cpp

@@ -15,7 +15,7 @@ namespace entre_portais {
 
         void initialize() override;
 
-        void renderUi(VertexArrayBuffer *quadVao, Shader shader) override;
+        void renderUi(VertexArrayBuffer *quadVao, Shader &shader) override;
 
         void setColor(glm::vec4 color) { this->color = color; }
 

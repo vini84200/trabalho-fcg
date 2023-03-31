@@ -1,5 +1,6 @@
 #include "entrePortaisEngine/render/Texture.hpp"
 #include "glad/glad.h"
+#include "entrePortaisEngine/render/TextureManager.hpp"
 
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -37,7 +38,6 @@ namespace entre_portais {
 
     void Texture::Bind() const {
         if (!valid_) {
-            spdlog::error("Trying to bind invalid texture {}", name_);
             return;
         }
         glBindTexture(GL_TEXTURE_2D, id_);
@@ -45,7 +45,6 @@ namespace entre_portais {
 
     void Texture::Unbind() const {
         if (!valid_) {
-            spdlog::error("Trying to unbind invalid texture {}", name_);
             return;
         }
         glBindTexture(GL_TEXTURE_2D, 0);
@@ -62,7 +61,6 @@ namespace entre_portais {
 
     ImTextureID Texture::GetImTextureID() const {
         if (!valid_) {
-            spdlog::error("Trying to get id of invalid texture {}", name_);
             return 0;
         }
         return (ImTextureID) id_;
@@ -70,7 +68,6 @@ namespace entre_portais {
 
     void Texture::Bind(unsigned int slot) const {
         if (!valid_) {
-            spdlog::error("Trying to bind invalid texture {}", name_);
             return;
         }
         if (slot > 31) {
@@ -79,5 +76,49 @@ namespace entre_portais {
         }
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, id_);
+    }
+
+    Texture::Texture(std::string name, TextureData data) {
+        glGenTextures(1, &id_);
+        glBindTexture(GL_TEXTURE_2D, id_);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
+        if (data.data) {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.width, data.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data);
+            glGenerateMipmap(GL_TEXTURE_2D);
+        } else {
+            std::string path = "assets/textures/" + name;
+            spdlog::error("Failed to load texture {} at {}", name, path);
+        }
+
+        stbi_image_free(data.data);
+
+    }
+
+    Texture::Texture() {
+        glGenTextures(1, &id_);
+        glBindTexture(GL_TEXTURE_2D, id_);
+
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+        glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+    }
+
+    void Texture::setData(TextureData data) {
+        spdlog::info("Setting data for texture {}", name_);
+        if (data.data) {
+            glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, data.width, data.height, 0, GL_RGBA, GL_UNSIGNED_BYTE, data.data);
+            glGenerateMipmap(GL_TEXTURE_2D); // TODO: generate mipmaps outside of the main thread
+//            stbi_image_free(data.data);
+        } else {
+            spdlog::error("Failed to load texture {} at {}", name_, "assets/textures/" + name_);
+        }
+
+
     }
 } // entre_portais
