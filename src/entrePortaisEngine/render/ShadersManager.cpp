@@ -12,6 +12,7 @@ namespace entre_portais {
     }
 
     Shader ShadersManager::createShader(std::string name) {
+        assert(utils::is_opengl_thread());
         int id = ++lastID_;
         std::string arqVer = "assets/shaders/" + name + ".vert";
         std::string arqFrag = "assets/shaders/" + name + ".frag";

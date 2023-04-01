@@ -21,7 +21,7 @@ namespace entre_portais {
                               1 * (isUsingTexture() ? 1 : 0)
                               + 2 * (isUsingHoverTexture() ? 1 : 0));
         if (isUsingTexture()) {
-            shader.setUniformInt("texture", 0);
+            shader.setUniformInt("textureBase", 0);
             TextureManager::instance().getTextureSync(texture_path_).Bind(0);
         }
         if (isUsingHoverTexture()) {

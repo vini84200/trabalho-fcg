@@ -17,8 +17,8 @@ void labirinto::WinScene::initialize() {
     auto center = std::make_shared<entre_portais::GuiRectangle>("CenterText", "ui/win_info.png");
     center->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::CENTER));
     center->setY(entre_portais::FixedToAnchorPosition(-100.0f, entre_portais::CENTER));
-    center->setWitdhtConstraint(entre_portais::FixedScale(708.0f * 0.8));
-    center->setHeightConstraint(entre_portais::FixedScale(108.0f * 0.8));
+    center->setWitdhtConstraint(entre_portais::FixedScale(851.0f * 0.8));
+    center->setHeightConstraint(entre_portais::FixedScale(313.0f * 0.8));
     center->setZIndex(-0.3f);
 
     auto back = std::make_shared<entre_portais::GuiRectangle>("Back", "ui/menu_principal.png");

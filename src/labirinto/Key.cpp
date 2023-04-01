@@ -3,6 +3,9 @@
 #include "entrePortaisEngine/meshes/MeshFromObj.hpp"
 #include "labirinto/InvisibleBox.hpp"
 #include "GLFW/glfw3.h"
+#include "entrePortaisEngine/Window.hpp"
+#include "labirinto/WinScene.hpp"
+#include "labirinto/LoseScene.hpp"
 
 namespace labirinto {
 
@@ -26,6 +29,11 @@ namespace labirinto {
                 return;
             }
 
+            if (!isDoor_) {
+                spdlog::info("Player has lost");
+                entre_portais::IObject::getScene()->getWindow()->setScene<LoseScene>();
+                entre_portais::IObject::getScene()->getWindow()->showCursor(true);
+            }
             animationRunning_ = true;
         }
     }
@@ -47,10 +55,17 @@ namespace labirinto {
             t += deltaTime;
             float animationTime = t; // Permite depois mudar a função de interpolação 
             if (animationTime >= 1) {
-                // Player won
-                spdlog::info("You won!!");
-                exit();
-                return;
+                animationTime = 0.999f;
+                if (t >= 2) {
+                    // Player won
+                    if (isDoor_) {
+                        spdlog::info("Player won");
+                        entre_portais::IObject::getScene()->getWindow()->setScene<WinScene>();
+                        entre_portais::IObject::getScene()->getWindow()->showCursor(true);
+
+                    } else {
+                    }
+                }
             }
             transform_.setPosition(animation.cubicPositionBezierCurve(animationTime));
             transform_.setRotation(animation.cubicRotationBezierCurve(animationTime));

@@ -19,14 +19,14 @@ void labirinto::MenuScene::initialize() {
     auto center = std::make_shared<entre_portais::GuiRectangle>("CenterText", "ui/menu_box.png");
     center->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::CENTER));
     center->setY(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::CENTER));
-    center->setWitdhtConstraint(entre_portais::FixedScale(537.0f));
-    center->setHeightConstraint(entre_portais::FixedScale(313.0f));
+    center->setWitdhtConstraint(entre_portais::FixedScale(536.0f));
+    center->setHeightConstraint(entre_portais::FixedScale(357.0f));
     center->setZIndex(-0.3f);
 
     auto start = std::make_shared<entre_portais::GuiRectangle>("Start", "ui/jogar.png");
     start->setHoverTexturePath("ui/JogarH.png");
     start->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::CENTER));
-    start->setY(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::CENTER));
+    start->setY(entre_portais::FixedToAnchorPosition(-54.0f, entre_portais::CENTER));
     start->setWitdhtConstraint(entre_portais::FixedScale(288.0f));
     start->setHeightConstraint(entre_portais::FixedScale(54.0f));
     start->setZIndex(-0.4f);
@@ -38,7 +38,7 @@ void labirinto::MenuScene::initialize() {
     auto help = std::make_shared<entre_portais::GuiRectangle>("Help", "ui/ajuda.png");
     help->setHoverTexturePath("ui/AjudaH.png");
     help->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::CENTER));
-    help->setY(entre_portais::FixedToAnchorPosition(60.0f, entre_portais::CENTER));
+    help->setY(entre_portais::FixedToAnchorPosition(6.0f, entre_portais::CENTER));
     help->setWitdhtConstraint(entre_portais::FixedScale(288.0f));
     help->setHeightConstraint(entre_portais::FixedScale(54.0f));
     help->setZIndex(-0.4f);
@@ -49,7 +49,7 @@ void labirinto::MenuScene::initialize() {
     auto credits = std::make_shared<entre_portais::GuiRectangle>("Credits", "ui/creditos.png");
     credits->setHoverTexturePath("ui/CreditosH.png");
     credits->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::CENTER));
-    credits->setY(entre_portais::FixedToAnchorPosition(120.0f, entre_portais::CENTER));
+    credits->setY(entre_portais::FixedToAnchorPosition(66.0f, entre_portais::CENTER));
     credits->setWitdhtConstraint(entre_portais::FixedScale(288.0f));
     credits->setHeightConstraint(entre_portais::FixedScale(54.0f));
     credits->setZIndex(-0.4f);
@@ -60,7 +60,7 @@ void labirinto::MenuScene::initialize() {
     auto exit = std::make_shared<entre_portais::GuiRectangle>("Exit", "ui/sair.png");
     exit->setHoverTexturePath("ui/SairH.png");
     exit->setX(entre_portais::FixedToAnchorPosition(0.0f, entre_portais::CENTER));
-    exit->setY(entre_portais::FixedToAnchorPosition(180.0f, entre_portais::CENTER));
+    exit->setY(entre_portais::FixedToAnchorPosition(126.0f, entre_portais::CENTER));
     exit->setWitdhtConstraint(entre_portais::FixedScale(288.0f));
     exit->setHeightConstraint(entre_portais::FixedScale(54.0f));
     exit->setZIndex(-0.4f);

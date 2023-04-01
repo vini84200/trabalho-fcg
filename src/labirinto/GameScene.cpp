@@ -141,6 +141,7 @@ namespace labirinto {
         light2->getTransform()->setPosition(glm::vec3(8.0, 3.0, 9.0));
         addChild(light2);
 
+
         // Adicionar o objetivo
 
         auto grnd = std::make_shared<entre_portais::ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");

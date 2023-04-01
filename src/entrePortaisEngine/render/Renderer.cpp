@@ -58,7 +58,9 @@ namespace entre_portais {
         auto sm = ShadersManager::getInstance();
 
         if (frameBuffer.get() == nullptr) {
-            frameBuffer = std::make_shared<FrameBuffer>();
+            int width, height;
+            glfwGetWindowSize(glfwGetCurrentContext(), &width, &height);
+            frameBuffer = std::make_shared<FrameBuffer>(width, height);
         }
         if (postProcessShader.get() == nullptr) {
             postProcessShader = std::make_shared<Shader>(sm->getShader("postprocess"));

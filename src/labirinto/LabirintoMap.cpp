@@ -131,7 +131,7 @@ namespace labirinto {
         y -= 40.0;
         x *= (40.0 / 41.0);
         y *= (40.0 / 41.0);
-        spdlog::info("X and Y at {}, {}", x, y);
+//        spdlog::info("X and Y at {}, {}", x, y);
         glm::vec2 position = glm::vec2(x, y);
         return position;
     }
@@ -145,7 +145,7 @@ namespace labirinto {
             if (array_[indexes.at(i)]) {
                 glm::vec2 positionToDraw = indexToPos(indexes.at(i));
                 colliders_[i]->getTransform()->setPosition(glm::vec3(positionToDraw.x, 0, positionToDraw.y));
-                spdlog::info("Collider {} at {}", i, glm::to_string(indexToPos(indexes.at(i))));
+//                spdlog::info("Collider {} at {}", i, glm::to_string(indexToPos(indexes.at(i))));
             }
         }
     }
