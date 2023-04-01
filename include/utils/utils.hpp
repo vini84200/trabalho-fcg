@@ -14,6 +14,9 @@ namespace utils {
             return a;
         }
     }
+
+    std::string getTexturePath(const std::string& name);
+
 }
 
 #define MACHINE_EPSILON std::numeric_limits<float>::epsilon()

@@ -6,7 +6,7 @@
 #define ENTREPORTAIS_AMBIENTFROMTEXTURE_HPP
 
 #include "entrePortaisEngine/IObject.hpp"
-#include "entrePortaisEngine/render/Texture.hpp"
+#include "entrePortaisEngine/render/TextureHandle.hpp"
 
 namespace entre_portais {
 

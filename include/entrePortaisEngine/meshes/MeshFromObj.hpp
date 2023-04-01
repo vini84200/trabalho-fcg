@@ -2,14 +2,15 @@
 #define ENTREPORTAIS_MESHFROMOBJ_HPP
 
 #include <functional>
+
 #include "IMesh.hpp"
-#include "entrePortaisEngine/tasks/TaskHandler.hpp"
-#include "entrePortaisEngine/tasks/ITask.hpp"
-#include "tiny_obj_loader.h"
 #include "entrePortaisEngine/Compatibility.hpp"
-#include "entrePortaisEngine/render/Texture.hpp"
-#include "spdlog/spdlog.h"
 #include "entrePortaisEngine/render/Renderer.hpp"
+#include "entrePortaisEngine/render/TextureHandle.hpp"
+#include "entrePortaisEngine/tasks/ITask.hpp"
+#include "entrePortaisEngine/tasks/TaskHandler.hpp"
+#include "spdlog/spdlog.h"
+#include "tiny_obj_loader.h"
 
 #define GLM_ENABLE_EXPERIMENTAL
 

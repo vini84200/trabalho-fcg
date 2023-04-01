@@ -109,6 +109,40 @@ namespace entre_portais {
 
         void removeTask(TaskHandler &taskHandler);
 
+        template<typename T, typename... Args>
+        TaskHandler addSyncTask(Args &&... args) {
+            static_assert(std::is_base_of<ITask, T>::value, "T must inherit from ITask");
+            int taskID;
+
+            {
+                // Obtain the next task ID
+                std::lock_guard<std::mutex> lock(nextTaskIDMutex_);
+                taskID = nextTaskID_++;
+            }
+
+            T *task = new T(std::forward<Args>(args)...);
+            auto t = static_cast<ITask *>(task);
+            TaskHandler taskHandler(taskID, task, true);
+
+            {
+                std::lock_guard<std::mutex> lock(tasksMutex_);
+                tasks_[taskHandler] = task;
+            }
+
+            t->setID(taskID);
+
+            {
+                std::lock_guard<std::mutex> lock(queueMutex_);
+                syncTaskQueue_.push(taskHandler);
+            }
+
+            logger_.getLogger()->info("Sync Task added to the queue");
+            task->setStatus(TaskStatus::WAITING); // setStatus is thread-safe
+            task->setID(taskID); // setID is thread-safe
+            return taskHandler;
+        }
+
+
         TaskStatus isFinished(TaskHandler &taskHandler);
 
         std::vector<std::shared_ptr<WorkerStruct>> getWorkers() {
@@ -122,6 +156,11 @@ namespace entre_portais {
 
         void stop();
 
+        /**
+         ** @brief Runs the tasks in the syncTaskQueue_ until the maxTime is reached.
+         ** @param maxTime The maximum time to run the tasks, in seconds.
+         **/
+        void RunSyncTasks(float maxTime);
     private:
         TaskManager();
 
@@ -130,6 +169,7 @@ namespace entre_portais {
         void OnTaskFinished(TaskHandler &taskHandler);
 
         [[noreturn]] void WorkerThread(WorkerStruct &signal);
+
 
         TaskHandler GetNextTask();
 
@@ -149,6 +189,7 @@ namespace entre_portais {
 
         // Thread safe queue
         std::queue<TaskHandler> taskQueue_;
+        std::queue<TaskHandler> syncTaskQueue_;
         std::mutex queueMutex_;
         std::condition_variable queueCondition_;
 
@@ -163,6 +204,8 @@ namespace entre_portais {
         // Logger
         Logger logger_ = Logger("TaskManager");
         bool stop_ = false;
+
+        TaskHandler GetNextSyncTask();
     };
 
 
