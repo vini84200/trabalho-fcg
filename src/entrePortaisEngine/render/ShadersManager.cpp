@@ -1,5 +1,6 @@
 #include "entrePortaisEngine/render/ShadersManager.hpp"
 #include "entrePortaisEngine/render/Shader.hpp"
+#include "utils/utils.hpp"
 
 namespace entre_portais {
     ShadersManager *ShadersManager::instance_ = nullptr;
