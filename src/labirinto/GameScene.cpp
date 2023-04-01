@@ -56,6 +56,7 @@ namespace labirinto {
         auto player = std::make_shared<labirinto::Player>(name);
         addChild(player);
         player->getTransform()->setPosition(glm::vec3(35.0f, 3.0f, 0.0f));
+        player->getTransform()->setRotationZYX(glm::vec3(0.0, -M_PI_2, 0.0));
         player->initializePropagate();
         setCamera(player->getCamera());
 
