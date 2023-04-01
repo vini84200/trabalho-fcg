@@ -322,5 +322,9 @@ namespace entre_portais {
         return cursorIsVisible_;
     }
 
+    void Window::setRunning(bool running) {
+        running_ = running;
+    }
+
 
 }  // namespace entre_portais

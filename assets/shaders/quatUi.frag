@@ -20,8 +20,8 @@ void main()
 {
     vec2 texCoord = TexCoord * textureResize + textureOffset;
 
-    vec4 texColor = texture2D(texture, texCoord.st);
-    vec4 texColorHover = texture2D(textureHover, texCoord.st);
+    vec4 texColor = texture(texture, texCoord.st);
+    vec4 texColorHover = texture(textureHover, texCoord.st);
     vec4 finalColor = color;
     if (isHovering && (flags & useHoverTexture) != 0u)
     {

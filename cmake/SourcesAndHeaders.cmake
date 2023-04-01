@@ -68,13 +68,17 @@ set(exe_sources
 		src/main.cpp
 		src/labirinto/LoadingScene.cpp
 		src/labirinto/MenuScene.cpp
+		src/labirinto/HelpScene.cpp
+		src/labirinto/CreditsScene.cpp
+		src/labirinto/WinScene.cpp
+		src/labirinto/LoseScene.cpp
 		src/labirinto/GameScene.cpp
 		src/labirinto/Player.cpp
 		src/labirinto/LabirintoMap.cpp
 		src/labirinto/InvisibleBox.cpp
-        src/labirinto/Pillar.cpp
+		src/labirinto/Pillar.cpp
 		src/labirinto/Key.cpp
-        ${sources}
+		${sources}
 		)
 
 set(headers

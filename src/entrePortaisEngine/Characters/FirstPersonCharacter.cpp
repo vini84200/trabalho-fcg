@@ -86,7 +86,7 @@ namespace entre_portais {
         auto newDirection = transform_.rotateVector(direction_);
         float sprintBoost;
         if (sprint_) {
-            sprintBoost = 3.0;
+            sprintBoost = 2.0;
         } else {
             sprintBoost = 1.0;
         }

@@ -51,6 +51,8 @@ namespace entre_portais {
             nextScene_ = std::make_shared<T>(std::forward<Args>(args)...);
         }
 
+        void setRunning(bool running);
+
     protected:
         void update(float deltaTime);
 
