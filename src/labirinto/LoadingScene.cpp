@@ -20,14 +20,19 @@ namespace labirinto {
         // Wait for the screen to be drawn on the first frame
         if (getWindow()->getFrameCount() > 3) {
             if (texturePreloadQueue.empty()) {
-                // Load the next scene
-                getWindow()->setScene<labirinto::MenuScene>();
+                // Start timer to load the next scene
+                finishTimer_ += deltaTime;
             } else {
                 // Load the next texture
                 auto texturePath = texturePreloadQueue.front();
                 texturePreloadQueue.pop();
                 entre_portais::TextureManager::instance().LoadTexture(texturePath);
             }
+        }
+
+        if (finishTimer_ > 1.2f) {
+            // Load the next scene
+            getWindow()->setScene<labirinto::MenuScene>();
         }
     }
 
@@ -43,6 +48,25 @@ namespace labirinto {
         texturePreloadQueue.push("skin.png");
         texturePreloadQueue.push("hair.png");
         texturePreloadQueue.push("StoneBricksBeige015_COL_2K.jpg");
+        texturePreloadQueue.push("ui/ajuda.png");
+        texturePreloadQueue.push("ui/AjudaH.png");
+        texturePreloadQueue.push("ui/creditos.png");
+        texturePreloadQueue.push("ui/CreditosH.png");
+        texturePreloadQueue.push("ui/credits_info.png");
+        texturePreloadQueue.push("ui/help_info.png");
+        texturePreloadQueue.push("ui/jogar.png");
+        texturePreloadQueue.push("ui/jogarH.png");
+        texturePreloadQueue.push("ui/menu.png");
+        texturePreloadQueue.push("ui/menu_box.png");
+        texturePreloadQueue.push("ui/menu_principal.png");
+        texturePreloadQueue.push("ui/Menu_principalH.png");
+        texturePreloadQueue.push("ui/sair.png");
+        texturePreloadQueue.push("ui/SairH.png");
+        texturePreloadQueue.push("ui/voltar.png");
+        texturePreloadQueue.push("ui/VoltarH.png");
+        texturePreloadQueue.push("ui/win_info.png");
+
+
 
         // Loading Text
         auto loadingText = std::make_shared<entre_portais::GuiRectangle>("LoadingText",

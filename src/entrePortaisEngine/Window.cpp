@@ -1,7 +1,9 @@
 #include "entrePortaisEngine/Window.hpp"
 #include "entrePortaisEngine/Compatibility.hpp"
 #include "entrePortaisEngine/Logger.hpp"
+#include "entrePortaisEngine/tasks/TaskManager.hpp"
 #include "utils/utils.hpp"
+#include <bits/types/struct_tm.h>
 #include <unistd.h>
 
 namespace entre_portais {
@@ -161,10 +163,13 @@ namespace entre_portais {
 
             glfwSwapBuffers(window_);
             glfwPollEvents();
+
+            // Run some sync tasks
+            auto tm = TaskManager::getInstance();
+            float maxTime = 1.0 / targetFPS_ - timeDifference;
+            tm->RunSyncTasks(maxTime);
+
             if (timeDifference < 1.0 / targetFPS_) {
-#ifdef USE_OPSYS_SLEEP
-                usleep((1.0 / targetFPS_ - timeDifference) * 1000000);
-#endif
             } else if (timeDifference > 1.0 / WARNING_FPS) {
                 getLogger()->warn("Running behind by {} seconds, expected {} seconds", timeDifference,
                                   1.0 / targetFPS_);

@@ -90,14 +90,21 @@ namespace entre_portais {
         } else {
             sprintBoost = 1.0;
         }
-        // transform_.move(newDirection * speed_ * deltaTime * sprintBoost);
-        glm::vec3 velocity = rigidBody_->getVelocity();
-        glm::vec3 diffVelocity = newDirection * speed_ * sprintBoost * 10.f - velocity;
-        float diffVelocityLength = glm::length(diffVelocity);
-        float maxVelocityChange = rigidBody_->getMass() * 10.f * sprintBoost;
-        float impulse = std::min(maxVelocityChange, diffVelocityLength);
-        glm::vec3 impulseVector = impulse * glm::normalize(diffVelocity);
-        rigidBody_->applyImpulse(impulseVector);
+
+        bool hasRigidBody = rigidBody_ != nullptr;
+        if (hasRigidBody)
+        {
+            glm::vec3 velocity = rigidBody_->getVelocity();
+            glm::vec3 diffVelocity = newDirection * speed_ * sprintBoost * 10.f - velocity;
+            float diffVelocityLength = glm::length(diffVelocity);
+            float maxVelocityChange = rigidBody_->getMass() * 10.f * sprintBoost;
+            float impulse = std::min(maxVelocityChange, diffVelocityLength);
+            glm::vec3 impulseVector = impulse * glm::normalize(diffVelocity);
+            rigidBody_->applyImpulse(impulseVector);
+        }
+        else {
+            transform_.move(newDirection * speed_ * deltaTime * sprintBoost);
+        }
     }
 
     void FirstPersonCharacter::initialize() {

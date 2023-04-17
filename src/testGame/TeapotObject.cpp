@@ -20,7 +20,7 @@ namespace entre_portais {
 
     void TeapotObject::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
-        loadShader("gouraud");
+        loadShader("phong");
         submit(renderer, RenderPass::FOREGROUND);
     }
 

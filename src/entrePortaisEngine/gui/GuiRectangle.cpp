@@ -22,11 +22,11 @@ namespace entre_portais {
                               + 2 * (isUsingHoverTexture() ? 1 : 0));
         if (isUsingTexture()) {
             shader.setUniformInt("textureBase", 0);
-            TextureManager::instance().getTextureSync(texture_path_).Bind(0);
+            TextureManager::instance().getTexture(texture_path_).Bind(0);
         }
         if (isUsingHoverTexture()) {
             shader.setUniformInt("textureHover", 1);
-            TextureManager::instance().getTextureSync(hover_texture_path_).Bind(1);
+            TextureManager::instance().getTexture(hover_texture_path_).Bind(1);
         }
         shader.setUniformInt("isHovering", isInHoverState());
         shader.setUniformVec2("textureResize", texture_size_);

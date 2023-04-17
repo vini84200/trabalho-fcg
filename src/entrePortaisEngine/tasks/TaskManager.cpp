@@ -55,7 +55,6 @@ namespace entre_portais {
         logger.getLogger()->info("Worker thread started");
         while (true) {
             TaskHandler taskHandler = GetNextTask();
-            ITask *task = GetTask(taskHandler);
             {
                 std::unique_lock<std::mutex> lock(signal.mutex);
                 if (signal.isRunning == false) {
@@ -63,6 +62,7 @@ namespace entre_portais {
                     return;
                 }
             }
+            ITask *task = GetTask(taskHandler);
             {
                 std::unique_lock<std::mutex> lock(signal.mutex);
                 signal.currentTask = task;
@@ -153,7 +153,7 @@ namespace entre_portais {
     TaskHandler TaskManager::GetNextTask() {
         std::unique_lock<std::mutex> lock(queueMutex_);
         queueCondition_.wait(lock, [this] { return !taskQueue_.empty() || stop_; });
-        TaskHandler taskHandler = taskQueue_.front();
+        TaskHandler taskHandler = std::move(taskQueue_.front());
         taskQueue_.pop();
         return taskHandler;
     }
@@ -210,4 +210,102 @@ namespace entre_portais {
 
     }
 
-}  // namespace entre_portais
+    void TaskManager::RunSyncTasks(float maxTime) {
+        // Check if there is some time left
+        if (maxTime <= 0) {
+            // Check if the first task is old, if it is, run it
+            if (!syncTaskQueue_.empty()) {
+                auto taskHandler = syncTaskQueue_.front();
+                if (taskHandler.getTaskID() != -1) {
+                    if (taskHandler.getWaitTime() > 0.5f) {
+                        spdlog::info("Sync task {} is old", taskHandler.getTaskID());
+                    }
+                    else
+                        return;
+                }
+                else
+                    return;
+            }
+            else
+                return;
+        }
+
+        // Get the current time
+        auto startTime = std::chrono::high_resolution_clock::now();
+
+        if (syncTaskQueue_.empty()) {
+            return;
+        }
+
+        spdlog::info("Running sync tasks");
+
+
+        // Run all sync tasks
+        while ( true ) {
+            // Get the next sync task
+            TaskHandler taskHandler = GetNextSyncTask();
+            ITask *task = GetTask(taskHandler);
+
+            // Check if the task is null
+            if (task == nullptr) {
+                spdlog::info("No more sync tasks");
+                return;
+            }
+
+            // Run the task
+            spdlog::info("Running task {}", taskHandler.getTaskID());
+            std::lock_guard<std::mutex> lock(task->runMutex_);
+            TaskRunResult result;
+            try {
+                result = task->Run();
+                spdlog::info("Task {} finished", taskHandler.getTaskID());
+                OnTaskFinished(taskHandler);
+            }
+            catch (std::exception &e) {
+                spdlog::error("Exception in task {}: {}", taskHandler.getTaskID(), e.what());
+                result = TaskRunResult::FAILURE;
+            }
+            catch (...) {
+                spdlog::error("Unknown exception in task {}", taskHandler.getTaskID());
+                result = TaskRunResult::FAILURE;
+            }
+
+            // Check the result
+            switch (result) {
+                case TaskRunResult::SUCCESS:
+                    task->setStatus(TaskStatus::SUCCESS);
+                    task->OnFinish();
+                    break;
+                case TaskRunResult::FAILURE:
+                    task->setStatus(TaskStatus::FAILURE);
+                    break;
+                case TaskRunResult::BLOCKED: {
+                    spdlog::warn("Sync task {} blocked, this is not allowed", taskHandler.getTaskID());
+                    task->setStatus(TaskStatus::FAILURE);
+                    break;
+
+                }
+            }
+
+            // Check if there is some time left
+            auto currentTime = std::chrono::high_resolution_clock::now();
+            auto elapsedTime = std::chrono::duration_cast<std::chrono::milliseconds>(currentTime - startTime).count();
+            if (elapsedTime > maxTime) {
+                spdlog::info("Time limit reached");
+                return;
+            }
+        }
+    }
+
+    TaskHandler TaskManager::GetNextSyncTask() {
+        std::unique_lock<std::mutex> lock(queueMutex_);
+        if (syncTaskQueue_.empty()) {
+            return TaskHandler();
+        }
+        TaskHandler taskHandler = syncTaskQueue_.front();
+        syncTaskQueue_.pop();
+
+        return taskHandler;
+    }
+}
+// namespace entre_portais

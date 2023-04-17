@@ -23,6 +23,7 @@ namespace labirinto {
 
     private:
         std::queue<std::string> texturePreloadQueue;
+        float finishTimer_ = 0.0f;
     };
 
 } // labirinto

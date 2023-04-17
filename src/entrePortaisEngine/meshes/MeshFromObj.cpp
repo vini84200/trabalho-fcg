@@ -31,22 +31,22 @@ namespace entre_portais {
                         shaderInUse.setUniformInt("normalTexture", 2);
                         shaderInUse.setUniformInt("specularHighlightTexture", 3);
                         if (material.diffuse_texname != "") {
-                            Texture texture = TextureManager::instance().getTextureSync(material.diffuse_texname);
+                          TextureHandle texture = TextureManager::instance().getTexture(material.diffuse_texname);
                             texture.Bind(0);
                             textureUsage |= 1;
                         }
                         if (material.specular_texname != "") {
-                            Texture texture = TextureManager::instance().getTextureSync(material.specular_texname);
+                            TextureHandle texture = TextureManager::instance().getTexture(material.specular_texname);
                             texture.Bind(1);
                             textureUsage |= 2;
                         }
                         if (material.normal_texname != "") {
-                            Texture texture = TextureManager::instance().getTextureSync(material.normal_texname);
+                            TextureHandle texture = TextureManager::instance().getTexture(material.normal_texname);
                             texture.Bind(2);
                             textureUsage |= 4;
                         }
                         if (material.specular_highlight_texname != "") {
-                            Texture texture = TextureManager::instance().getTextureSync(
+                            TextureHandle texture = TextureManager::instance().getTexture(
                                     material.specular_highlight_texname);
                             texture.Bind(3);
                             textureUsage |= 8;
@@ -61,7 +61,7 @@ namespace entre_portais {
             if (current_pass == RenderPass::TRANSPARENCY) {
                 for (const auto &[materialId, range]: transparentMaterialRanges_) {
                     auto [start, count] = range;
-                    std::optional<Texture> texture;
+                    std::optional<TextureHandle> texture;
                     if (materialId < materials_.size()) {
                         auto material = materials_.at(materialId);
                         shaderInUse.setUniformVec3("Ka", material.ambient[0], material.ambient[1], material.ambient[2]);
@@ -73,7 +73,7 @@ namespace entre_portais {
                         shaderInUse.setUniformFloat("alpha", material.dissolve);
 
                         if (material.diffuse_texname != "") {
-                            texture = TextureManager::instance().getTextureSync(material.diffuse_texname);
+                            texture = TextureManager::instance().getTexture(material.diffuse_texname);
                             texture->Bind();
                             shaderInUse.setUniformInt("texture_", 1);
                         } else {
@@ -207,13 +207,13 @@ namespace entre_portais {
                                          ImGuiSliderFlags_Logarithmic);
                         if (!material.diffuse_texname.empty()) {
                             ImGui::Text("Texture: %s", material.diffuse_texname.c_str());
-                            Texture tex = TextureManager::instance().getTextureSync(material.diffuse_texname);
+                            TextureHandle tex = TextureManager::instance().getTexture(material.diffuse_texname);
                             ImGui::Image(tex.GetImTextureID(), ImVec2(128, 128),
                                          ImVec2(0, 1), ImVec2(1, 0));
                         }
                         if (!material.specular_texname.empty()) {
                             ImGui::Text("Specular Texture: %s", material.specular_texname.c_str());
-                            Texture tex = TextureManager::instance().getTextureSync(material.specular_texname);
+                            TextureHandle tex = TextureManager::instance().getTexture(material.specular_texname);
                             ImGui::Image(tex.GetImTextureID(), ImVec2(128, 128),
                                          ImVec2(0, 1), ImVec2(1, 0));
                         }

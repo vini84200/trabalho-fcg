@@ -18,6 +18,7 @@ set(sources
         src/entrePortaisEngine/render/IRenderable.cpp
         src/entrePortaisEngine/render/Renderer.cpp
         src/entrePortaisEngine/render/Texture.cpp
+		src/entrePortaisEngine/render/ImageTexture.cpp
         src/entrePortaisEngine/render/TextureManager.cpp
         src/entrePortaisEngine/render/FrameBuffer.cpp
         src/entrePortaisEngine/render/PointLight.cpp

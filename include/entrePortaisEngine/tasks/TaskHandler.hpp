@@ -16,10 +16,19 @@ namespace entre_portais {
 
         }
 
-        TaskHandler(int taskID, class ITask *task) : taskID_(taskID), task_(task) {}
+        TaskHandler(int taskID, class ITask *task) : taskID_(taskID), task_(task), sync_(false) {
+            queueTime_ = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch()).count();
+        }
+        TaskHandler(int taskID, class ITask *task, bool sync) : taskID_(taskID), task_(task), sync_(sync) {
+            queueTime_ = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch()).count();
+        }
 
         // Copy
-        TaskHandler(const TaskHandler &other) : taskID_(other.taskID_), task_(other.task_) {}
+        TaskHandler(const TaskHandler &other) : taskID_(other.taskID_), task_(other.task_) {
+            queueTime_ = other.queueTime_;
+        }
 
         bool operator==(const TaskHandler &other) const {
             return taskID_ == other.taskID_;
@@ -41,9 +50,25 @@ namespace entre_portais {
             return task_->getStatus();
         }
 
+        bool isSync() const {
+            return sync_;
+        }
+
+        long int getQueueTime() const {
+            return queueTime_;
+        }
+
+        float getWaitTime() const {
+            long int const currentTime = std::chrono::duration_cast<std::chrono::milliseconds>(
+                    std::chrono::system_clock::now().time_since_epoch()).count();
+            return (static_cast<float>(currentTime - queueTime_)) / 1000.0f;
+        }
+
     private:
         int taskID_;
         ITask *task_;
+        bool sync_;
+        long int queueTime_;
     };
 
 } // entre_portais
