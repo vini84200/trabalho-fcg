@@ -6,7 +6,7 @@
 #include "entrePortaisEngine/meshes/IMesh.hpp"
 #include "Transform.hpp"
 #include "Logger.hpp"
-#include "entrePortaisEngine/physics/RigidBody.hpp"
+#include "entrePortaisEngine/physics/PhysicsActor.hpp"
 
 namespace entre_portais {
 
@@ -59,15 +59,15 @@ namespace entre_portais {
     protected:
         std::shared_ptr<IMesh> mesh_;
         std::weak_ptr<IScene> scene_;
-        std::unique_ptr<RigidBody> rigidBody_;
+        std::unique_ptr<PhysicsActor> rigidBody_;
     public:
         const std::shared_ptr<IMesh> &getMesh() const;
 
         void setMesh(const std::shared_ptr<IMesh> &mesh);
 
-        const std::unique_ptr<RigidBody> &getRigidBody() const;
+        const std::unique_ptr<PhysicsActor> &getRigidBody() const;
 
-        void setRigidBody(std::unique_ptr<RigidBody> rigidBody);
+        void setRigidBody(std::unique_ptr<PhysicsActor> rigidBody);
 
     protected:
         bool visible_ = true;

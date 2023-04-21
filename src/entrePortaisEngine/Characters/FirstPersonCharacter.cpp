@@ -1,9 +1,10 @@
 #include "entrePortaisEngine/Characters/FirstPersonCharacter.hpp"
 #include "GLFW/glfw3.h"
+#include "characterkinematic/PxCapsuleController.h"
+#include "characterkinematic/PxController.h"
 #include "entrePortaisEngine/IScene.hpp"
 #include "entrePortaisEngine/Window.hpp"
 #include "glm/gtx/string_cast.hpp"
-#include "entrePortaisEngine/physics/BoxCollider.hpp"
 
 namespace entre_portais {
     FirstPersonCharacter::FirstPersonCharacter(char *name) : IObject(name) {
@@ -71,6 +72,13 @@ namespace entre_portais {
                     sprint_ = false;
                 }
                 break;
+            case GLFW_KEY_SPACE:
+                if (action == GLFW_PRESS) {
+                    if (isOnGround_) {
+                        verticalAcceleration_ += 5.f;
+                    }
+                }
+                break;
         }
     }
 
@@ -92,19 +100,44 @@ namespace entre_portais {
         }
 
         bool hasRigidBody = rigidBody_ != nullptr;
-        if (hasRigidBody)
-        {
-            glm::vec3 velocity = rigidBody_->getVelocity();
-            glm::vec3 diffVelocity = newDirection * speed_ * sprintBoost * 10.f - velocity;
-            float diffVelocityLength = glm::length(diffVelocity);
-            float maxVelocityChange = rigidBody_->getMass() * 10.f * sprintBoost;
-            float impulse = std::min(maxVelocityChange, diffVelocityLength);
-            glm::vec3 impulseVector = impulse * glm::normalize(diffVelocity);
-            rigidBody_->applyImpulse(impulseVector);
+//        if (hasRigidBody)
+//        {
+//            glm::vec3 velocity = rigidBody_->getVelocity();
+//            glm::vec3 diffVelocity = newDirection * speed_ * sprintBoost * 10.f - velocity;
+//            float diffVelocityLength = glm::length(diffVelocity);
+//            float maxVelocityChange = rigidBody_->getMass() * 10.f * sprintBoost;
+//            float impulse = std::min(maxVelocityChange, diffVelocityLength);
+//            glm::vec3 impulseVector = impulse * glm::normalize(diffVelocity);
+//            rigidBody_->applyImpulse(impulseVector);
+//        }
+//        else {
+            //TODO: Reimplementar a movimentação usando rigidbody
+//            transform_.move(newDirection * speed_ * deltaTime * sprintBoost);
+
+//        }
+
+//        physx::PxVec3 disp =
+
+        physx::PxControllerState cctState;
+        controller_->getState(cctState);
+
+        isOnGround_ = cctState.collisionFlags & physx::PxControllerCollisionFlag::eCOLLISION_DOWN;
+        if (!isOnGround_) {
+            verticalAcceleration_ -= 9.8f * deltaTime;
+        } else {
+            verticalAcceleration_ = std::max(0.0f, verticalAcceleration_);
         }
-        else {
-            transform_.move(newDirection * speed_ * deltaTime * sprintBoost);
-        }
+
+        newDirection.y = verticalAcceleration_;
+
+        controller_->move(physx::PxVec3(newDirection.x, newDirection.y, newDirection.z) * speed_ * sprintBoost * deltaTime, 0.0f, deltaTime, physx::PxControllerFilters());
+
+        // Sync transform
+        auto position = controller_->getPosition();
+        transform_.setPosition(glm::vec3(position.x, position.y, position.z));
+
+
+
     }
 
     void FirstPersonCharacter::initialize() {
@@ -132,6 +165,19 @@ namespace entre_portais {
 //        rigidBody_ = std::make_unique<RigidBody>(&modelMatrix_, std::move(cubeCollider),
 //                                                 *this->getScene()->getPhysicsEngine().get(),
 //                                                 this->transform_);
+        physx::PxCapsuleControllerDesc desc;
+        desc.height = 1.8f;
+        desc.radius = 0.3f;
+        desc.material = getScene()->getPhysicsEngine()->getPhysics().createMaterial(0.5f, 0.5f, 0.6f);
+        desc.position = physx::PxExtendedVec3(transform_.getPosition().x, transform_.getPosition().y, transform_.getPosition().z);
+        desc.slopeLimit = 0.0f;
+        desc.contactOffset = 0.1f;
+        desc.stepOffset = 0.1f;
+        desc.invisibleWallHeight = 0.0f;
+        desc.maxJumpHeight = 0.0f;
+        desc.reportCallback = nullptr;
+        controller_ = getScene()->getPhysicsEngine()->getControllerManager().createController(desc);
+        controller_->setUserData(this);
     }
 
     std::shared_ptr<Camera> FirstPersonCharacter::getCamera() {
@@ -149,7 +195,7 @@ namespace entre_portais {
         if (!pauseMode_) {
             glm::vec2 d = 0.001f * delta;
             glm::vec3 rightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());
-            glm::quat rotationHead = glm::quat(glm::vec3(0, 0, -d.y));
+            glm::quat rotationHead = glm::quat(glm::vec3(-d.y, 0, 0));
             glm::quat rotationBody = glm::quat(glm::vec3(0, -d.x, 0));
             camera_->getTransform()->rotateBy(rotationHead);
             glm::vec3 newRightCamera = glm::cross(glm::vec3(0.0, 1.0, 0.0), camera_->getTransform()->getForward());

@@ -1,5 +1,4 @@
 #include "labirinto/InvisibleBox.hpp"
-#include "entrePortaisEngine/physics/BoxCollider.hpp"
 #include "entrePortaisEngine/IScene.hpp"
 
 InvisibleBox::InvisibleBox(int x, int y) : InvisibleBox(glm::vec3(x, 0, y),
@@ -13,12 +12,13 @@ InvisibleBox::InvisibleBox(int x, int y) : InvisibleBox(glm::vec3(x, 0, y),
 }
 
 void InvisibleBox::initialize() {
-    auto cubeCollider = std::make_unique<entre_portais::BoxCollider>(glm::vec3(1.0f, 1.0f, 1.0f),
-                                                                     modelMatrix_);
-    rigidBody_ = std::make_unique<entre_portais::RigidBody>(&modelMatrix_, std::move(cubeCollider),
-                                                            *this->getScene()->getPhysicsEngine().get(),
-                                                            this->transform_);
-    rigidBody_->setInertiaTensor(matrices::inertiaTensorBox(1, glm::vec3(1.0f, 1.0f, 1.0f)));
+//    auto cubeCollider = std::make_unique<entre_portais::BoxCollider>(glm::vec3(1.0f, 1.0f, 1.0f),
+//                                                                     modelMatrix_);
+//    rigidBody_ = std::make_unique<entre_portais::RigidBody>(&modelMatrix_, std::move(cubeCollider),
+//                                                            *this->getScene()->getPhysicsEngine().get(),
+//                                                            this->transform_);
+//    rigidBody_->setInertiaTensor(matrices::inertiaTensorBox(1, glm::vec3(1.0f, 1.0f, 1.0f)));
+    // TODO: Reimplementar o rigidbody
     spdlog::info("InvisibleBox initialized");
 }
 

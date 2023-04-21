@@ -36,18 +36,10 @@ set(sources
         src/entrePortaisEngine/Characters/FirstPersonCharacter.cpp
         src/entrePortaisEngine/Objects/ObjFromFile.cpp
         src/entrePortaisEngine/Objects/AmbientFromTexture.cpp
-		src/entrePortaisEngine/physics/PhysicsEngine.cpp
-		src/entrePortaisEngine/physics/RigidBody.cpp
-		src/entrePortaisEngine/physics/ICollider.cpp
-		src/entrePortaisEngine/physics/BoxCollider.cpp
-		src/entrePortaisEngine/physics/SphereCollider.cpp
-		src/entrePortaisEngine/physics/collisions.cpp
+		src/entrePortaisEngine/physics/PhysXAdapter.cpp
+		src/entrePortaisEngine/physics/PhysicsScene.cpp
+		src/entrePortaisEngine/physics/PhysicsActor.cpp
 
-		src/algos/algoShape.cpp
-		src/algos/HalfEdgeStructure.cpp
-		src/algos/gjk/VoronoiSimplex.cpp
-		src/algos/gjk/gjk.cpp
-		src/algos/sat/SatAlgorithm.cpp
 
 		src/testGame/TriScene.cpp
 		src/testGame/TriObject.cpp

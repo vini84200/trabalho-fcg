@@ -25,7 +25,7 @@ const std::shared_ptr<entre_portais::Renderer> &entre_portais::IScene::getRender
 
 entre_portais::IScene::IScene(char *name) : IGameNode(name) {
     renderer_ = std::make_shared<Renderer>();
-    physicsEngine_ = std::make_shared<PhysicsEngine>();
+    physicsEngine_ = std::make_shared<PhysicsScene>();
 }
 
 entre_portais::Window *entre_portais::IScene::getWindow() {
@@ -36,11 +36,11 @@ void entre_portais::IScene::setWindow(entre_portais::Window *window) {
     window_ = window;
 }
 
-const std::shared_ptr<entre_portais::PhysicsEngine> &entre_portais::IScene::getPhysicsEngine() const {
+const std::shared_ptr<entre_portais::PhysicsScene> &entre_portais::IScene::getPhysicsEngine() const {
     return physicsEngine_;
 }
 
-void entre_portais::IScene::setPhysicsEngine(const std::shared_ptr<PhysicsEngine> &physicsEngine) {
+void entre_portais::IScene::setPhysicsEngine(const std::shared_ptr<PhysicsScene> &physicsEngine) {
     physicsEngine_ = physicsEngine;
 }
 

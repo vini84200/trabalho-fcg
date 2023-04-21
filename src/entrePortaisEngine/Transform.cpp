@@ -10,7 +10,7 @@
 glm::mat4 entre_portais::Transform::getLocalModelMatrix() const {
     glm::mat4 model = matrices::Matrix_Identity();
     model = matrices::Matrix_Scale(scale_.x, scale_.y, scale_.z) * model;
-    model = matrices::RotationFromQuat(rotation_) * model;
+    model = glm::toMat4(rotation_) * model;
     model = matrices::Matrix_Translate(position_.x, position_.y, position_.z) * model;
     return model;
 }
@@ -61,7 +61,7 @@ glm::quat entre_portais::Transform::getRotation() const {
 }
 
 glm::vec3 entre_portais::Transform::getForward() const {
-    return matrices::RotationFromQuat(rotation_) * glm::vec4(0, 0, 1, 0);
+    return matrices::RotationFromQuat(rotation_) * glm::vec4(1, 0, 0, 0);
 }
 
 //glm::vec3 entre_portais::Transform::getForward() const {

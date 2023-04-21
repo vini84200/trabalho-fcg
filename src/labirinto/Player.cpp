@@ -1,6 +1,5 @@
 #include "labirinto/Player.hpp"
 #include "entrePortaisEngine/IScene.hpp"
-#include "entrePortaisEngine/physics/BoxCollider.hpp"
 #include "entrePortaisEngine/meshes/MeshFromObj.hpp"
 
 void labirinto::Player::loadBodyMesh() {
@@ -26,7 +25,6 @@ void labirinto::Player::update(float deltaTime) {
        // TP player 
     
         transform_.setPosition(glm::vec3(35.0f, 3.0f, 0.0f));
-        rigidBody_->setVelocity(glm::vec3(0, 0, 0));
     }
 }
 
@@ -34,13 +32,7 @@ void labirinto::Player::initialize() {
     FirstPersonCharacter::initialize();
     // Physics
     auto physics = getScene()->getPhysicsEngine();
-    auto collider = std::make_unique<entre_portais::BoxCollider>(glm::vec3(0.5f, 3.f, 0.5f), modelMatrix_);
-    rigidBody_ = std::make_unique<entre_portais::RigidBody>(&modelMatrix_, std::move(collider), *physics.get(),
-                                                            transform_);
-    rigidBody_->setInertiaTensor(matrices::inertiaTensorBox(60, glm::vec3(0.5f, 1.8f, 0.5f)));
-    rigidBody_->setMass(60);
-    rigidBody_->setIsStatic(false);
-
+    // TODO: Implementar rigidbody
     // Move the camera to the player eyes
     emptyObject1_->getTransform()->setPosition(glm::vec3(0, 0.8f, 0));
 }

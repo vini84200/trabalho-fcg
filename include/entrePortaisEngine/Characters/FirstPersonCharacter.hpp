@@ -1,6 +1,8 @@
 #ifndef ENTREPORTAIS_FIRSTPERSONCHARACTER_HPP
 #define ENTREPORTAIS_FIRSTPERSONCHARACTER_HPP
 
+#include "characterkinematic/PxCapsuleController.h"
+#include "characterkinematic/PxController.h"
 #include "entrePortaisEngine/IObject.hpp"
 #include "testGame/EmptyObject.hpp"
 
@@ -40,6 +42,9 @@ namespace entre_portais {
         bool altMode_;
         bool pauseMode_;
         float speed_ = 2;
+        physx::PxController *controller_;
+        physx::PxU32 isOnGround_;
+        float verticalAcceleration_;
     };
 
 } // entre_portais

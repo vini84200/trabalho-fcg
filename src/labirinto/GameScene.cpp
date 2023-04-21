@@ -4,7 +4,6 @@
 #include "testGame/Player.hpp"
 #include "entrePortaisEngine/Objects/ObjFromFile.hpp"
 #include "entrePortaisEngine/meshes/MeshFromObj.hpp"
-#include "entrePortaisEngine/physics/BoxCollider.hpp"
 #include "labirinto/LabirintoMap.hpp"
 #include "labirinto/Pillar.hpp"
 #include "labirinto/Key.hpp"
@@ -147,12 +146,14 @@ namespace labirinto {
         auto grnd = std::make_shared<entre_portais::ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");
         addChild(grnd);
         grnd->getTransform()->setScale(glm::vec3(10.0f, 1.0f, 10.0f));
-        auto grndCollider = std::make_unique<entre_portais::BoxCollider>(glm::vec3(2.0f, 0.2f, 2.0f),
-                                                                         grnd->getModelMatrix());
-        grnd->setRigidBody(std::make_unique<entre_portais::RigidBody>(&grnd->getModelMatrix(), std::move(grndCollider),
-                                                                      *getPhysicsEngine().get(),
-                                                                      *grnd->getTransform()));
-        grnd->getRigidBody()->setIsStatic(true);
+        // TODO: Adicionar rigid body
+//        auto grndCollider = std::make_unique<entre_portais::BoxCollider>(glm::vec3(2.0f, 0.2f, 2.0f),
+//                                                                         grnd->getModelMatrix());
+//        grnd->setRigidBody(std::make_unique<entre_portais::RigidBody>(&grnd->getModelMatrix(), std::move(grndCollider),
+//                                                                      *getPhysicsEngine().get(),
+//                                                                      *grnd->getTransform()));
+//        grnd->getRigidBody()->setIsStatic(true);
+
     }
 
 } // labirinto

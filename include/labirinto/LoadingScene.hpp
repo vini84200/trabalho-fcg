@@ -1,6 +1,7 @@
 #ifndef ENTREPORTAIS_LOADINGSCENE_HPP
 #define ENTREPORTAIS_LOADINGSCENE_HPP
 
+#include <queue>
 #include "entrePortaisEngine/IScene.hpp"
 
 namespace labirinto {

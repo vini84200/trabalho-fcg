@@ -2,6 +2,7 @@
 #include "entrePortaisEngine/render/Renderer.hpp"
 #include "entrePortaisEngine/IScene.hpp"
 #include "glm/gtc/type_ptr.hpp"
+#include "utils/matrices.h"
 
 namespace entre_portais {
     void PointLight::onKey(int key, int scancode, int action, int mods) {

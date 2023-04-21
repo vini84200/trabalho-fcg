@@ -3,11 +3,11 @@
 
 #include <stdexcept>
 
-#include "entrePortaisEngine/render/Camera.hpp"
 #include "IGameNode.hpp"
+#include "entrePortaisEngine/physics/PhysicsScene.hpp"
+#include "entrePortaisEngine/render/Camera.hpp"
 #include "entrePortaisEngine/render/Renderer.hpp"
 #include "imgui.h"
-#include "entrePortaisEngine/physics/PhysicsEngine.hpp"
 
 namespace entre_portais {
     class Window;
@@ -88,15 +88,15 @@ namespace entre_portais {
 
         const std::shared_ptr<Renderer> &getRenderer() const;
 
-        const std::shared_ptr<PhysicsEngine> &getPhysicsEngine() const;
+        const std::shared_ptr<PhysicsScene> &getPhysicsEngine() const;
 
-        void setPhysicsEngine(const std::shared_ptr<PhysicsEngine> &physicsEngine);
+        void setPhysicsEngine(const std::shared_ptr<PhysicsScene> &physicsEngine);
 
     protected:
         Window *window_;
         std::shared_ptr<Camera> camera_;
         std::shared_ptr<Renderer> renderer_;
-        std::shared_ptr<PhysicsEngine> physicsEngine_;
+        std::shared_ptr<PhysicsScene> physicsEngine_;
 
         // Imgui windows
     };

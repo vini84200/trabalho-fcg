@@ -153,6 +153,10 @@ namespace entre_portais {
     TaskHandler TaskManager::GetNextTask() {
         std::unique_lock<std::mutex> lock(queueMutex_);
         queueCondition_.wait(lock, [this] { return !taskQueue_.empty() || stop_; });
+        if (stop_) {
+            spdlog::info("Task manager stopped");
+            return TaskHandler();
+        }
         TaskHandler taskHandler = std::move(taskQueue_.front());
         taskQueue_.pop();
         return taskHandler;
