@@ -266,9 +266,10 @@ namespace entre_portais {
 
         if (ImGui::TreeNode("Postprocess")) {
             ImGui::Indent();
-            const char* hdrModes[] = {"Off", "Reinhard", "Extended Reinhard", "Exposure", "Filmic", "Uncharted 2", "ACES", "ACES Filmic", "Reinhard Luminance"};
-            const char* currentMode = hdrModes[hdr];
-            if(ImGui::BeginCombo("HDR Mode", currentMode)) {
+            const char *hdrModes[] = {"Off", "Reinhard", "Extended Reinhard", "Exposure", "Filmic", "Uncharted 2",
+                                      "ACES", "ACES Filmic", "Reinhard Luminance"};
+            const char *currentMode = hdrModes[hdr];
+            if (ImGui::BeginCombo("HDR Mode", currentMode)) {
                 for (int i = 0; i < 9; i++) {
                     bool isSelected = (currentMode == hdrModes[i]);
                     if (ImGui::Selectable(hdrModes[i], isSelected)) {
@@ -288,7 +289,6 @@ namespace entre_portais {
 
             ImGui::TreePop();
         }
-
 
 
     }

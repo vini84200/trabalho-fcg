@@ -18,6 +18,7 @@ namespace entre_portais {
 
         // Delete copy constructor and assignment operator
         TextureManager(TextureManager const &) = delete;
+
         void operator=(TextureManager const &) = delete;
 
         TextureHandle getTexture(std::string name);
@@ -33,7 +34,6 @@ namespace entre_portais {
 
         TextureHandle createTexture(std::string name);
     };
-
 
 
 } // entre_portais

@@ -15,8 +15,11 @@ namespace entre_portais {
     class PhysicsScene {
     public:
         PhysicsScene();
+
         ~PhysicsScene();
+
         PhysicsScene(const PhysicsScene &other) = default;
+
         PhysicsScene &operator=(const PhysicsScene &other) = default;
 
         void update(float deltaTime);
@@ -33,18 +36,21 @@ namespace entre_portais {
 
         static physx::PxPhysics &getPhysics();
 
-        physx::PxScene & getScene() const;
+        physx::PxScene &getScene() const;
 
         physx::PxControllerManager &getControllerManager() const;
 
     private:
-        static inline entre_portais::PhysXAdaptor& getPhysXAdaptorRef() {
+        static inline entre_portais::PhysXAdaptor &getPhysXAdaptorRef() {
             return entre_portais::PhysXAdaptor::getInstance();
         }
-        physx::PxAllocatorCallback & getAllocatorCallback();
 
-        physx::PxScene* scene = nullptr;
+        physx::PxAllocatorCallback &getAllocatorCallback();
+
+        physx::PxScene *scene = nullptr;
+
         physx::PxCpuDispatcher *getDispatcher();
+
         physx::PxPvdSceneClient *pvdClient;
         physx::PxControllerManager *controllerManager;
     };

@@ -16,7 +16,7 @@ namespace labirinto {
     }
 
     void Key::onKey(int key, int scancode, int action, int mods) {
-        if ((key == GLFW_KEY_SPACE || key == GLFW_KEY_E ) && action == GLFW_PRESS) {
+        if ((key == GLFW_KEY_SPACE || key == GLFW_KEY_E) && action == GLFW_PRESS) {
             spdlog::info("Key pressed");
             // Calculate player position
             auto playerPosition = getPlayerPosition();
@@ -84,20 +84,20 @@ namespace labirinto {
         if (isDoor_) {
             animation = entre_portais::Bezier();
             animation.add(
-                transform_.getPosition(),
-                glm::quat(1,0,0,0)
+                    transform_.getPosition(),
+                    glm::quat(1, 0, 0, 0)
             );
             animation.add(
-                glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.4, 0),
-                glm::quat(0.7,0,0.4,0)
+                    glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.4, 0),
+                    glm::quat(0.7, 0, 0.4, 0)
             );
             animation.add(
-                glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.5, -.1),
-                glm::quat(0.707,0,0,0.707)
+                    glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.5, -.1),
+                    glm::quat(0.707, 0, 0, 0.707)
             );
             animation.add(
-                glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.5, -.2),
-                glm::quat(0.707,0,0,0.707)
+                    glm::vec3(transform_.getPosition()) + glm::vec3(0, 0.5, -.2),
+                    glm::quat(0.707, 0, 0, 0.707)
             );
         }
     }

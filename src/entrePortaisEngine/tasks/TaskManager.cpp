@@ -223,14 +223,11 @@ namespace entre_portais {
                 if (taskHandler.getTaskID() != -1) {
                     if (taskHandler.getWaitTime() > 0.5f) {
                         spdlog::info("Sync task {} is old", taskHandler.getTaskID());
-                    }
-                    else
+                    } else
                         return;
-                }
-                else
+                } else
                     return;
-            }
-            else
+            } else
                 return;
         }
 
@@ -245,7 +242,7 @@ namespace entre_portais {
 
 
         // Run all sync tasks
-        while ( true ) {
+        while (true) {
             // Get the next sync task
             TaskHandler taskHandler = GetNextSyncTask();
             ITask *task = GetTask(taskHandler);

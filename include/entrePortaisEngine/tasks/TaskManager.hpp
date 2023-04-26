@@ -161,6 +161,7 @@ namespace entre_portais {
          ** @param maxTime The maximum time to run the tasks, in seconds.
          **/
         void RunSyncTasks(float maxTime);
+
     private:
         TaskManager();
 

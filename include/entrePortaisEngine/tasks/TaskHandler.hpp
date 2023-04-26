@@ -20,6 +20,7 @@ namespace entre_portais {
             queueTime_ = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch()).count();
         }
+
         TaskHandler(int taskID, class ITask *task, bool sync) : taskID_(taskID), task_(task), sync_(sync) {
             queueTime_ = std::chrono::duration_cast<std::chrono::milliseconds>(
                     std::chrono::system_clock::now().time_since_epoch()).count();

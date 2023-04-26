@@ -33,6 +33,7 @@ namespace labirinto {
         glm::vec2 indexToPos(int index);
 
         void buildCollision();
+
         void buildInitialCollision();
 
     private:

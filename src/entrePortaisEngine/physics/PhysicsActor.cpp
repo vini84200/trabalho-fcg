@@ -23,6 +23,7 @@ namespace entre_portais {
         };
 
     }
+
     PhysicsScene &PhysicsActor::getPhysicsEngine() const {
 //        actor_->userData
         // TODO: insert return statement here
@@ -31,15 +32,15 @@ namespace entre_portais {
     physx::PxTransform toPxTransform(const Transform &transform);
 
     PhysicsActor::PhysicsActor(PhysicsScene &physicsScene, Transform &transform, const physx::PxGeometry &geometry,
-                               const physx::PxMaterial &material, const physx::PxReal density, bool isDynamic) : localTransform_(transform) {
+                               const physx::PxMaterial &material, const physx::PxReal density, bool isDynamic)
+            : localTransform_(transform) {
         shape_ = physicsScene.getPhysics().createShape(geometry, material, true);
         physx::PxTransform const pxTransform = entre_portais::toPxTransform(transform);
         if (isDynamic) {
             physx::PxRigidDynamic *rigidBody = physicsScene.getPhysics().createRigidDynamic(pxTransform);
             physx::PxRigidBodyExt::updateMassAndInertia(*rigidBody, density);
             body = rigidBody;
-        }
-        else {
+        } else {
             body = entre_portais::PhysicsScene::getPhysics().createRigidStatic(pxTransform);
         }
         body->attachShape(*shape_);

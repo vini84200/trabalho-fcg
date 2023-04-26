@@ -15,7 +15,7 @@ namespace utils {
         }
     }
 
-    std::string getTexturePath(const std::string& name);
+    std::string getTexturePath(const std::string &name);
 
 }
 

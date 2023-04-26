@@ -4,8 +4,7 @@
 
 namespace entre_portais {
 
-    entre_portais::PhysXAdaptor* PhysXAdaptor::instance{nullptr};
-
+    entre_portais::PhysXAdaptor *PhysXAdaptor::instance{nullptr};
 
 
     PhysXAdaptor::PhysXAdaptor() {
@@ -14,8 +13,7 @@ namespace entre_portais {
         foundation = PxCreateFoundation(PX_PHYSICS_VERSION, allocator, errorCallback);
         if (!foundation) {
             spdlog::error("PxCreateFoundation failed!");
-        }
-        else {
+        } else {
             spdlog::info("PxCreateFoundation success!");
         }
         pvd = PxCreatePvd(*foundation);

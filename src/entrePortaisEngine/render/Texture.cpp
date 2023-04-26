@@ -8,26 +8,27 @@
 #include "spdlog/spdlog.h"
 
 namespace entre_portais {
-    void ITexture::Bind()  {
+    void ITexture::Bind() {
         Bind(0);
     }
 
-    void ITexture::Bind(unsigned int slot)  {
-        if (!isInitialized()){
+    void ITexture::Bind(unsigned int slot) {
+        if (!isInitialized()) {
             initialize();
         }
-        if (!isLoaded()){
+        if (!isLoaded()) {
             load();
         }
         if (slot > MAX_TEXTURE_SLOTS) {
-            spdlog::error("Trying to bind texture {} to slot {}, but only {} slots are available", GetName(), slot, MAX_TEXTURE_SLOTS + 1);
+            spdlog::error("Trying to bind texture {} to slot {}, but only {} slots are available", GetName(), slot,
+                          MAX_TEXTURE_SLOTS + 1);
             return;
         }
         glActiveTexture(GL_TEXTURE0 + slot);
         glBindTexture(GL_TEXTURE_2D, static_cast<GLuint>(GetID()));
     }
 
-    void ITexture::Unbind()  {
+    void ITexture::Unbind() {
         if (GetID() == 0) {
             spdlog::error("Trying to unbind texture {}, but it is not bound", GetName());
             return;

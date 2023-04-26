@@ -111,7 +111,7 @@ namespace entre_portais {
 //            rigidBody_->applyImpulse(impulseVector);
 //        }
 //        else {
-            //TODO: Reimplementar a movimentação usando rigidbody
+        //TODO: Reimplementar a movimentação usando rigidbody
 //            transform_.move(newDirection * speed_ * deltaTime * sprintBoost);
 
 //        }
@@ -130,12 +130,13 @@ namespace entre_portais {
 
         newDirection.y = verticalAcceleration_;
 
-        controller_->move(physx::PxVec3(newDirection.x, newDirection.y, newDirection.z) * speed_ * sprintBoost * deltaTime, 0.0f, deltaTime, physx::PxControllerFilters());
+        controller_->move(
+                physx::PxVec3(newDirection.x, newDirection.y, newDirection.z) * speed_ * sprintBoost * deltaTime, 0.0f,
+                deltaTime, physx::PxControllerFilters());
 
         // Sync transform
         auto position = controller_->getPosition();
         transform_.setPosition(glm::vec3(position.x, position.y, position.z));
-
 
 
     }
@@ -169,7 +170,8 @@ namespace entre_portais {
         desc.height = 1.8f;
         desc.radius = 0.3f;
         desc.material = getScene()->getPhysicsEngine()->getPhysics().createMaterial(0.5f, 0.5f, 0.6f);
-        desc.position = physx::PxExtendedVec3(transform_.getPosition().x, transform_.getPosition().y, transform_.getPosition().z);
+        desc.position = physx::PxExtendedVec3(transform_.getPosition().x, transform_.getPosition().y,
+                                              transform_.getPosition().z);
         desc.slopeLimit = 0.0f;
         desc.contactOffset = 0.1f;
         desc.stepOffset = 0.1f;

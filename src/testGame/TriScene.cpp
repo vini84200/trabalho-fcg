@@ -99,8 +99,6 @@ namespace entre_portais {
         addChild(b3);
 
 
-
-
         auto l1 = std::make_shared<PointLight>(glm::vec3(0, 2, 1), glm::vec3(1, 0, 0), 1.0f, 1.0f, 0.014f, 0.07f);
         addChild(l1);
         auto l2 = std::make_shared<PointLight>(glm::vec3(0, 2, 0), glm::vec3(0, 1, 0), 1.0f, 1.0f, 0.014f, 0.07f);

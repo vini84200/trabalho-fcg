@@ -10,6 +10,7 @@ namespace entre_portais {
     class ImageTexture : public ITexture {
     public:
         ImageTexture(std::string path, std::string name);
+
         unsigned int GetID() const override;
 
         ImTextureID GetImTextureID() const override;

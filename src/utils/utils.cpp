@@ -8,7 +8,7 @@ namespace utils {
         return std::this_thread::get_id() == opengl_thread;
     }
 
-    std::string getTexturePath(const std::string& name) {
+    std::string getTexturePath(const std::string &name) {
         return "assets/textures/" + name;
     }
 

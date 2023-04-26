@@ -38,8 +38,8 @@ namespace entre_portais {
                 std::make_shared<ImageTexture>(
                         utils::getTexturePath(name),
                         name
-                        )
-                );
+                )
+        );
         textures_.insert({name, handle});
         return handle;
     }

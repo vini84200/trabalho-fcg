@@ -31,7 +31,7 @@ namespace entre_portais {
                         shaderInUse.setUniformInt("normalTexture", 2);
                         shaderInUse.setUniformInt("specularHighlightTexture", 3);
                         if (material.diffuse_texname != "") {
-                          TextureHandle texture = TextureManager::instance().getTexture(material.diffuse_texname);
+                            TextureHandle texture = TextureManager::instance().getTexture(material.diffuse_texname);
                             texture.Bind(0);
                             textureUsage |= 1;
                         }

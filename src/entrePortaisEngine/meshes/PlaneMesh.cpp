@@ -25,8 +25,8 @@ namespace entre_portais {
         std::vector<glm::vec3> positions({
                                                  {0, -w, -h},
                                                  {0, -w, h},
-                                                 {0, w, h},
-                                                 {0, w, -h}
+                                                 {0, w,  h},
+                                                 {0, w,  -h}
                                          });
         std::vector<glm::vec3> colors;
         switch (cor) {
@@ -68,11 +68,11 @@ namespace entre_portais {
                 float z = -h + zStep * j;
                 // Draw the lines for a square
                 positions.insert(positions.end(), {
-                        {0,     x+ xStep, z},
-                        {0,     x+ xStep, z + zStep},
-                        {0,     x,         z + zStep},
-                        {0,     x,         z},
-                        {0,     x,         z}
+                        {0, x + xStep, z},
+                        {0, x + xStep, z + zStep},
+                        {0, x,         z + zStep},
+                        {0, x,         z},
+                        {0, x,         z}
                 });
                 colors.insert(colors.end(), {
                         lineColor,
