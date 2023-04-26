@@ -32,6 +32,8 @@ namespace entre_portais {
 
         void switchCameraMode();
 
+        void teleport(glm::vec3 position);
+
 
     protected:
         glm::vec3 direction_ = {0, 0, 0};

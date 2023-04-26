@@ -1,5 +1,7 @@
 #include "labirinto/InvisibleBox.hpp"
+#include <cmath>
 #include "entrePortaisEngine/IScene.hpp"
+#include "entrePortaisEngine/physics/PhysicsActor.hpp"
 
 InvisibleBox::InvisibleBox(int x, int y) : InvisibleBox(glm::vec3(x, 0, y),
                                                         glm::vec3(2 * (40.0 / 41.0), 12, 2 * (40.0 / 41.0)),
@@ -18,8 +20,15 @@ void InvisibleBox::initialize() {
 //                                                            *this->getScene()->getPhysicsEngine().get(),
 //                                                            this->transform_);
 //    rigidBody_->setInertiaTensor(matrices::inertiaTensorBox(1, glm::vec3(1.0f, 1.0f, 1.0f)));
-    // TODO: Reimplementar o rigidbody
     spdlog::info("InvisibleBox initialized");
+
+    physx::PxBoxGeometry geometry = physx::PxBoxGeometry(scale_.x / 2, scale_.y / 2, scale_.z / 2);
+    physx::PxMaterial *material = getScene()->getPhysicsEngine()->getPhysics().createMaterial(0.5f, 0.5f, 0.3f);
+    rigidBody_ = std::make_unique<entre_portais::PhysicsActor>(*getScene()->getPhysicsEngine().get(),
+                                                               transform_,
+                                                               geometry,
+                                                               *material,
+                                                               1.f, false);
 }
 
 void InvisibleBox::render(entre_portais::RenderPass current_pass) {
@@ -40,7 +49,7 @@ void InvisibleBox::onMouseButton(int button, int action, int mods) {
 
 InvisibleBox::InvisibleBox(glm::vec3 pos, glm::vec3 scale, const char *name) : IObject(name) {
     transform_.setPosition(pos);
-    transform_.setScale(scale);
+    scale_ = scale;
 
 }
 

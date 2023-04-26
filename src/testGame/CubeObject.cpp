@@ -33,7 +33,7 @@ namespace entre_portais {
 
     void CubeObject::initialize() {
         auto renderer = IObject::getScene()->getRenderer();
-        loadShader("primitive");
+        loadShader("phong");
         submit(renderer, RenderPass::FOREGROUND);
 
         physx::PxBoxGeometry geometry = physx::PxBoxGeometry(0.5f, 0.5f, 0.5f);

@@ -18,7 +18,7 @@ int main() {
     std::string const title = "Entre Portais";
 
 
-    auto load_scene = std::make_shared<entre_portais::TriScene>();
+    auto load_scene = std::make_shared<labirinto::LoadingScene>();
     std::shared_ptr<entre_portais::Window> janela(
             new entre_portais::Window(WIDTH, HEIGHT, title.c_str(), std::move(load_scene)));
 

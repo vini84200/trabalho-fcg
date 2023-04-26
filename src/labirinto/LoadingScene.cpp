@@ -55,7 +55,7 @@ namespace labirinto {
         texturePreloadQueue.push("ui/credits_info.png");
         texturePreloadQueue.push("ui/help_info.png");
         texturePreloadQueue.push("ui/jogar.png");
-        texturePreloadQueue.push("ui/jogarH.png");
+        texturePreloadQueue.push("ui/JogarH.png");
         texturePreloadQueue.push("ui/menu.png");
         texturePreloadQueue.push("ui/menu_box.png");
         texturePreloadQueue.push("ui/menu_principal.png");

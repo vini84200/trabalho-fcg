@@ -47,6 +47,7 @@ namespace entre_portais {
         constant_ = constant;
         linear_ = linear;
         quadratic_ = quadratic;
+        ambientIntensity_ = 0.0f;
     }
 
     void PointLight::CustomImGui() {

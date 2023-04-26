@@ -23,6 +23,7 @@ public:
     void onMouseButton(int button, int action, int mods) override;
 
     void onExit() override;
+    glm::vec3 scale_;
 };
 
 

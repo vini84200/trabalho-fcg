@@ -1,5 +1,6 @@
 #include "entrePortaisEngine/render/Renderer.hpp"
 
+#include "imgui.h"
 #include "spdlog/spdlog.h"
 #include "utils/matrices.h"
 #include "entrePortaisEngine/Window.hpp"
@@ -79,9 +80,9 @@ namespace entre_portais {
         camera->setUpCamera();
         // BACKGROUND
         glDepthMask(GL_FALSE);
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 0, -1, "BACKGROUND");
-        #endif
+#endif
         for (auto [shaderID, objs]: renderables_[BACKGROUND]) {
             auto shader = sm->getShaderByID(shaderID);
             shader.use();
@@ -95,25 +96,25 @@ namespace entre_portais {
             }
         }
         glDepthMask(GL_TRUE);
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPopDebugGroup();
-        #endif
+#endif
 
 
         // PREPASS
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 1, -1, "PREPASS");
-        #endif
+#endif
 
 
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPopDebugGroup();
-        #endif
+#endif
         // FOREGROUND
 
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 2, -1, "FOREGROUND");
-        #endif
+#endif
 
         camera->setUpCamera();
         for (auto [shaderID, objs]: renderables_[FOREGROUND]) {
@@ -126,34 +127,34 @@ namespace entre_portais {
                 obj->render(FOREGROUND);
             }
         }
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPopDebugGroup();
-        #endif
+#endif
 
         // LIGHTING
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 3, -1, "LIGHTING");
-        #endif
+#endif
 
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPopDebugGroup();
-        #endif
+#endif
 
         // TRANSPARENCY
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 4, -1, "TRANSPARENCY");
-        #endif
+#endif
 
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPopDebugGroup();
-        #endif
+#endif
 
         frameBuffer->unbind();
 
         // POSTPROCESS
-        #ifdef OPENGL_DEBUG
+#ifdef OPENGL_DEBUG
         glPushDebugGroup(GL_DEBUG_SOURCE_APPLICATION, 5, -1, "POSTPROCESS");
-        #endif
+#endif
 
 
         int width, height;
@@ -164,7 +165,7 @@ namespace entre_portais {
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, frameBuffer->getColorAttachment());
 
-        postProcessShader->setUniformBool("hdr", hdr);
+        postProcessShader->setUniformInt("hdr", hdr);
         postProcessShader->setUniformBool("bloom", bloom);
         postProcessShader->setUniformBool("gammaCorrect", gammaCorrection);
         postProcessShader->setUniformFloat("exposure", exposure);
@@ -265,10 +266,24 @@ namespace entre_portais {
 
         if (ImGui::TreeNode("Postprocess")) {
             ImGui::Indent();
-            ImGui::Checkbox("HDR", &hdr);
-            ImGui::Checkbox("Bloom", &bloom);
+            const char* hdrModes[] = {"Off", "Reinhard", "Extended Reinhard", "Exposure", "Filmic", "Uncharted 2", "ACES", "ACES Filmic", "Reinhard Luminance"};
+            const char* currentMode = hdrModes[hdr];
+            if(ImGui::BeginCombo("HDR Mode", currentMode)) {
+                for (int i = 0; i < 9; i++) {
+                    bool isSelected = (currentMode == hdrModes[i]);
+                    if (ImGui::Selectable(hdrModes[i], isSelected)) {
+                        hdr = static_cast<HDRMode>(i);
+                    }
+                    if (isSelected) {
+                        ImGui::SetItemDefaultFocus();
+                    }
+                }
+                ImGui::EndCombo();
+            }
+//            ImGui::Checkbox("Bloom", &bloom);
             ImGui::Checkbox("Gamma Correction", &gammaCorrection);
             ImGui::SliderFloat("Exposure", &exposure, -2.0f, 10.0f);
+            ImGui::ColorPicker4("White Color", glm::value_ptr(whiteColor));
             ImGui::Unindent();
 
             ImGui::TreePop();

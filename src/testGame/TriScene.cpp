@@ -65,24 +65,24 @@ namespace entre_portais {
         auto grnd = std::make_shared<Ground>();
         addChild(grnd);
 
-//        auto grnd2 = std::make_shared<ObjFromFile>("Cube of Metal", "assets/objs/metal_cube.obj");
-//        addChild(grnd2);
-//        auto grnd3 = std::make_shared<ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");
-//        addChild(grnd3);
-//        grnd3->getTransform()->setPosition(glm::vec3(4.0, 0.2, 4.0));
+        auto grnd2 = std::make_shared<ObjFromFile>("Cube of Metal", "assets/objs/metal_cube.obj");
+        addChild(grnd2);
+        auto grnd3 = std::make_shared<ObjFromFile>("Wood Plane 2", "assets/objs/wood_plane12.obj");
+        addChild(grnd3);
+        grnd3->getTransform()->setPosition(glm::vec3(4.0, 0.2, 4.0));
 //
-//        char *teapotName = "Teapot";
-//        auto teapot = std::make_shared<TeapotObject>(teapotName);
-//        addChild(teapot);
+        char *teapotName = "Teapot";
+        auto teapot = std::make_shared<TeapotObject>(teapotName);
+        addChild(teapot);
 
         //    char *cuelhoNome = "Cuelho";
         //    auto cuelho = std::make_shared<Cuelho>(cuelhoNome);
         //    addChild(cuelho);
 
-//        char *path = "assets/objs/Intercity1.obj";
-//        char *name = "Train";
-//        auto train = std::make_shared<ObjFromFile>(name, path);
-//        addChild(train);
+        char *path = "assets/objs/Intercity1.obj";
+        char *name = "Train";
+        auto train = std::make_shared<ObjFromFile>(name, path);
+        addChild(train);
 
 //       addChild(std::make_shared<ObjFromFile>("Bunny", "assets/objs/bunny.obj"));
 //

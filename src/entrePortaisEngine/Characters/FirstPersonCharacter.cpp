@@ -238,4 +238,9 @@ namespace entre_portais {
         }
         pauseMode_ = !pauseMode_;
     }
+
+    void FirstPersonCharacter::teleport(glm::vec3 position) {
+        controller_->setPosition(physx::PxExtendedVec3(position.x, position.y, position.z));
+
+    }
 } // entre_portais

@@ -46,7 +46,8 @@ namespace entre_portais {
                     rigidBody->postPhysics(deltaTime);
                 }
                 else {
-                    spdlog::warn("Actor without user data");
+//                    spdlog::warn("Actor without user data");
+//                  FIXME: Check if this is a problem
                 }
             }
         }

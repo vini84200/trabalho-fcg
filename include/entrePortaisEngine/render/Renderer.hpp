@@ -24,6 +24,18 @@ namespace entre_portais {
         UI = 0b01000000,
     };
 
+    enum HDRMode : int32_t {
+        NONE = 0,
+        REINHARD = 1,
+        EXTENDED_REINHARD = 2,
+        EXPOSURE = 3,
+        FILMIC = 4,
+        UNCHARTED2_SP = 5,
+        ACES = 6,
+        ACES2 = 7,
+        REINHARD_LUMINANCE = 8,
+    };
+
 
     using RenderPasses = int32_t;
 
@@ -78,10 +90,11 @@ namespace entre_portais {
         std::shared_ptr<VertexArrayBuffer> quadVAO_;
 
         // Configure post-processing
-        bool hdr = true;
+        HDRMode hdr = HDRMode::EXTENDED_REINHARD;
         bool bloom = true;
         bool gammaCorrection = true;
         float exposure = 1.0f;
+        glm::vec4 whiteColor;
 
         // Directional light
         glm::vec3 lightDir = glm::normalize(glm::vec3(.2f, -1.f, 0.0f));
