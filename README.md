@@ -1,12 +1,12 @@
-# Entre-portais
+# A Mazeing Game
 
-Este projeto foi desenvolvido para a disciplina de Computação Gráfica do curso de Ciência da Computação da Universidade
+Este projeto foi desenvolvido para a disciplina de Fundamentos de Computação Gráfica do curso de Ciência da Computação da Universidade
 Federal do Rio Grande do Sul (UFRGS).
+Nome antigo: *Entre Portais*
 
 ## Objetivo
 
-Usando a biblioteca OpenGL, desenvolver um jogo 3D em primeira pessoa, com o objetivo de explorar um ambiente e resolver
-quebra-cabeças para avançar para o próximo nível.
+Usando a biblioteca OpenGL, desenvolver um jogo 3D em primeira pessoa, com o objetivo de explorar um labirinto.
 
 ## Autores
 
